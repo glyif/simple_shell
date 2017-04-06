@@ -24,7 +24,7 @@ int _getline(char *buffer, int limit)
  * @argv: variadic arguments from input
  * Return: void
  */
-void execute(char **argv)
+void execute(char **argv, char **envp)
 {
      pid_t pid;
      int status;
@@ -38,7 +38,7 @@ void execute(char **argv)
      }
      else if (pid == 0)
 	 {
-		 if (execvp(*argv, argv) < 0)
+		 if (execve(*argv, argv, envp) < 0)
 		 {
 			 perror("No Command");
 			 exit(1);
@@ -64,7 +64,7 @@ int main(void)
 		_getline(line, 1024);
 		printf("\n");
 		tokenize(&tokens, line);
-		execute(tokens.tokens);
+		execute(tokens.tokens, environ);
 	}
 	return (0);
 }
