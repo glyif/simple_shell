@@ -61,7 +61,7 @@ int main(void)
 
 	while (1)
 	{
-		printf("$ ");
+		write(1, "$ ", 2);
 		_getline(line, 1024);
 		printf("\n");
 		tokenize(&tokens, line);
