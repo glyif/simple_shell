@@ -1,5 +1,30 @@
 #include "header.h"
+/**
+ * _getline - custom getline currently reads 1 char at a time
+ * needs to be updated to read entire stream
+ * @buffer: input buffer
+ * @limit: maxsize of input character string
+ * Return: number of characters written
+ */
+int _getline(char *buffer, int limit)
+{
+	int c, i;
 
+	for (i = 0; i < limit - 1; i++)
+	{
+		read(0, &c, 1);
+		buffer[i] = c;
+		if (buffer[i] == '\n')
+			break;
+	}
+	buffer[++i] = '\0';
+	return i;
+}
+/**
+ * execute - completes execution
+ * @argv: variadic arguments from input
+ * Return: void
+ */
 void execute(char **argv)
 {
      pid_t pid;
@@ -25,7 +50,10 @@ void execute(char **argv)
 		 wait(&status);
      }
 }
-
+/**
+ * main - custom shell
+ * Return: 0
+ */
 int main(void)
 {
 	tokens_t tokens;
@@ -33,10 +61,11 @@ int main(void)
 
 	while (1)
 	{
-		printf("$ ");
-		fgets(line, sizeof(line), stdin);
+		write(1, "$ ", 2);
+		_getline(line, 1024);
 		printf("\n");
 		tokenize(&tokens, line);
 		execute(tokens.tokens);
 	}
+	return (0);
 }
