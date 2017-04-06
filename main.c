@@ -8,12 +8,11 @@
  */
 int _getline(char *buffer, int limit)
 {
-	int c, i;
+	int i;
 
 	for (i = 0; i < limit - 1; i++)
 	{
-		read(0, &c, 1);
-		buffer[i] = c;
+		read(0, (buffer + i), 1);
 		if (buffer[i] == '\n')
 			break;
 	}
