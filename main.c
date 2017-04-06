@@ -1,6 +1,6 @@
 #include "header.h"
 
-void  execute(const char **argv)
+void execute(char **argv)
 {
      pid_t pid;
      int status;
@@ -9,14 +9,14 @@ void  execute(const char **argv)
 
      if (pid < 0)
 	 {
-		 printf("*** ERROR: forking child process failed\n");
+		 perror("Process Creation\n");
 		 exit(1);
      }
      else if (pid == 0)
 	 {
 		 if (execvp(*argv, argv) < 0)
 		 {
-			 printf("*** ERROR: exec failed\n");
+			 perror("No Command");
 			 exit(1);
 		 }
 	 }
@@ -26,14 +26,14 @@ void  execute(const char **argv)
      }
 }
 
-void  main(void)
+int main(void)
 {
 	tokens_t tokens;
 	char  line[1024];
 
 	while (1)
 	{
-		printf("Shell -> ");
+		printf("$ ");
 		fgets(line, sizeof(line), stdin);
 		printf("\n");
 		tokenize(&tokens, line);
