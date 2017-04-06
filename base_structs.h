@@ -12,7 +12,7 @@ typedef struct tokens
 	 * AST will use tokens from this structure!
 	 */
 	char *data;
-	const char **tokens;
+	char **tokens;
 	unsigned int tokensN;
 } tokens_t;
 #endif
