@@ -6,7 +6,4 @@ sudo: true
 
 compiler: gcc
 
-install:
-    - sudo apt-get install valgrind
-
-script: make all && valgrind ./hsh
+script: make all
