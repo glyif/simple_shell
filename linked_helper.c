@@ -3,7 +3,7 @@
 /**
  * link_count - counts number of nodes in linked list
  * @envp: pointer to head of linked list
- * 
+ *
  * Return: number of nodes
  */
 unsigned int link_count(env_t *envp)
@@ -48,7 +48,6 @@ char **zelda_to_ganondorf(env_t *envp)
 		_strncpy(ganondorf[i], tmp->var, len);
 		tmp = tmp->next;
 	}
-	
 	ganondorf[i] = NULL;
 
 	return (ganondorf);

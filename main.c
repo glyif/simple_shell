@@ -1,9 +1,10 @@
 #include "header.h"
 /**
  * _getline - custom getline currently reads 1 char at a time
- * needs to be updated to read entire stream
  * @buffer: input buffer
  * @limit: maxsize of input character string
+ *
+ * Goal: update to make one syscall instead of one sys call per char
  * Return: number of characters written
  */
 int _getline(char *buffer, int limit)
@@ -17,40 +18,43 @@ int _getline(char *buffer, int limit)
 			break;
 	}
 	buffer[++i] = '\0';
-	return i;
+
+	return (i);
 }
 /**
  * execute - completes execution
- * @argv: variadic arguments from input
+ * @argv: input commands from user
+ * @envp: environmental variables
+ *
  * Return: void
  */
 void execute(char **argv, env_t *envp)
 {
-     pid_t pid;
-     int status;
-	 char **l_to_a;
+	pid_t pid;
+	int status;
+	char **l_to_a;
 
-	 pid = fork();
+	pid = fork();
 
-     if (pid < 0)
-	 {
-		 perror("Process Creation\n");
-		 exit(1);
-     }
-     else if (pid == 0)
-	 {
-		 l_to_a = zelda_to_ganondorf(envp);
+	if (pid < 0)
+	{
+		perror("Process Creation\n");
+		exit(1);
+	}
+	else if (pid == 0)
+	{
+		l_to_a = zelda_to_ganondorf(envp);
 
-		 if (execve(*argv, argv, l_to_a) < 0)
-		 {
-			 perror("No Command");
-			 exit(1);
-		 }
-	 }
-     else
-	 {
-		 wait(&status);
-     }
+		if (execve(*argv, argv, l_to_a) < 0)
+		{
+			perror("No Command");
+			exit(1);
+		}
+	}
+	else
+	{
+		wait(&status);
+	}
 }
 /**
  * main - custom shell

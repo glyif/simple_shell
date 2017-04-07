@@ -1,70 +1,66 @@
 #include "header.h"
 
 /**
- * _strlen - gets length of string
- * @str: string
+ * _strlen - finds and returns length of string
+ * @str: string to find length
  *
- * Return: length
+ * Return: length of string
  */
 unsigned int _strlen(const char *str)
 {
-    int i;
+	int i = 0;
 
-    for (i = 0; str[i] != '\0'; i++)
-        ;
+	while (str[i] != '\0')
+		i++;
 
-    return (i);
+	return (i);
 }
 
 /**
- * mem_reset - sets all bytes to '\0'
+ * mem_reset - sets all bytes of string to '\0'
  * @str: string
  * @bytes: number of bytes
  *
- * Return: pointer to reset mem
+ * Return: pointer to string with reset mem
  */
 char *mem_reset(char *str, int bytes)
 {
-    int i;
+	int i = 0;
 
-    i = 0;
-    while (i < bytes)
-    {
-        str[i] = '\0';
-        i++;
-    }
+	while (i < bytes)
+		str[i++] = '\0';
 
-    return (str);
+	return (str);
 }
 
 /**
- * safe_malloc - mallocs that checks if is memory is there and clears
- * @size
+ * safe_malloc - mallocs memory of size bytes, prints error message on error
+ * @bytes: number of bytes to malloc
  *
- * Return: pointer to malloced memory
+ * Return: pointer to malloced memory or NULL
  */
-void *safe_malloc(int size)
+void *safe_malloc(int bytes)
 {
 	void *check;
 
-	check = malloc(size);
+	check = malloc(bytes);
 	if (check == NULL)
 	{
 		perror("No Memory");
 		return (check);
 	}
-	check = mem_reset(check, size);
+	check = mem_reset(check, bytes);
 
 	return (check);
 }
 
 /**
- * _strncpy - copies a string
- * @dest: destination
- * @src: source
- * @n: max characters copied
+ * _strncpy - copies a string to another string
+ * @dest: destination string
+ * @src: source string to be copied
+ * @n: number of bytes to be copied
  *
- * Return: copied string
+ * Return: pointer to copied string
  */
 
 char *_strncpy(char *dest, char *src, int n)
@@ -82,19 +78,16 @@ char *_strncpy(char *dest, char *src, int n)
 	}
 
 	while (n > i)
-	{
-		dest[i] = '\0';
-		i++;
-	}
+		dest[i++] = '\0';
 
 	return (dest);
 }
 
 /**
- * _strdup - takes a string and copies to another place and returns pointer to it
- * @str: stirng
+ * _strdup - takes a string and copies to another a new memory location
+ * @str: string to copy
  *
- * Return: pointer to string
+ * Return: pointer to copied string
  */
 char *_strdup(char *str)
 {
@@ -106,10 +99,11 @@ char *_strdup(char *str)
 
 	len = _strlen(str);
 
-	ptrstring = safe_malloc(len * sizeof(char));
+	ptrstring = safe_malloc((len + 1) * sizeof(char));
 
 	for (j = 0; j < len; j++)
 		ptrstring[j] = str[j];
+	ptrstring[j] = '\0';
 
 	return (ptrstring);
 }
