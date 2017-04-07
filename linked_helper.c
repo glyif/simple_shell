@@ -2,16 +2,16 @@
 
 /**
  * link_count - counts number of nodes in linked list
- * @envp: pointer to head of linked list
+ * @head: pointer to head of linked list
  *
  * Return: number of nodes
  */
-unsigned int link_count(env_t *envp)
+unsigned int link_count(env_t *head)
 {
 	env_t *tmp;
 	unsigned int count;
 
-	tmp = envp;
+	tmp = head;
 	count = 0;
 
 	while (tmp != NULL)
@@ -25,21 +25,21 @@ unsigned int link_count(env_t *envp)
 
 /**
  * zelda_to_ganondorf - converts linked list to double pointer
- * @env_p: head pointer to head of list
+ * @head: head pointer to head of linked list
  *
- * Return: array of pointers pointing to strings
+ * Return: array of pointers, pointing to strings
  */
-char **zelda_to_ganondorf(env_t *envp)
+char **zelda_to_ganondorf(env_t *head)
 {
 	int i;
 	unsigned int count, len;
 	char **ganondorf;
 	env_t *tmp;
 
-	count = link_count(envp);
+	count = link_count(head);
 	ganondorf = malloc(sizeof(char *) * (count + 1));
 
-	tmp = envp;
+	tmp = head;
 	i = 0;
 	while (tmp != NULL)
 	{
