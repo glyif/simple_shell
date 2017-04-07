@@ -7,10 +7,14 @@
  */
 void init_tokens(tokens_t *tokens, int length)
 {
+	int i;
 	/* For the extreme case, such as 'a;a;a;a;a;a', we'll need to allocate twice as much memory for data + 1 byte for terminator */
 	/* Maximum amount of tokens is the same as length */
 	tokens->data = malloc((length * 2 + 1) * sizeof(char));
 	tokens->tokens = malloc(length * sizeof(const char *));
+
+	for (i = 0; i < length; ++ i)
+		tokens->tokens[i] = NULL;
 
 	if (!tokens->data || !tokens->tokens)
 	{

@@ -78,6 +78,7 @@ int main(void)
 		_getline(line, 1024);
 		tokenize(&tokens, line);
 		execute(tokens.tokens, envp);
+		delete_tokens(&tokens);
 	}
 	return (0);
 }

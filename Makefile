@@ -18,7 +18,7 @@ all: $(GLOBAL_HEADERS) $(CFILES) main.c
 	$(CC) $(CFLAGS) $(CFILES) main.c -o $(EXENAME) $(LIBS)
 
 debug: $(GLOBAL_HEADERS) $(CFILES) main.c
-	$(CC) $(CFLAGS) $(OFILES) main.c -o $(EXENAME) $(LIBS) -g
+	$(CC) $(CFLAGS) $(CFILES) main.c -o $(EXENAME) $(LIBS) -g
 
 clean:
 	rm -f $(EXENAME)
