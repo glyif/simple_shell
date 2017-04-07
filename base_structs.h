@@ -1,5 +1,6 @@
 #ifndef BASE_STRUCTS
 #define BASE_STRUCTS
+
 /**
  * struct tokens - struct for tokenizing string
  * @data: initial string separated with '\0', hold all the tokens
@@ -26,4 +27,16 @@ typedef struct env
 	char *var;
 	struct env *next;
 } env_t;
+
+/**
+ * struct our_builtins - matches command to appropriate builtin function
+ * @command: string command for builtin
+ * @builtin_func: function to handle builtin command
+ */
+typedef struct our_builtins
+{
+	char *command;
+	int (*builtin_func)(char**);
+} builtins_t;
+
 #endif
