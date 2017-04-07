@@ -11,9 +11,6 @@ void env_node(env_t **head, char *str)
 	env_t *tmp;
 
 	new = malloc(sizeof(env_t));
-	if (new == NULL)
-		return (NULL);
-
 	new->var = _strdup(str);
 	new->next = NULL;
 
