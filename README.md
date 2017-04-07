@@ -1,4 +1,4 @@
-# daVinci shell
+# MaryAnning shell
 
 screen-shot
 <img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-low_level_programming/235/shell.png" alt="screen shot of custom printf function">
@@ -9,7 +9,7 @@ This repo has...
 
 ### C language standard functions and system calls utilized
 
-``access``, ``chdir``, ``close`` ``closedir``, ``execve``, ``exit``, ``fork``,
+``access``, ``chdir``, ``close``, ``closedir``, ``execve``, ``exit``, ``fork``,
 ``free``, ``fstat``, ``getcwd``, ``getline``, ``kill``, ``lstat``, ``malloc``,
 ``open``, ``opendir``, ``perror``, ``read``, ``readdir``, ``signal``, ``stat``,
 ``strtok``, ``wait``, ``waitpid``, ``wait3``, ``wait4``, ``write``, ``_exit``
@@ -35,21 +35,14 @@ This is a synopsis
   output 1 at a time
   * ``_strlen``: custom function to find string length
 
+### header files
+
 * ``./holberton.h``: header file that contains all necessary included libraries
 for all functions, the struct prototype and type definition for the struct,
 and prototypes for all functions
 * ``./man_simple_shell``: manual file
 
-#### development directory
-  * ``./dev/``: contains a template file with function template, the redirection
-  of standard output into 'expected' from test cases of standard ``printf()``
-  and my output of test cases into 'custom' file.  directory also included all
-  other files of function ``_printf()``.
-  * ``./dev/prinf-screen-shot.png`` a screenshot of the custom ``_printf()``.
-  This is a former version of our function.  For updated screenshot see root
-  directory of our repository.
-
-#### main directory
+### main directory
   * this directory contains ``main()`` functions for testing custom .c files and
   testing the expected output of standard C version of ``printf()``
   * ``./dev/main/main.c``: tests expected output of standard ``printf()``

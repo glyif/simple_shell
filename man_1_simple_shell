@@ -1,0 +1,86 @@
+.TH maryanning 1 "09 March 1847" "0.1" "Mary Anning Shell"
+
+.SH NAME
+
+.B maryanning
+- command interpreter (shell)
+
+.SH SYNOPSIS
+.B	#include "holberton.h"
+
+	int _printf(const char *format, ...);
+
+.SH COPYRIGHT
+maryanning copyright here
+
+.SH DESCRIPTION
+
+.B maryanning
+is a custom shell based on our own understanding.
+
+.SH OPTIONS
+.IP -b
+Do not write `busy' to stdout while processing.
+.IP "-c config-file"
+Use the alternate system wide
+.I config-file
+instead of
+.IR /etc/foo.conf .
+This overrides any
+.B FOOCONF
+environment variable.
+.IP -a
+In addition to the baz segments, also parse the
+blurfl headers.
+.IP -r
+Recursive mode. Operates as fast as lightning
+at the expense of a megabyte of virtual memory.
+.SH FILES
+.I /etc/foo.conf
+.RS
+The system wide configuration file. See
+.BR foo (5)
+for further details.
+
+.RE
+.I ~/.foorc
+.RS
+Per user configuration file. See
+.BR foo (5)
+for further details.
+
+.SH ENVIRONMENT
+.IP FOOCONF
+If non-null the full pathname for an alternate system wide
+.IR foo.conf .
+Overridden by the
+.B -c
+option.
+
+.SH Invocation
+invocation here
+
+.SS subheader
+paragraph here
+
+.SH Another big header
+.P
+.SS subheader
+.P
+.B bold word
+paragraph here
+.P
+.SS
+.B Subheader
+
+.SH BUGS
+here is where we write the bugs and missing functions from maryanning
+.SH AUTHOR
+Bobby Yang <122@holberton.com>
+
+David John Coleman II <lcsw@davidjohncoleman.com>
+
+.SH "SEE ALSO"
+.BR bar (1),
+.BR foo (5),
+.BR xyzzy (1)
