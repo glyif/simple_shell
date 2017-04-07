@@ -4,7 +4,11 @@ LIBS=
 EXENAME=hsh
 
 CFILES=\
-	   tokenizer.c
+	   base_helper.c\
+	   linked_helper.c\
+	   tokenizer.c\
+	   env_list.c
+	   
 
 GLOBAL_HEADERS=\
 	header.h

@@ -74,18 +74,15 @@ int tokenize(tokens_t *tokens, const char *string)
 	unsigned int is_token;
 
 	char symbol;
-	/* First of all, we need to carefully allocate memory */
-	/* It does not matter if we allocate too much, it is better than constant reallocations, */
-	/* because they take too much time, and memory is not a concern */
-	length = strlen(string);
+	length = _strlen(string);
 	if (length == 0)
-		length = 1; /* Empty string should be properly processed too! */
+		length = 1;
 
 	/* Initializes struct */
 	init_tokens(tokens, length);
 
 	/* Set up current indexes; */
-	string_idx = 0; /* Current position in original string */
+	string_idx = 0; /* Current p$osition in original string */
 	data_idx = 0;   /* Current position in resulting data string */
 	tokens_idx = 0; /* Current token */
 
