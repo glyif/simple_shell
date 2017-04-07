@@ -24,10 +24,11 @@ int _getline(char *buffer, int limit)
  * @argv: variadic arguments from input
  * Return: void
  */
-void execute(char **argv, char **envp)
+void execute(char **argv, env_t *envp)
 {
      pid_t pid;
      int status;
+	 char **l_to_a;
 
 	 pid = fork();
 
@@ -38,7 +39,9 @@ void execute(char **argv, char **envp)
      }
      else if (pid == 0)
 	 {
-		 if (execve(*argv, argv, envp) < 0)
+		 l_to_a = zelda_to_ganondorf(envp);
+
+		 if (execve(*argv, argv, l_to_a) < 0)
 		 {
 			 perror("No Command");
 			 exit(1);
@@ -56,15 +59,16 @@ void execute(char **argv, char **envp)
 int main(void)
 {
 	tokens_t tokens;
-	char  line[1024];
+	env_t *envp;
+	char line[1024];
 
+	envp = env_list();
 	while (1)
 	{
 		write(1, "$ ", 2);
 		_getline(line, 1024);
-		printf("\n");
 		tokenize(&tokens, line);
-		execute(tokens.tokens, environ);
+		execute(tokens.tokens, envp);
 	}
 	return (0);
 }

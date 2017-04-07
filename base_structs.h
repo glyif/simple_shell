@@ -15,4 +15,15 @@ typedef struct tokens
 	char **tokens;
 	unsigned int tokensN;
 } tokens_t;
+
+/**
+ * struct env - struct for holding a env var
+ * @var: env var
+ * @next: pointer to the next env node
+ */
+typedef struct env
+{
+	char *var;
+	struct env *next;
+} env_t;
 #endif
