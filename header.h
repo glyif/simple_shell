@@ -19,6 +19,7 @@ extern char **environ;
 int _getline(char *buffer, int limit);
 
 /* tokenizer functions */
+int delete_tokens(tokens_t *tokens);
 int tokenize(tokens_t *tokens, const char *string);
 
 /* environ variable functions (support linked list & convert to char**) */
