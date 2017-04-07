@@ -1,9 +1,9 @@
 #include "header.h"
 
 /**
- * env_node - adds env node to end
- * @head: address of the head
- * @str: var to be stored
+ * env_node - adds new env node to end of linked list of environ variables
+ * @head: address of pointer to first node of linked list
+ * @str: new environmental variable to added to linked list
  */
 void env_node(env_t **head, char *str)
 {
@@ -11,14 +11,14 @@ void env_node(env_t **head, char *str)
 	env_t *tmp;
 
 	new = malloc(sizeof(env_t));
-	
+	if (new == NULL)
+		return (NULL);
+
 	new->var = _strdup(str);
 	new->next = NULL;
 
 	if (*head == NULL)
-	{
 		*head = new;
-	}
 	else
 	{
 		tmp = *head;
@@ -29,9 +29,12 @@ void env_node(env_t **head, char *str)
 }
 
 /**
- * env_list - creates a linked list of all envion variables
- * 
- * Return: head pointer of the created environ list
+ * env_list - creates a linked list of all environ variables
+ * Description: this function calls env_node() to add each environ variable,
+ * (from extern char** environ) one at a time to the linked list of environ
+ * variables.
+ *
+ * Return: head (pointer to first node of linked list of environ variables)
  */
 env_t *env_list(void)
 {
