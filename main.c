@@ -67,6 +67,11 @@ int main(void)
 	char line[1024];
 
 	envp = env_list();
+	if (envp == NULL)
+	{
+		perror("No Memory");
+		write(1, "insufficient memory", 19);
+	}
 	while (1)
 	{
 		write(1, "$ ", 2);

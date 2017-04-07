@@ -4,13 +4,18 @@
  * env_node - adds new env node to end of linked list of environ variables
  * @head: address of pointer to first node of linked list
  * @str: new environmental variable to added to linked list
+ *
+ * Return: pointer to new node with new environ variable
  */
-void env_node(env_t **head, char *str)
+env_t *env_node(env_t **head, char *str)
 {
 	env_t *new;
 	env_t *tmp;
 
 	new = malloc(sizeof(env_t));
+	if (new == NULL)
+		return (NULL);
+
 	new->var = _strdup(str);
 	new->next = NULL;
 
@@ -23,6 +28,8 @@ void env_node(env_t **head, char *str)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
+
+	return (new);
 }
 
 /**
@@ -41,7 +48,8 @@ env_t *env_list(void)
 	head = NULL;
 
 	for (i = 0; environ[i] != NULL; i++)
-		env_node(&head, environ[i]);
+		if (env_node(&head, environ[i]) == NULL)
+			return (NULL);
 
 	return (head);
 }
