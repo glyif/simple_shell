@@ -1,4 +1,8 @@
 #include "header.h"
+/**
+ * locate_path - sorts through list of environs to find find custom PATH
+ * @path: copies path
+ */
 int locate_path(char *path, env_t *envlist)
 {
 	env_t *tmp;
@@ -10,7 +14,7 @@ int locate_path(char *path, env_t *envlist)
 		if (path_match(tmp->var, "PATH=") != 0)
 		{
 			len = _strlen(tmp->var);
-			_strncpy(path, tmp->var, len, 5);
+			_strncpy(path, (tmp->var + 5), len);
 			return (1);
 		}
 
