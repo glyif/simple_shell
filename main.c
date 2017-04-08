@@ -61,17 +61,17 @@ int execdavinci_builtins(char **commands)
 /**
  * execute - completes execution of input commands
  * @commands: input commands from user organized by tokenizer function
- * @davinci_envlist: custom davinci environmental variables "linked" list
+ * @envlist: custom davinci environmental variables "linked" list
  *
  * Return: void
  */
-void execute(char **commands, env_t *davinci_envlist)
+void execute(char **commands, env_t *envlist)
 {
 	pid_t pid;
 	int status;
 	char **davinci_environ;
 
-	davinci_environ = zelda_to_ganondorf(davinci_envlist);
+	davinci_environ = zelda_to_ganondorf(envlist);
 
 	if (execdavinci_builtins(commands))
 	{
@@ -96,23 +96,26 @@ void execute(char **commands, env_t *davinci_envlist)
 int main(void)
 {
 	tokens_t tokens;
-	env_t *envp;
-	char *line;
-	size_t limit = BUFSIZE;
+	arg_inventory_t *arginv;
 
-	line = safe_malloc(limit * sizeof(char));
-	envp = env_list();
-	if (envp == NULL)
+	arginv = safe_malloc(sizeof(arg_inventory_t));
+
+	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
+	arginv->envlist = env_list();
+	arginv->buflimit = BUFSIZE;
+
+	if (arginv->envlist == NULL)
 	{
 		perror("No Memory");
 		write(STDOUT_FILENO, "insufficient memory", 19);
 	}
+
 	while (1)
 	{
 		write(STDOUT_FILENO, "$ ", 2);
-		getline(&line, &limit, stdin);
-		tokenize(&tokens, line);
-		execute(tokens.tokens, envp);
+		getline(&arginv->input_commands, &arginv->buflimit, stdin);
+		tokenize(&tokens, arginv->input_commands);
+		execute(tokens.tokens, arginv->envlist);
 		delete_tokens(&tokens);
 	}
 	return (0);

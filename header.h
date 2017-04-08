@@ -24,7 +24,7 @@ extern char **environ;
 
 /* main functions */
 int _getline(char *buffer, unsigned int limit);
-void execute(char **argv, env_t *envp);
+void execute(char **commands, env_t *envlist);
 int execdavinci_builtins(char** commands);
 
 /* tokenizer functions */
@@ -49,6 +49,7 @@ unsigned int _strlen(const char *str);
 
 /* file input / output functions */
 ssize_t read_textfile(const char *filename, size_t letters);
+int append_text_to_file(const char *filename, char *text_content);
 
 /* custom malloc, free functions */
 char *mem_reset(char *str, int bytes);
