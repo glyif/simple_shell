@@ -13,6 +13,12 @@ ssize_t _getline(char **buffer, size_t *limit)
 	i = read(STDIN_FILENO, *buffer, *limit);
 	charcount += i;
 
+	if (i == 0)
+	{
+		free(*buffer);
+		_exit(0);
+	}
+
 	if (i == *limit - 1)
 	{
 		iterations++;
