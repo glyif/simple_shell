@@ -23,7 +23,7 @@
 extern char **environ;
 
 /* main functions */
-int _getline(char *buffer, int limit);
+int _getline(char *buffer, unsigned int limit);
 void execute(char **argv, env_t *envp);
 int execdavinci_builtins(char** commands);
 
@@ -53,4 +53,6 @@ ssize_t read_textfile(const char *filename, size_t letters);
 /* custom malloc, free functions */
 char *mem_reset(char *str, int bytes);
 void *safe_malloc(int size);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+
 #endif

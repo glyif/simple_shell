@@ -7,19 +7,26 @@
  * Goal: update to make one syscall instead of one sys call per char
  * Return: number of characters written
  */
-int _getline(char *buffer, int limit)
+int _getline(char *buffer, unsigned int limit)
 {
-	int i;
+	unsigned int i, charcount = 0, iterations = 0;
 
-	for (i = 0; i < limit - 1; i++)
+	i = read(STDIN_FILENO, buffer, limit);
+	charcount += i;
+
+	if (i == limit - 1)
 	{
-		read(STDIN_FILENO, (buffer + i), 1);
-		if (buffer[i] == '\n' || buffer[i] == EOF)
-			break;
+		iterations++;
+		while (i == limit - 1)
+		{
+			iterations++;
+			buffer = _realloc(buffer, i, limit * iterations);
+			i = read(STDIN_FILENO, (buffer + charcount), limit);
+			charcount += i;
+		}
 	}
-	buffer[++i] = '\0';
 
-	return (i);
+	return (i * (limit * iterations));
 }
 
 /**
@@ -33,8 +40,10 @@ int execdavinci_builtins(char **commands)
 	int i = 0, j;
 	char *str;
 	builtins_t builtins_list[] = {
+
 		{"exit", builtin_exit}, {"monalisa", builtin_monalisa},
 		{NULL, NULL}
+
 	};
 
 	for (i = 0; (str = builtins_list[i].command) != NULL; i++)
@@ -42,8 +51,10 @@ int execdavinci_builtins(char **commands)
 			if (strcmp(str, commands[j]) == 0)
 			{
 				builtins_list[i].builtin_func(commands);
+
 				return (EXT_SUCCESS);
 			}
+
 	return (EXT_FAILURE);
 }
 
@@ -86,8 +97,10 @@ int main(void)
 {
 	tokens_t tokens;
 	env_t *envp;
-	char line[1024];
+	char *line;
+	size_t limit = 1024;
 
+	line = safe_malloc(1025 * sizeof(char));
 	envp = env_list();
 	if (envp == NULL)
 	{
@@ -97,7 +110,7 @@ int main(void)
 	while (1)
 	{
 		write(STDOUT_FILENO, "$ ", 2);
-		_getline(line, 1024);
+		getline(&line, &limit, stdin);
 		tokenize(&tokens, line);
 		execute(tokens.tokens, envp);
 		delete_tokens(&tokens);

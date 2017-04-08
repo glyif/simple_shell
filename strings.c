@@ -17,44 +17,6 @@ unsigned int _strlen(const char *str)
 }
 
 /**
- * mem_reset - sets all bytes of string to '\0'
- * @str: string
- * @bytes: number of bytes
- *
- * Return: pointer to string with reset mem
- */
-char *mem_reset(char *str, int bytes)
-{
-	int i = 0;
-
-	while (i < bytes)
-		str[i++] = '\0';
-
-	return (str);
-}
-
-/**
- * safe_malloc - mallocs memory of size bytes, prints error message on error
- * @bytes: number of bytes to malloc
- *
- * Return: pointer to malloced memory or NULL
- */
-void *safe_malloc(int bytes)
-{
-	void *check;
-
-	check = malloc(bytes);
-	if (check == NULL)
-	{
-		perror("No Memory");
-		return (check);
-	}
-	check = mem_reset(check, bytes);
-
-	return (check);
-}
-
-/**
  * _strncpy - copies a string to another string
  * @dest: destination string
  * @src: source string to be copied
@@ -62,7 +24,6 @@ void *safe_malloc(int bytes)
  *
  * Return: pointer to copied string
  */
-
 char *_strncpy(char *dest, char *src, int n)
 {
 	int i = 0;

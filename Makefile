@@ -4,7 +4,8 @@ LIBS=
 EXENAME=hsh
 
 CFILES=\
-		base_helper.c\
+		strings.c\
+		memmalloc.c\
 		linked_helper.c\
 		tokenizer.c\
 		env_list.c\
