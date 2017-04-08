@@ -26,5 +26,6 @@ int builtin_monalisa(char **commands)
 
 	if (!read_textfile("monalisa.txt", 3808))
 		write(STDOUT_FILENO, "Simplicity is the ultimate sophistication\n", 42);
+
 	return (0);
 }

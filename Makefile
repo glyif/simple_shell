@@ -9,7 +9,7 @@ CFILES=\
 		linked_helper.c\
 		tokenizer.c\
 		env_list.c\
-		extpwdwho.c\
+		builtin_funcs.c\
 		file_io.c
 
 

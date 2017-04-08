@@ -4,38 +4,37 @@
  * @buffer: input buffer
  * @limit: maxsize of input character string
  *
- * Goal: update to make one syscall instead of one sys call per char
  * Return: number of characters written
  */
-int _getline(char *buffer, unsigned int limit)
+ssize_t _getline(char **buffer, size_t *limit)
 {
 	unsigned int i, charcount = 0, iterations = 0;
 
-	i = read(STDIN_FILENO, buffer, limit);
+	i = read(STDIN_FILENO, *buffer, *limit);
 	charcount += i;
 
-	if (i == limit - 1)
+	if (i == *limit - 1)
 	{
 		iterations++;
-		while (i == limit - 1)
+		while (i == *limit - 1)
 		{
 			iterations++;
-			buffer = _realloc(buffer, i, limit * iterations);
-			i = read(STDIN_FILENO, (buffer + charcount), limit);
+			*buffer = _realloc(*buffer, i, (*limit * iterations));
+			i = read(STDIN_FILENO, (*buffer + charcount), *limit);
 			charcount += i;
 		}
 	}
 
-	return (i * (limit * iterations));
+	return ((ssize_t)(i * (*limit * iterations)));
 }
 
 /**
- * execdavinci_builtins - custom function to execute builtin commands
+ * exec_builtins - custom function to execute builtin commands
  * @commands: input commands from user organized by tokenizer function
  *
  * Return: 1 on success, 0 on failure
  */
-int execdavinci_builtins(char **commands)
+int exec_builtins(char **commands)
 {
 	int i = 0, j;
 	char *str;
@@ -43,7 +42,6 @@ int execdavinci_builtins(char **commands)
 
 		{"exit", builtin_exit}, {"monalisa", builtin_monalisa},
 		{NULL, NULL}
-
 	};
 
 	for (i = 0; (str = builtins_list[i].command) != NULL; i++)
@@ -73,7 +71,7 @@ void execute(char **commands, env_t *envlist)
 
 	davinci_environ = zelda_to_ganondorf(envlist);
 
-	if (execdavinci_builtins(commands))
+	if (exec_builtins(commands))
 	{
 		pid = fork();
 
@@ -113,7 +111,7 @@ int main(void)
 	while (1)
 	{
 		write(STDOUT_FILENO, "$ ", 2);
-		getline(&arginv->input_commands, &arginv->buflimit, stdin);
+		_getline(&arginv->input_commands, &arginv->buflimit);
 		tokenize(&tokens, arginv->input_commands);
 		execute(tokens.tokens, arginv->envlist);
 		delete_tokens(&tokens);
