@@ -68,13 +68,11 @@ void execute(char **commands, env_t *envlist)
 	pid_t pid;
 	int status;
 	char **davinci_environ;
-
 	davinci_environ = zelda_to_ganondorf(envlist);
 
 	if (exec_builtins(commands))
 	{
 		pid = fork();
-
 		if (pid < 0)
 			perror("Process Creation\n"), exit(1);
 		else if (pid == 0)
