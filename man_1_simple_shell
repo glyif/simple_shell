@@ -1,0 +1,122 @@
+.TH DAVINCI 1 "09 March 1847" "0.1" "daVinci Shell"
+
+
+
+.SH NAME
+
+.B daVinci
+- command interpreter (shell)
+
+
+
+.SH SYNOPSIS
+
+.B	./hsh
+[options] [command_string | file]
+
+
+
+.SH COPYRIGHT
+
+daVinci is Public Domain, no copyright protection
+
+
+
+.SH DESCRIPTION
+
+daVinci replicates a 'shell' or command line interpreter, which is a user\
+interface used for access to an operating system's services.  This shell has\
+a set of custom built-in commands, and also integrates with other commands\
+located in the system's PATH.
+
+
+
+.SH OPTIONS
+.IP -b
+Do not write `busy' to stdout while processing.
+.IP "-c config-file"
+Use the alternate system wide
+.I config-file
+instead of
+.IR /etc/foo.conf .
+This overrides any
+.B FOOCONF
+environment variable.
+.IP -a
+In addition to the baz segments, also parse the
+blurfl headers.
+.IP -r
+Recursive mode. Operates as fast as lightning
+at the expense of a megabyte of virtual memory.
+
+
+
+.SH ENVIRONMENT
+
+.IP FOOCONF
+If non-null the full pathname for an alternate system wide
+.IR foo.conf .
+Overridden by the
+.B -c
+option.
+
+
+
+.SH INVOCATION
+
+invocation here
+
+.SS subheader
+paragraph here
+
+
+
+.SH Another big header
+
+.P
+.SS subheader
+.P
+.B bold word
+paragraph here
+.P
+.SS
+.B Subheader
+
+
+
+.SH FILES
+
+.I /etc/foo.conf
+.RS
+The system wide configuration file. See
+.BR foo (5)
+for further details.
+
+.RE
+.I ~/.foorc
+.RS
+Per user configuration file. See
+.BR foo (5)
+for further details.
+
+
+
+.SH "SEE ALSO"
+
+.BR bar (1),
+.BR foo (5),
+.BR xyzzy (1)
+
+
+
+.SH BUGS
+
+here is where we write the bugs and missing functions from maryanning
+
+
+
+.SH AUTHOR
+
+Bobby Yang <122@holberton.com>
+
+David John Coleman II <lcsw@davidjohncoleman.com>

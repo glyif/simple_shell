@@ -1,22 +1,27 @@
-# daVinci shell
+# daVinci
 
-screen-shot
 <img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-low_level_programming/235/shell.png" alt="screen shot of custom printf function">
 
 ## Description
 
-This repo has...
+This repo has our custom shell project, which attempts to replicate some of the
+processes of the 'sh' shell or 'bash' shell.
 
 ### C language standard functions and system calls utilized
 
-``access``, ``chdir``, ``close`` ``closedir``, ``execve``, ``exit``, ``fork``,
+``access``, ``chdir``, ``close``, ``closedir``, ``execve``, ``exit``, ``fork``,
 ``free``, ``fstat``, ``getcwd``, ``getline``, ``kill``, ``lstat``, ``malloc``,
 ``open``, ``opendir``, ``perror``, ``read``, ``readdir``, ``signal``, ``stat``,
 ``strtok``, ``wait``, ``waitpid``, ``wait3``, ``wait4``, ``write``, ``_exit``
 
 ## Brief Synopsis
 
-This is a synopsis
+All files in this repository are designed to compile with GNU compiler
+collection v. '``gcc 4.8.4``' in the linux environment from '``Ubuntu 14.04.5
+LTS``'.  When compiled, the executable file replicates a 'shell' or command line
+interpreter, which is a user interface used for access to an operating system's
+services.  This shell has a set of custom built-in commands, and also integrates
+with other commands located in the system's PATH.
 
 ## File List
 
@@ -35,34 +40,21 @@ This is a synopsis
   output 1 at a time
   * ``_strlen``: custom function to find string length
 
-* ``./holberton.h``: header file that contains all necessary included libraries
-for all functions, the struct prototype and type definition for the struct,
-and prototypes for all functions
-* ``./man_simple_shell``: manual file
+### header files
 
-#### development directory
-  * ``./dev/``: contains a template file with function template, the redirection
-  of standard output into 'expected' from test cases of standard ``printf()``
-  and my output of test cases into 'custom' file.  directory also included all
-  other files of function ``_printf()``.
-  * ``./dev/prinf-screen-shot.png`` a screenshot of the custom ``_printf()``.
-  This is a former version of our function.  For updated screenshot see root
-  directory of our repository.
+* ``.r/header.h``: main header file that contains all necessary C standard
+library headers, all our custom macro definitions, and all prototypes of all
+functions in our custom shell application.
+* ``./base_structs.h``: header file that contains all type definitions for all
+structs.
 
-#### main directory
-  * this directory contains ``main()`` functions for testing custom .c files and
-  testing the expected output of standard C version of ``printf()``
-  * ``./dev/main/main.c``: tests expected output of standard ``printf()``
-  function.  Can be compiled on its own - no need for other functions
-  * ``./dev/main/custom_main.c``: tests actual output of custom ``_printf()``
-  function
-  * ``./dev/main/combo_main.c``: tests actual output of custom ``_printf()``
-  function and expected output of ``printf()`` function together.  Most test
-  cases are for standard functions.
+### testing files
+  * travis-ci
+  * Makefile
 
 ## Authors
 
-Bobby Yang - https://github.com/bobstermyang/
+Bobby Yang - https://github.com/bobstermyang/  
 David John Coleman II - http://www.davidjohncoleman.com/
 
 ## License

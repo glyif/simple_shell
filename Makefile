@@ -4,7 +4,15 @@ LIBS=
 EXENAME=hsh
 
 CFILES=\
-	   tokenizer.c
+		strings.c\
+		memmalloc.c\
+		linked_helper.c\
+		tokenizer.c\
+		env_list.c\
+		builtin_funcs.c\
+		file_io.c\
+		path.c
+
 
 GLOBAL_HEADERS=\
 	header.h
@@ -14,7 +22,7 @@ all: $(GLOBAL_HEADERS) $(CFILES) main.c
 	$(CC) $(CFLAGS) $(CFILES) main.c -o $(EXENAME) $(LIBS)
 
 debug: $(GLOBAL_HEADERS) $(CFILES) main.c
-	$(CC) $(CFLAGS) $(OFILES) main.c -o $(EXENAME) $(LIBS) -g
+	$(CC) $(CFLAGS) $(CFILES) main.c -o $(EXENAME) $(LIBS) -g
 
 clean:
 	rm -f $(EXENAME)
