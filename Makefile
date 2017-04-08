@@ -10,7 +10,8 @@ CFILES=\
 		tokenizer.c\
 		env_list.c\
 		builtin_funcs.c\
-		file_io.c
+		file_io.c\
+		path.c
 
 
 GLOBAL_HEADERS=\

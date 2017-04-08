@@ -10,8 +10,8 @@ void init_tokens(tokens_t *tokens, int length)
 	int i;
 	/* For the extreme case, such as 'a;a;a;a;a;a', we'll need to allocate twice as much memory for data + 1 byte for terminator */
 	/* Maximum amount of tokens is the same as length */
-	tokens->data = malloc((length * 2 + 1) * sizeof(char));
-	tokens->tokens = malloc(length * sizeof(const char *));
+	tokens->data = safe_malloc((length * 2 + 1) * sizeof(char));
+	tokens->tokens = safe_malloc(length * sizeof(const char *));
 
 	for (i = 0; i < length; ++ i)
 		tokens->tokens[i] = NULL;
@@ -103,10 +103,10 @@ int tokenize(tokens_t *tokens, const char *string)
 		symbol = string[string_idx];
 		string_idx++;
 
-		if (!is_token && isspace(symbol))
+		if (!is_token && _isspace(symbol))
 			continue; /* Skip whitespaces if we are not in token mode */
 
-		if (!is_token && !isspace(symbol) && (symbol != ';'))
+		if (!is_token && !_isspace(symbol) && (symbol != ';'))
 		{
 			/* Note that we'll handle ';' later, this is the special case */
 			/* New token has been started */
@@ -115,8 +115,8 @@ int tokenize(tokens_t *tokens, const char *string)
 			tokens_idx++;
 			is_token = 1; /* The token has started. We need to process it carefully */
 		}
-
-		if (is_token && isspace(symbol) && !skip_next && !skip_quote)
+		
+		if (is_token && _isspace(symbol) && !skip_next && !skip_quote)
 		{
 			/* Previous token has been ended */
 			/* Finish this token */

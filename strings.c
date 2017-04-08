@@ -24,7 +24,7 @@ unsigned int _strlen(const char *str)
  *
  * Return: pointer to copied string
  */
-char *_strncpy(char *dest, char *src, int n)
+char *_strncpy(char *dest, char *src, int n, int start)
 {
 	int i = 0;
 	int j = 0;
@@ -32,14 +32,16 @@ char *_strncpy(char *dest, char *src, int n)
 	while (src[i] != '\0')
 		i++;
 
-	while (j < n && src[j] != '\0')
+	while (j < n && src[start] != '\0')
 	{
-		dest[j] = src[j];
+		dest[j] = src[start];
 		j++;
+		start++;
 	}
 
 	while (n > i)
 		dest[i++] = '\0';
+
 
 	return (dest);
 }
@@ -67,4 +69,72 @@ char *_strdup(char *str)
 	ptrstring[j] = '\0';
 
 	return (ptrstring);
+}
+
+char _isspace(char c)
+{
+	if (c == ' ')
+		return (1);
+	if (c == '\t')
+		return (1);
+	if (c == '\n')
+		return (1);
+	if (c == '\v')
+		return (1);
+	if (c == '\f')
+		return (1);
+	if (c == '\r')
+		return (1);
+	if (c == ':')
+		return (1);
+
+	return (0);
+}
+
+/**
+ * _strcpy - copy string
+ * @dest: copy of src
+ * @src: the source of the copy
+ *
+ * Return: the copy of the src
+ */
+
+char *_strcpy(char *dest, char *src)
+{
+	char *temp = dest;
+
+	while (*src != '\0')
+	{
+		*dest = *src;
+		dest++;
+		src++;
+	}
+
+	return (temp);
+}
+
+/**
+ * _strncat - cats from src to dest
+ * @dest: destination
+ * @src: source
+ * @n: number of bytes
+ * Return: pointer to dest
+ */
+
+char *_strncat(char *dest, char *src, int n)
+{
+	int i, j;
+
+	for (i = 0; dest[i] != '\0'; i++)
+	{
+	}
+	j = 0;
+	while (j < n && src[j] != '\0')
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

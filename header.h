@@ -11,6 +11,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <stdarg.h>
 
 /* included custom headers */
 #include "base_structs.h"
@@ -43,10 +44,13 @@ int builtin_exit(char **commands);
 int builtin_monalisa(char **commands);
 
 /* custom C standard library functions */
-char *_strncpy(char *dest, char *src, int n);
+char *_strncpy(char *dest, char *src, int n, int start);
 char *_strdup(char *str);
 char *_strdup(char *str);
 unsigned int _strlen(const char *str);
+char _isspace(char c);
+char *_strcpy(char *dest, char *src);
+char *_strncat(char *dest, char *src, int n);
 
 /* file input / output functions */
 ssize_t read_textfile(const char *filename, size_t letters);
@@ -57,4 +61,7 @@ char *mem_reset(char *str, int bytes);
 void *safe_malloc(int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
+int locate_path(char *path, env_t *envlist);
+int path_match(char *path, char *str);
+int cat_path(char **search_path, char *cmd);
 #endif
