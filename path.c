@@ -7,11 +7,11 @@ int locate_path(char *path, env_t *envlist)
 
 	while(tmp->next != NULL)
 	{
-		if (path_match(tmp->var) != 0)
+		if (path_match(tmp->var, "PATH=") != 0)
 		{
 			len = _strlen(tmp->var);
 			_strncpy(path, tmp->var, len);
-			return (0);
+			return (1);
 		}
 
 		tmp = tmp->next;
@@ -20,25 +20,25 @@ int locate_path(char *path, env_t *envlist)
 	return (1);
 }
 
-int path_match(char *path)
+int path_match(char *path, char *str)
 {
 	int i;
-	char *p_string;
 
-	p_string = "PATH=";
-
-	if (path == NULL)
+	if (path == NULL || str == NULL)
 		return (0);
 
-	while (path[i] == p_string[i])
+	i = 0;
+
+	while (path[i] == str[i])
 	{
-		if (path[i] == '\0' || p_string[i] == '\0')
+		if (path[i] == '\0' || str[i] == '\0')
 			return (1);
+
 		i++;
 	}
 
-	if (path[i] == '\0' || p_string[i] == '\0')
+	if (path[i] == '\0' || str[i] == '\0')
 		return (1);
-	
+
 	return (0);
 }

@@ -57,5 +57,5 @@ void *safe_malloc(int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 int locate_path(char *path, env_t *envlist);
-int path_match(char *path);
+int path_match(char *path, char *str);
 #endif

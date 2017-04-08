@@ -69,10 +69,10 @@ void execute(char **commands, env_t *envlist)
 	int status;
 	char **davinci_environ;
 	char *path;
+
 	davinci_environ = zelda_to_ganondorf(envlist);
 	path = malloc(BUFSIZE);
 	locate_path(path, envlist);
-
 	if (exec_builtins(commands))
 	{
 		pid = fork();
