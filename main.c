@@ -7,55 +7,88 @@
  * Goal: update to make one syscall instead of one sys call per char
  * Return: number of characters written
  */
-int _getline(char *buffer, int limit)
+int _getline(char *buffer, unsigned int limit)
 {
-	int i;
+	unsigned int i, charcount = 0, iterations = 0;
 
-	for (i = 0; i < limit - 1; i++)
+	i = read(STDIN_FILENO, buffer, limit);
+	charcount += i;
+
+	if (i == limit - 1)
 	{
-		read(0, (buffer + i), 1);
-		if (buffer[i] == '\n')
-			break;
+		iterations++;
+		while (i == limit - 1)
+		{
+			iterations++;
+			buffer = _realloc(buffer, i, limit * iterations);
+			i = read(STDIN_FILENO, (buffer + charcount), limit);
+			charcount += i;
+		}
 	}
-	buffer[++i] = '\0';
 
-	return (i);
+	return (i * (limit * iterations));
 }
+
 /**
- * execute - completes execution
- * @argv: input commands from user
- * @envp: environmental variables
+ * execdavinci_builtins - custom function to execute builtin commands
+ * @commands: input commands from user organized by tokenizer function
+ *
+ * Return: 1 on success, 0 on failure
+ */
+int execdavinci_builtins(char **commands)
+{
+	int i = 0, j;
+	char *str;
+	builtins_t builtins_list[] = {
+
+		{"exit", builtin_exit}, {"monalisa", builtin_monalisa},
+		{NULL, NULL}
+
+	};
+
+	for (i = 0; (str = builtins_list[i].command) != NULL; i++)
+		for (j = 0; commands[j] != NULL; j++)
+			if (strcmp(str, commands[j]) == 0)
+			{
+				builtins_list[i].builtin_func(commands);
+
+				return (EXT_SUCCESS);
+			}
+
+	return (EXT_FAILURE);
+}
+
+/**
+ * execute - completes execution of input commands
+ * @commands: input commands from user organized by tokenizer function
+ * @envlist: custom davinci environmental variables "linked" list
  *
  * Return: void
  */
-void execute(char **argv, env_t *envp)
+void execute(char **commands, env_t *envlist)
 {
 	pid_t pid;
 	int status;
-	char **l_to_a;
+	char **davinci_environ;
 
-	pid = fork();
+	davinci_environ = zelda_to_ganondorf(envlist);
 
-	if (pid < 0)
+	if (execdavinci_builtins(commands))
 	{
-		perror("Process Creation\n");
-		exit(1);
-	}
-	else if (pid == 0)
-	{
-		l_to_a = zelda_to_ganondorf(envp);
+		pid = fork();
 
-		if (execve(*argv, argv, l_to_a) < 0)
-		{
-			perror("No Command");
-			exit(1);
-		}
-	}
-	else
-	{
-		wait(&status);
+		if (pid < 0)
+			perror("Process Creation\n"), exit(1);
+		else if (pid == 0)
+			if (execve(*commands, commands, davinci_environ) < 0)
+				perror("No Command"), exit(1);
+			else
+				_exit(0);
+		else
+			wait(&status);
 	}
 }
+
 /**
  * main - custom shell
  * Return: 0
@@ -63,21 +96,26 @@ void execute(char **argv, env_t *envp)
 int main(void)
 {
 	tokens_t tokens;
-	env_t *envp;
-	char line[1024];
+	arg_inventory_t *arginv;
 
-	envp = env_list();
-	if (envp == NULL)
+	arginv = safe_malloc(sizeof(arg_inventory_t));
+
+	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
+	arginv->envlist = env_list();
+	arginv->buflimit = BUFSIZE;
+
+	if (arginv->envlist == NULL)
 	{
 		perror("No Memory");
-		write(1, "insufficient memory", 19);
+		write(STDOUT_FILENO, "insufficient memory", 19);
 	}
+
 	while (1)
 	{
-		write(1, "$ ", 2);
-		_getline(line, 1024);
-		tokenize(&tokens, line);
-		execute(tokens.tokens, envp);
+		write(STDOUT_FILENO, "$ ", 2);
+		getline(&arginv->input_commands, &arginv->buflimit, stdin);
+		tokenize(&tokens, arginv->input_commands);
+		execute(tokens.tokens, arginv->envlist);
 		delete_tokens(&tokens);
 	}
 	return (0);
