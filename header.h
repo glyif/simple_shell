@@ -32,6 +32,7 @@ arg_inventory_t *buildarginv(void);
 /* tokenizer functions */
 int delete_tokens(tokens_t *tokens);
 int tokenize(tokens_t *tokens, const char *string);
+char _isspace(char c);
 
 /* environ variable functions (support linked list & convert to char**) */
 env_t *env_node(env_t **head, char *str);
@@ -43,12 +44,10 @@ char **zelda_to_ganondorf(env_t *head);
 int builtin_exit(char **commands);
 int builtin_monalisa(char **commands);
 
-/* custom C standard library functions */
-char *_strncpy(char *dest, char *src, int n, int start);
-char *_strdup(char *str);
+/* custom C standard library string functions */
+char *_strncpy(char *dest, char *src, int n);
 char *_strdup(char *str);
 unsigned int _strlen(const char *str);
-char _isspace(char c);
 char *_strcpy(char *dest, char *src);
 char *_strncat(char *dest, char *src, int n);
 
@@ -61,6 +60,7 @@ char *mem_reset(char *str, int bytes);
 void *safe_malloc(int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
+/* path environ variable functions to find custom path */
 int locate_path(char *path, env_t *envlist);
 int path_match(char *path, char *str);
 int cat_path(char **search_path, char *cmd);

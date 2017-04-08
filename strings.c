@@ -17,36 +17,6 @@ unsigned int _strlen(const char *str)
 }
 
 /**
- * _strncpy - copies a string to another string
- * @dest: destination string
- * @src: source string to be copied
- * @n: number of bytes to be copied
- *
- * Return: pointer to copied string
- */
-char *_strncpy(char *dest, char *src, int n, int start)
-{
-	int i = 0;
-	int j = 0;
-
-	while (src[i] != '\0')
-		i++;
-
-	while (j < n && src[start] != '\0')
-	{
-		dest[j] = src[start];
-		j++;
-		start++;
-	}
-
-	while (n > i)
-		dest[i++] = '\0';
-
-
-	return (dest);
-}
-
-/**
  * _strdup - takes a string and copies to another a new memory location
  * @str: string to copy
  *
@@ -71,70 +41,119 @@ char *_strdup(char *str)
 	return (ptrstring);
 }
 
-char _isspace(char c)
+/**
+ * _strcmp - checks if 2 strings are of equal value and length
+ * @s1: destination string
+ * @s2: source string to be compared
+ *
+ * Return: difference of first characters that are of diff value or 0 on success
+ */
+int _strcmp(char *s1, char *s2)
 {
-	if (c == ' ')
-		return (1);
-	if (c == '\t')
-		return (1);
-	if (c == '\n')
-		return (1);
-	if (c == '\v')
-		return (1);
-	if (c == '\f')
-		return (1);
-	if (c == '\r')
-		return (1);
-	if (c == ':')
-		return (1);
+	int j;
+
+	for (j = 0; s1[j] != '\0' && s2[j] != '\0'; j++)
+		if (s1[j] != s2[j])
+			return (s1[j] - s2[j]);
 
 	return (0);
 }
 
 /**
- * _strcpy - copy string
- * @dest: copy of src
+ * _strcpy - copies a string from src to dest
+ * @dest: new copy of string
  * @src: the source of the copy
  *
- * Return: the copy of the src
+ * Return: pointer to copy
  */
-
 char *_strcpy(char *dest, char *src)
 {
-	char *temp = dest;
+	int c;
 
-	while (*src != '\0')
-	{
-		*dest = *src;
-		dest++;
-		src++;
-	}
+	for (c = 0; src[c] != '\0'; c++)
+		dest[c] = src[c];
 
-	return (temp);
+	dest[c] = '\0';
+
+	return (dest);
 }
 
 /**
- * _strncat - cats from src to dest
- * @dest: destination
- * @src: source
- * @n: number of bytes
- * Return: pointer to dest
+ * _strncpy - copies string from source to destination
+ * @dest: destination string
+ * @src: source string to be copied
+ * @n: bytes to be copied from source string
+ *
+ * Return: destination string concatenated
  */
+char *_strncpy(char *dest, char *src, int n)
+{
+	int j;
 
+	for (j = 0; j < n && src[j] != '\0'; j++)
+		dest[j] = src[j];
+
+	while (j < n)
+	{
+		dest[j] = '\0';
+		j++;
+	}
+
+	return (dest);
+}
+
+/**
+ * _strncat - concatenates from src string to dest string
+ * @dest: destination string
+ * @src: source string
+ * @n: number of bytes to concatenate
+ *
+ * Return: pointer to destination
+ */
 char *_strncat(char *dest, char *src, int n)
 {
-	int i, j;
+	int i = 0, j = 0;
 
-	for (i = 0; dest[i] != '\0'; i++)
-	{
-	}
-	j = 0;
+	while (dest[i] != '\0')
+		i++;
+
 	while (j < n && src[j] != '\0')
 	{
 		dest[i] = src[j];
 		i++;
 		j++;
 	}
+
 	dest[i] = '\0';
+
 	return (dest);
+}
+
+/**
+ * _isspace - checks if input char is a space character
+ * @c: input character
+ *
+ * Return: 1 on success, 0 on failure
+ */
+char _isspace(char c)
+{
+	int i;
+
+	switch (c)
+	{
+	case ' ':
+	case '\t':
+	case '\n':
+	case '\v':
+	case '\f':
+	case '\r':
+	case ':':
+		i = 1;
+		break;
+	default:
+		i = 0;
+		break;
+	}
+
+	return (i);
 }
