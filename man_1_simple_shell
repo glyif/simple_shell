@@ -1,22 +1,35 @@
-.TH maryanning 1 "09 March 1847" "0.1" "Mary Anning Shell"
+.TH DAVINCI 1 "09 March 1847" "0.1" "daVinci Shell"
+
+
 
 .SH NAME
 
-.B maryanning
+.B daVinci
 - command interpreter (shell)
 
-.SH SYNOPSIS
-.B	#include "holberton.h"
 
-	int _printf(const char *format, ...);
+
+.SH SYNOPSIS
+
+.B	./hsh
+[options] [command_string | file]
+
+
 
 .SH COPYRIGHT
-maryanning copyright here
+
+daVinci is Public Domain, no copyright protection
+
+
 
 .SH DESCRIPTION
 
-.B maryanning
-is a custom shell based on our own understanding.
+daVinci replicates a 'shell' or command line interpreter, which is a user\
+interface used for access to an operating system's services.  This shell has\
+a set of custom built-in commands, and also integrates with other commands\
+located in the system's PATH.
+
+
 
 .SH OPTIONS
 .IP -b
@@ -35,7 +48,44 @@ blurfl headers.
 .IP -r
 Recursive mode. Operates as fast as lightning
 at the expense of a megabyte of virtual memory.
+
+
+
+.SH ENVIRONMENT
+
+.IP FOOCONF
+If non-null the full pathname for an alternate system wide
+.IR foo.conf .
+Overridden by the
+.B -c
+option.
+
+
+
+.SH INVOCATION
+
+invocation here
+
+.SS subheader
+paragraph here
+
+
+
+.SH Another big header
+
+.P
+.SS subheader
+.P
+.B bold word
+paragraph here
+.P
+.SS
+.B Subheader
+
+
+
 .SH FILES
+
 .I /etc/foo.conf
 .RS
 The system wide configuration file. See
@@ -49,38 +99,24 @@ Per user configuration file. See
 .BR foo (5)
 for further details.
 
-.SH ENVIRONMENT
-.IP FOOCONF
-If non-null the full pathname for an alternate system wide
-.IR foo.conf .
-Overridden by the
-.B -c
-option.
 
-.SH Invocation
-invocation here
-
-.SS subheader
-paragraph here
-
-.SH Another big header
-.P
-.SS subheader
-.P
-.B bold word
-paragraph here
-.P
-.SS
-.B Subheader
-
-.SH BUGS
-here is where we write the bugs and missing functions from maryanning
-.SH AUTHOR
-Bobby Yang <122@holberton.com>
-
-David John Coleman II <lcsw@davidjohncoleman.com>
 
 .SH "SEE ALSO"
+
 .BR bar (1),
 .BR foo (5),
 .BR xyzzy (1)
+
+
+
+.SH BUGS
+
+here is where we write the bugs and missing functions from maryanning
+
+
+
+.SH AUTHOR
+
+Bobby Yang <122@holberton.com>
+
+David John Coleman II <lcsw@davidjohncoleman.com>
