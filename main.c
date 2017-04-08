@@ -85,6 +85,7 @@ void execute(char **commands, env_t *envlist)
     locate_path(path, envlist);
     tokenize(&path_token, path);
     cat_path(path_token.tokens, command);
+
     if (exec_builtins(commands))
     {
         pid = fork();
@@ -98,6 +99,9 @@ void execute(char **commands, env_t *envlist)
         else
             wait(&status);
     }
+
+	free(command);
+	delete_tokens(&path_token);
 }
 
 /**
@@ -140,6 +144,7 @@ int main(void)
 		_getline(&arginv->input_commands, &arginv->buflimit);
 		tokenize(&tokens, arginv->input_commands);
 		execute(tokens.tokens, arginv->envlist);
+		mem_reset(arginv->input_commands, BUFSIZE);
 		delete_tokens(&tokens);
 	}
 	return (0);
