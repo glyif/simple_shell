@@ -26,6 +26,7 @@ extern char **environ;
 ssize_t _getline(char **buffer, size_t *limit);
 void execute(char **commands, env_t *envlist);
 int execdavinci_builtins(char** commands);
+arg_inventory_t *buildarginv(void);
 
 /* tokenizer functions */
 int delete_tokens(tokens_t *tokens);

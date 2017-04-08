@@ -88,12 +88,11 @@ void execute(char **commands, env_t *envlist)
 }
 
 /**
- * main - custom shell
- * Return: 0
+ * buildarginv - function to build a struct of the arguments inventory
+ * Return: pointer to arguments inventory struct
  */
-int main(void)
+arg_inventory_t *buildarginv(void)
 {
-	tokens_t tokens;
 	arg_inventory_t *arginv;
 
 	arginv = safe_malloc(sizeof(arg_inventory_t));
@@ -107,6 +106,20 @@ int main(void)
 		perror("No Memory");
 		write(STDOUT_FILENO, "insufficient memory", 19);
 	}
+
+	return (arginv);
+}
+
+/**
+ * main - custom shell
+ * Return: 0
+ */
+int main(void)
+{
+	tokens_t tokens;
+	arg_inventory_t *arginv;
+
+	arginv = buildarginv();
 
 	while (1)
 	{
