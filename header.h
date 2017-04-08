@@ -23,7 +23,7 @@
 extern char **environ;
 
 /* main functions */
-int _getline(char *buffer, unsigned int limit);
+ssize_t _getline(char **buffer, size_t *limit);
 void execute(char **commands, env_t *envlist);
 int execdavinci_builtins(char** commands);
 
