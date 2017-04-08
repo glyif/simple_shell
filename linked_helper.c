@@ -45,7 +45,7 @@ char **zelda_to_ganondorf(env_t *head)
 	{
 		len = _strlen(tmp->var);
 		ganondorf[i] = safe_malloc(sizeof(char *) * (len + 1));
-		_strncpy(ganondorf[i], tmp->var, len);
+		_strncpy(ganondorf[i], tmp->var, len, 0);
 		tmp = tmp->next;
 	}
 	ganondorf[i] = NULL;

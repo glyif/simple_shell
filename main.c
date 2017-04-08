@@ -65,36 +65,41 @@ int exec_builtins(char **commands)
  */
 void execute(char **commands, env_t *envlist)
 {
-	pid_t pid;
-	int status;
-	char **davinci_environ;
-	char *path;
+    pid_t pid;
+    tokens_t path_token;
+    int status;
+    char **davinci_environ;
+    char *path;
+    char *command;
 
-	davinci_environ = zelda_to_ganondorf(envlist);
-	path = malloc(BUFSIZE);
-	locate_path(path, envlist);
-	if (exec_builtins(commands))
-	{
-		pid = fork();
-		if (pid < 0)
-			perror("Process Creation\n"), exit(1);
-		else if (pid == 0)
-			if (execve(*commands, commands, davinci_environ) < 0)
-				perror("No Command"), exit(1);
-			else
-				_exit(0);
-		else
-			wait(&status);
-	}
+    command = safe_malloc(BUFSIZE);
+    command = _strcpy(command, *commands);
+    davinci_environ = zelda_to_ganondorf(envlist);
+    path = safe_malloc(BUFSIZE);
+    locate_path(path, envlist);
+    tokenize(&path_token, path);
+    cat_path(path_token.tokens, command);
+    if (exec_builtins(commands))
+    {
+        pid = fork();
+        if (pid < 0)
+            perror("Process Creation\n"), exit(1);
+        else if (pid == 0)
+            if (execve(command, commands, davinci_environ) < 0)
+                perror("No Command"), exit(1);
+            else
+                _exit(0);
+        else
+            wait(&status);
+    }
 }
 
 /**
- * main - custom shell
- * Return: 0
+ * buildarginv - function to build a struct of the arguments inventory
+ * Return: pointer to arguments inventory struct
  */
-int main(void)
+arg_inventory_t *buildarginv(void)
 {
-	tokens_t tokens;
 	arg_inventory_t *arginv;
 
 	arginv = safe_malloc(sizeof(arg_inventory_t));
@@ -108,6 +113,20 @@ int main(void)
 		perror("No Memory");
 		write(STDOUT_FILENO, "insufficient memory", 19);
 	}
+
+	return (arginv);
+}
+
+/**
+ * main - custom shell
+ * Return: 0
+ */
+int main(void)
+{
+	tokens_t tokens;
+	arg_inventory_t *arginv;
+
+	arginv = buildarginv();
 
 	while (1)
 	{
