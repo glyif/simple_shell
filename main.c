@@ -98,9 +98,9 @@ int main(void)
 	tokens_t tokens;
 	env_t *envp;
 	char *line;
-	size_t limit = 1024;
+	size_t limit = BUFSIZE;
 
-	line = safe_malloc(1025 * sizeof(char));
+	line = safe_malloc(limit * sizeof(char));
 	envp = env_list();
 	if (envp == NULL)
 	{
