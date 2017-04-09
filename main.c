@@ -8,12 +8,20 @@
  */
 ssize_t _getline(char **buffer, size_t *limit)
 {
-	unsigned int i, charcount = 0, iterations = 0;
+	unsigned int i, j, charcount = 0, iterations = 0, eol = 0;
 
-	i = read(STDIN_FILENO, *buffer, *limit);
-	charcount += i;
+	j = 0;
+	i = -1;
+	
+	while (j < *limit && i != 0 && !eol)
+	{
+		i = read(STDIN_FILENO, (*buffer + j), 1);
+		eol = ((*buffer + j)[0] == '\n');
+		j += i;
+	}
 
-	if (i <= 0)
+	charcount += j;
+	if (i == 0)
 	{
 		free(*buffer);
 		exit(EXT_SUCCESS);
@@ -26,8 +34,17 @@ ssize_t _getline(char **buffer, size_t *limit)
 		{
 			iterations++;
 			*buffer = _realloc(*buffer, i, (*limit * iterations));
-			i = read(STDIN_FILENO, (*buffer + charcount), *limit);
-			charcount += i;
+
+			j = 0;
+			eol = 0;
+			while (j < *limit && i != 0 && !eol)
+			{
+				i = read(STDIN_FILENO, (*buffer + charcount + j), 1);
+				eol = ((*buffer + charcount + j)[0] == '\n');
+				j += i;
+			}
+
+			charcount += j;
 		}
 	}
 
