@@ -1,7 +1,7 @@
 #include "header.h"
 
 /**
- * _exit - exits daVinci
+ * the_exit - exits daVinci
  * @arginv - arguments inventory
  *
  * Return: 0 on success
