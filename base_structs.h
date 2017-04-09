@@ -40,6 +40,7 @@ typedef struct arg_inventory
 	env_t *envlist;
 	tokens_t *tokens;
 	size_t buflimit;
+	int st_mode;
 } arg_inventory_t;
 
 /**
