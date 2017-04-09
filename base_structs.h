@@ -29,17 +29,6 @@ typedef struct env
 } env_t;
 
 /**
- * struct our_builtins - matches command to appropriate builtin function
- * @command: string command for builtin
- * @builtin_func: function to handle builtin command
- */
-typedef struct our_builtins
-{
-	char *command;
-	int (*builtin_func)(char**);
-} builtins_t;
-
-/**
  * struct arg_inventory - inventory of support arguments for immediate access
  * @input_commands: string of input commands
  * @envlist: custom davinci environ linked list
@@ -49,7 +38,19 @@ typedef struct arg_inventory
 {
 	char *input_commands;
 	env_t *envlist;
+	tokens_t *tokens;
 	size_t buflimit;
 } arg_inventory_t;
+
+/**
+ * struct our_builtins - matches command to appropriate builtin function
+ * @command: string command for builtin
+ * @builtin_func: function to handle builtin command
+ */
+typedef struct our_builtins
+{
+	char *command;
+	int (*builtin_func)(arg_inventory_t *arginv);
+} builtins_t;
 
 #endif

@@ -42,17 +42,18 @@ char *_strdup(char *str)
 }
 
 /**
- * _strcmp - checks if 2 strings are of equal value and length
- * @s1: destination string
- * @s2: source string to be compared
+ * _strncmp - checks if 2 strings are of equal value and length
+ * @s1: first string
+ * @s2: second string
+ * @n: number of bytes to compare
  *
  * Return: difference of first characters that are of diff value or 0 on success
  */
-int _strcmp(char *s1, char *s2)
+int _strncmp(char *s1, char *s2, unsigned int n)
 {
-	int j;
+	unsigned int j;
 
-	for (j = 0; s1[j] != '\0' && s2[j] != '\0'; j++)
+	for (j = 0; s1[j] != '\0' && s2[j] != '\0' && j < n; j++)
 		if (s1[j] != s2[j])
 			return (s1[j] - s2[j]);
 
@@ -127,33 +128,4 @@ char *_strncat(char *dest, char *src, int n)
 	dest[i] = '\0';
 
 	return (dest);
-}
-
-/**
- * _isspace - checks if input char is a space character
- * @c: input character
- *
- * Return: 1 on success, 0 on failure
- */
-char _isspace(char c)
-{
-	int i;
-
-	switch (c)
-	{
-	case ' ':
-	case '\t':
-	case '\n':
-	case '\v':
-	case '\f':
-	case '\r':
-	case ':':
-		i = 1;
-		break;
-	default:
-		i = 0;
-		break;
-	}
-
-	return (i);
 }
