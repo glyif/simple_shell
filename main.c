@@ -13,7 +13,7 @@ ssize_t _getline(char **buffer, size_t *limit)
 	i = read(STDIN_FILENO, *buffer, *limit);
 	charcount += i;
 
-	if (i == 0)
+	if (i <= 0)
 	{
 		free(*buffer);
 		exit(EXT_SUCCESS);
@@ -31,7 +31,7 @@ ssize_t _getline(char **buffer, size_t *limit)
 		}
 	}
 
-	return ((ssize_t)(i * (*limit * iterations)));
+	return ((ssize_t)charcount);
 }
 
 /**
@@ -59,18 +59,46 @@ arg_inventory_t *buildarginv(void)
 }
 
 /**
+ * _filemode - finds file mode of standard input
+ * @fd: STDIN_FILENO
+ *
+ * Return: 1 a device like a terminal, 0 a FIFO special file, or a pipe
+ */
+int _filemode(int fd)
+{
+	int result;
+	struct stat buf;
+
+	fstat(fd, &buf);
+
+	if (S_ISCHR(buf.st_mode) != 0)
+		result = 1;
+	else if (S_ISFIFO(buf.st_mode) != 0)
+		result = 0;
+	else
+		result = -1;
+
+	return (result);
+}
+
+/**
  * main - custom shell
  * Return: 0
  */
-int main(void)
+int main(int argc, char **argv, char **envp)
 {
+	int st_mode;
 	arg_inventory_t *arginv;
 
-	arginv = buildarginv();
+	(void)argc, (void)argv, (void)envp;
 
-	while (1)
+	arginv = buildarginv();
+	st_mode = _filemode(STDIN_FILENO);
+
+	while (TRUE)
 	{
-		write(STDOUT_FILENO, "$ ", 2);
+		if (st_mode)
+			write(STDOUT_FILENO, "$ ", 2);
 		_getline(&arginv->input_commands, &arginv->buflimit);
 		tokenize(arginv->tokens, arginv->input_commands);
 		execute(arginv);
