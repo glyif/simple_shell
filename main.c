@@ -124,9 +124,10 @@ int is_path(char *command)
 void execute(arg_inventory_t *arginv)
 {
     tokens_t path_token;
- 	char *path, *command;
-	env_t *envlist = arginv->envlist;
+ 	env_t *envlist = arginv->envlist;
 	char **commands = arginv->tokens->tokens;
+
+	char *path, *command;
 
     command = safe_malloc(BUFSIZE);
     command = _strcpy(command, *commands);
@@ -145,6 +146,7 @@ void execute(arg_inventory_t *arginv)
 			cat_path(path_token.tokens, command);
 			exec_path(command, commands, envlist);
 		}
+		
     }
 }
 
