@@ -1,51 +1,42 @@
 #include "header.h"
 /**
  * _getline - custom getline currently reads 1 char at a time
- * @buffer: input buffer
- * @limit: maxsize of input character string
+ * @buffer: address of pointer to input commands buffer
+ * @limit: maxsize of input character string, realloc if necessary
  *
  * Return: number of characters written
  */
 ssize_t _getline(char **buffer, size_t *limit)
 {
-	unsigned int i, j, charcount = 0, iterations = 0, eol = 0;
+	unsigned int i, j;
+	size_t charcount, iterations;
 
+	charcount = 0;
+	iterations = 1;
 	j = 0;
 	i = -1;
-	
-	while (j < *limit && i != 0 && !eol)
+
+	while (j < *limit && i != 0)
 	{
 		i = read(STDIN_FILENO, (*buffer + j), 1);
-		eol = ((*buffer + j)[0] == '\n');
-		j += i;
+
+		if ((*buffer + j++)[0] == '\n')
+		{
+			charcount++;
+			break;
+		}
+
+		if (charcount++ % *limit == 0)
+		{
+			iterations++;
+			*buffer = _realloc(*buffer, charcount, (*limit * iterations));
+		}
 	}
 
-	charcount += j;
 	if (i == 0)
 	{
 		free(*buffer);
 		exit(EXT_SUCCESS);
-	}
-
-	if (i == *limit - 1)
-	{
-		iterations++;
-		while (i == *limit - 1)
-		{
-			iterations++;
-			*buffer = _realloc(*buffer, i, (*limit * iterations));
-
-			j = 0;
-			eol = 0;
-			while (j < *limit && i != 0 && !eol)
-			{
-				i = read(STDIN_FILENO, (*buffer + charcount + j), 1);
-				eol = ((*buffer + charcount + j)[0] == '\n');
-				j += i;
-			}
-
-			charcount += j;
-		}
 	}
 
 	return ((ssize_t)charcount);
@@ -65,6 +56,7 @@ arg_inventory_t *buildarginv(void)
 	arginv->envlist = env_list();
 	arginv->tokens = safe_malloc(sizeof(tokens_t));
 	arginv->buflimit = BUFSIZE;
+	arginv->st_mode = _filemode(STDIN_FILENO);
 
 	if (arginv->envlist == NULL)
 	{
@@ -83,17 +75,22 @@ arg_inventory_t *buildarginv(void)
  */
 int _filemode(int fd)
 {
-	int result;
+	int result = -1;
 	struct stat buf;
 
 	fstat(fd, &buf);
 
-	if (S_ISCHR(buf.st_mode) != 0)
+	switch (buf.st_mode & S_IFMT)
+	{
+	case S_IFCHR:
 		result = 1;
-	else if (S_ISFIFO(buf.st_mode) != 0)
+		break;
+	case S_IFIFO:
 		result = 0;
-	else
-		result = -1;
+		break;
+	default:
+		break;
+	}
 
 	return (result);
 }
@@ -102,19 +99,15 @@ int _filemode(int fd)
  * main - custom shell
  * Return: 0
  */
-int main(int argc, char **argv, char **envp)
+int main(void)
 {
-	int st_mode;
 	arg_inventory_t *arginv;
 
-	(void)argc, (void)argv, (void)envp;
-
 	arginv = buildarginv();
-	st_mode = _filemode(STDIN_FILENO);
 
 	while (TRUE)
 	{
-		if (st_mode)
+		if (arginv->st_mode)
 			write(STDOUT_FILENO, "$ ", 2);
 		_getline(&arginv->input_commands, &arginv->buflimit);
 		tokenize(arginv->tokens, arginv->input_commands);
