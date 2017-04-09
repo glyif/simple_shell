@@ -64,45 +64,6 @@ int exec_builtins(arg_inventory_t *arginv)
 	return (EXT_FAILURE);
 }
 
-void exec_path(char *command, char **commands, env_t *envlist)
-{
-	pid_t pid;
-	int status;
-	char **davinci_environ;
-
-	pid = fork();
-
-	if (pid == 0)
-	{
-		davinci_environ = zelda_to_ganondorf(envlist);
-		
-		if (execve(command, commands, davinci_environ) < 0)
-		{
-			perror("No Command");
-			exit(1);
-		}
-	}
-	else
-	{
-		wait(&status);
-	}
-}
-
-int is_path(char *command)
-{
-	int i;
-
-	i = 0;
-	while (command[i] != '\0')
-	{
-		if (command[i] == '/')
-			return (1);
-		i++;
-	}
-
-		return (0);
-}
-
 /**
  * exec_path - custom function to execute from PATH
  * @command: arguments inventory
@@ -183,7 +144,7 @@ void execute(arg_inventory_t *arginv)
 			tokenize(&path_token, path);
 			cat_path(path_token.tokens, command);
 			exec_path(command, commands, envlist);
-    }
+		}
     }
 }
 
