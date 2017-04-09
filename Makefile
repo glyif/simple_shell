@@ -13,7 +13,6 @@ CFILES=\
 		builtin_funcs.c\
 		file_io.c\
 		stdlib_funcs.c\
-		execfunctions.c\
 		path.c
 
 
