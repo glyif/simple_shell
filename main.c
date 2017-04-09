@@ -16,7 +16,7 @@ ssize_t _getline(char **buffer, size_t *limit)
 	j = 0;
 	i = -1;
 
-	while (j < *limit && i != 0)
+	while (i != 0)
 	{
 		i = read(STDIN_FILENO, (*buffer + j), 1);
 
