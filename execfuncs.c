@@ -19,13 +19,17 @@ int exec_builtins(arg_inventory_t *arginv)
 	};
 
 	for (i = 0; (str = builtins_list[i].command) != NULL; i++)
+	{
 		for (j = 0; commands[j] != NULL; j++)
+		{
 			if (_strncmp(str, commands[j], _strlen(str)) == 0)
 			{
 				builtins_list[i].builtin_func(arginv);
 
 				return (EXT_SUCCESS);
 			}
+		}
+	}
 
 	return (EXT_FAILURE);
 }
@@ -98,7 +102,7 @@ void execute(arg_inventory_t *arginv)
     command = _strcpy(command, *commands);
     path = safe_malloc(BUFSIZE);
 
-    if (exec_builtins(arginv))
+    if (exec_builtins(arginv) == EXT_FAILURE)
     {
 		if(is_path(command))
 		{

@@ -16,7 +16,7 @@ ssize_t _getline(char **buffer, size_t *limit)
 	if (i == 0)
 	{
 		free(*buffer);
-		_exit(0);
+		exit(EXT_SUCCESS);
 	}
 
 	if (i == *limit - 1)
