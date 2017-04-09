@@ -20,15 +20,18 @@
 #define BUFSIZE 1024
 #define EXT_SUCCESS 0
 #define EXT_FAILURE 1
-
+#define TRUE (1 == 1)
+#define FALSE (!TRUE)
 extern char **environ;
 
-/* main functions */
+/* main */
 ssize_t _getline(char **buffer, size_t *limit);
+arg_inventory_t *buildarginv(void);
+int _filemode(int fd);
+
+/* execute */
 void execute(arg_inventory_t *arginv);
 int exec_builtins(arg_inventory_t *arginv);
-arg_inventory_t *buildarginv(void);
-int is_path(char *command);
 void exec_path(char *command, char **commands, env_t *envlist);
 
 /* tokenizer functions */
@@ -76,5 +79,6 @@ int append_text_to_file(const char *filename, char *text_content);
 int locate_path(char *path, env_t *envlist);
 int path_match(char *path, char *str);
 int cat_path(char **search_path, char *cmd);
+int is_path(char *command);
 
 #endif

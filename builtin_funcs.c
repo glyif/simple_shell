@@ -10,7 +10,6 @@ int the_exit(arg_inventory_t *arginv)
 {
 	(void)arginv;
 
-	write(STDOUT_FILENO, "Simplicity is the ultimate sophistication\n", 42);
 	exit(EXT_SUCCESS);
 }
 
