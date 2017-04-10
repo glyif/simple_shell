@@ -14,7 +14,10 @@
 #include <stdarg.h>
 
 /* included custom headers */
-#include "base_structs.h"
+#include "structs.h"
+
+/* macros for tokenizer */
+#include "tokenizer.h"
 
 /* MACROS and variables */
 #define BUFSIZE 1024
@@ -37,6 +40,8 @@ void exec_path(char *command, char **commands, env_t *envlist);
 /* tokenizer functions */
 int delete_tokens(tokens_t *tokens);
 int tokenize(tokens_t *tokens, const char *string);
+int dump_token(tokens_t *tokens);
+const char *dump_get_token_descr(int token_id);
 
 /* linked list functions, support custom environ */
 env_t *env_node(env_t **head, char *str);
@@ -61,6 +66,7 @@ char *_strcpy(char *dest, char *src);
 char *_strncat(char *dest, char *src, int n);
 int _strncmp(char *s1, char *s2, unsigned int n);
 void _puts(char *str);
+int _strcmp(const char *s1, const char *s2);
 
 /* custom C std lib functions */
 int _putchar(char c);
@@ -81,4 +87,25 @@ int path_match(char *path, char *str);
 int cat_path(char **search_path, char *cmd);
 int is_path(char *command);
 
+/* ptree functions */
+ptree_t *ptree_insert_string(ptree_t *parent, tokens_t *tokens, unsigned int *cur_token);
+ptree_t *ptree_insert_token_right(ptree_t *parent, tokens_t *tokens, unsigned int *cur_token);
+ptree_t *ptree_emplace_token(ptree_t *tree, tokens_t *tokens, unsigned int *cur_token);
+ptree_t *ptree_get_root(ptree_t *node);
+int delete_ptree(ptree_t *node);
+int dump_ptree(ptree_t *ptree, unsigned int depth, int side);
+
+/* parser */
+int parse_error(const char *error, token_t *near);
+int parse(parser_t *parser, tokens_t *tokens);
+int delete_parser(parser_t *parser);
+
+/* worker */
+unsigned int init_pipeline_count_processes(ptree_t *tree);
+int init_pipeline_push_processes(pipeline_t *pipeline, ptree_t *tree);
+int init_pipeline(pipeline_t *pipeline, ptree_t *ptree);
+int worker_exec_builtins(arg_inventory_t *arginv);
+int worker_execute_core(pipeline_t * pipeline, arg_inventory_t *arginv);
+int worker_execute(pipeline_t *pipeline, arg_inventory_t *arginv);
+int delete_pipeline(pipeline_t * pipeline);
 #endif

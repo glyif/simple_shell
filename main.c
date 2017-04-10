@@ -1,4 +1,5 @@
 #include "header.h"
+
 /**
  * _getline - custom getline currently reads 1 char at a time
  * @buffer: input buffer
@@ -46,8 +47,8 @@ arg_inventory_t *buildarginv(void)
 
 	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
 	arginv->envlist = env_list();
-	arginv->tokens = safe_malloc(sizeof(tokens_t));
 	arginv->buflimit = BUFSIZE;
+	arginv->st_mode = _filemode(STDIN_FILENO);
 
 	if (arginv->envlist == NULL)
 	{
@@ -89,6 +90,9 @@ int main(int argc, char **argv, char **envp)
 {
 	int st_mode;
 	arg_inventory_t *arginv;
+	tokens_t tokens;
+	parser_t parser;
+	pipeline_t pipeline;
 
 	(void)argc, (void)argv, (void)envp;
 
@@ -100,10 +104,25 @@ int main(int argc, char **argv, char **envp)
 		if (st_mode)
 			write(STDOUT_FILENO, "$ ", 2);
 		_getline(&arginv->input_commands, &arginv->buflimit);
-		tokenize(arginv->tokens, arginv->input_commands);
-		execute(arginv);
+
+		tokenize(&tokens, arginv->input_commands);
+
+		if (parse(&parser, &tokens))
+		{
+			delete_parser(&parser);
+			delete_tokens(&tokens);
+			continue;
+		}
+
+		/* execute!!!! */
+		init_pipeline(&pipeline, parser.tree);
+		worker_execute(&pipeline,arginv);
+		delete_pipeline(&pipeline);
+		
 		mem_reset(arginv->input_commands, BUFSIZE);
-		delete_tokens(arginv->tokens);
+
+		delete_parser(&parser);
+		delete_tokens(&tokens);
 	}
 	return (0);
 }

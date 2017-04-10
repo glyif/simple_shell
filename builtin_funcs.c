@@ -40,7 +40,8 @@ int _setenv(arg_inventory_t *arginv)
 	char **commands, *var, *val, *new_value;
 	env_t *envlist = arginv->envlist;
 
-	commands = arginv->tokens->tokens;
+	commands = (char**)arginv->commands;
+
 	var = commands[1];
 	val = commands[2];
 
