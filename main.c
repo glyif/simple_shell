@@ -55,6 +55,8 @@ arg_inventory_t *buildarginv(void)
 		perror("No Memory");
 		write(STDOUT_FILENO, "insufficient memory", 19);
 	}
+	
+	arginv->exit=0;
 
 	return (arginv);
 }
@@ -90,39 +92,38 @@ int main(int argc, char **argv, char **envp)
 {
 	int st_mode;
 	arg_inventory_t *arginv;
-	tokens_t tokens;
-	parser_t parser;
-	pipeline_t pipeline;
 
 	(void)argc, (void)argv, (void)envp;
 
 	arginv = buildarginv();
 	st_mode = _filemode(STDIN_FILENO);
 
-	while (TRUE)
+	while (!arginv->exit)
 	{
 		if (st_mode)
 			write(STDOUT_FILENO, "$ ", 2);
 		_getline(&arginv->input_commands, &arginv->buflimit);
 
-		tokenize(&tokens, arginv->input_commands);
+		tokenize(&arginv->tokens, arginv->input_commands);
 
-		if (parse(&parser, &tokens))
-		{
-			delete_parser(&parser);
-			delete_tokens(&tokens);
-			continue;
-		}
+		if(arginv->tokens.tokensN>0)
+		{	
+			if (parse(&arginv->parser, &arginv->tokens))
+			{
+				delete_parser(&arginv->parser);
+				delete_tokens(&arginv->tokens);
+				continue;
+			}
 
-		/* execute!!!! */
-		init_pipeline(&pipeline, parser.tree);
-		worker_execute(&pipeline,arginv);
-		delete_pipeline(&pipeline);
-		
+			init_pipeline(&arginv->pipeline, arginv->parser.tree);
+			worker_execute(arginv);
+			delete_pipeline(&arginv->pipeline);
+			delete_parser(&arginv->parser);
+		}		
+
 		mem_reset(arginv->input_commands, BUFSIZE);
 
-		delete_parser(&parser);
-		delete_tokens(&tokens);
+		delete_tokens(&arginv->tokens);
 	}
 	return (0);
 }

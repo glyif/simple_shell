@@ -8,6 +8,7 @@ CFILES=\
 	strings2.c\
 	memmalloc.c\
 	linked_helper.c\
+	execfuncs.c\
 	tokenizer.c\
 	env_list.c\
 	builtin_funcs.c\
@@ -16,7 +17,8 @@ CFILES=\
 	path.c\
 	ptree.c\
 	parse.c\
-	worker.c
+	worker.c\
+	pipeline.c
 
 GLOBAL_HEADERS=\
 	header.h

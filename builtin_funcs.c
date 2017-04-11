@@ -8,7 +8,7 @@
  */
 int the_exit(arg_inventory_t *arginv)
 {
-	(void)arginv;
+	arginv->exit=1;
 
 	exit(EXT_SUCCESS);
 }
@@ -41,9 +41,21 @@ int _setenv(arg_inventory_t *arginv)
 	env_t *envlist = arginv->envlist;
 
 	commands = (char**)arginv->commands;
+	
+	if (commands[1]==NULL)
+	{
+		perror("setenv: missing parameters.");
+		return (-1);
+	}
 
 	var = commands[1];
 	val = commands[2];
+
+	if (commands[2]==NULL)
+	{
+		perror("setenv: missing value.");
+		return (-1);
+	}
 
 	len1 = _strlen(var);
 	len2 = _strlen(val);

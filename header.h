@@ -33,9 +33,9 @@ arg_inventory_t *buildarginv(void);
 int _filemode(int fd);
 
 /* execute */
-void execute(arg_inventory_t *arginv);
-int exec_builtins(arg_inventory_t *arginv);
-void exec_path(char *command, char **commands, env_t *envlist);
+pid_t execute(arg_inventory_t *arginv, int pipein, int pipeout);
+int exec_builtins(arg_inventory_t *arginv, int pipein, int pipeout);
+pid_t exec_path(char *command, char **commands, env_t *envlist, int pipein, int pipeout);
 
 /* tokenizer functions */
 int delete_tokens(tokens_t *tokens);
@@ -104,8 +104,7 @@ int delete_parser(parser_t *parser);
 unsigned int init_pipeline_count_processes(ptree_t *tree);
 int init_pipeline_push_processes(pipeline_t *pipeline, ptree_t *tree);
 int init_pipeline(pipeline_t *pipeline, ptree_t *ptree);
-int worker_exec_builtins(arg_inventory_t *arginv);
-int worker_execute_core(pipeline_t * pipeline, arg_inventory_t *arginv);
-int worker_execute(pipeline_t *pipeline, arg_inventory_t *arginv);
+int worker_execute_core(arg_inventory_t *arginv);
+int worker_execute(arg_inventory_t *arginv);
 int delete_pipeline(pipeline_t * pipeline);
 #endif

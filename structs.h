@@ -29,6 +29,11 @@ typedef struct arg_inventory
 	const char **commands;
 	size_t buflimit;
 	int st_mode;
+
+	tokens_t tokens;
+	parser_t parser;
+	pipeline_t pipeline;
+	int exit;
 } arg_inventory_t;
 
 /**
