@@ -1,5 +1,12 @@
 #include "header.h"
 
+/**
+ * yellow_brick_road - assembles path to cd into
+ * @commands: array of pointer pointg to commands
+ * @envlist: head of env linked list
+ *
+ * Return: full filepath
+ */
 char *yellow_brick_road(char **commands, env_t *envlist)
 {
 	env_t *fetched_home;
@@ -43,6 +50,12 @@ char *yellow_brick_road(char **commands, env_t *envlist)
 }
 
 
+/**
+ * _cd - builtin cd function
+ * @arginv: arg inventory
+ *
+ * Return: 0 if good, -1 if bad
+ */
 int _cd(arg_inventory_t *arginv)
 {
 	char *path;
