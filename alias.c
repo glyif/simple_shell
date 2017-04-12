@@ -68,56 +68,48 @@ env_t *add_node_env(env_t **head, char *var, char *val)
  */
 int modify_node_env(env_t **head, char *new_var, char *new_val)
 {
-	env_t *temp;
+	env_t *temp_node;
 
-	temp = *head;
+	temp_node = *head;
 
-	while (temp)
+	while (temp_node)
 	{
-		if (sp_strncmp(temp->var, new_var, _strlen(temp->var)) == 0)
+		if (sp_strncmp(temp_node->var, new_var, _strlen(temp_node->var)) == 0)
 		{
-			free(temp->val);
-			temp->val = _strdup(new_val);
+			free(temp_node->val);
+			temp_node->val = _strdup(new_val);
 
 			return (EXT_SUCCESS);
 		}
-		temp = temp->next;
+		temp_node = temp_node->next;
 	}
 
 	return (EXT_FAILURE);
 }
 
 /**
- * remove_node_env - removes node from linked list
- * @head: beginning of linked list
- * @var: var of node to be removed from linked list
+ * print_list - prints all elements of linked list
+ * @head: head of linked list to print
  *
- * Return: pointer to new node or NULL
+ * Return: number of nodes printed
  */
-int remove_node_env(env_t **head, char *var)
+size_t print_list(env_t *head)
 {
-	env_t *copy_head = *head, *temp = *head;
+	unsigned int i = 0;
+	char **_environ;
+	unsigned int count = link_count(head);
 
-	while (temp)
+	_environ = zelda_to_ganondorf(head);
+
+	while (i < count)
 	{
-		if (sp_strncmp(temp->var, var, _strlen(temp->var)) == 0)
-		{
-			while (copy_head->next != temp)
-				copy_head = copy_head->next;
-
-			copy_head->next = temp->next;
-
-			free(temp->var);
-			free(temp->val);
-			free(temp);
-
-			return (EXT_SUCCESS);
-		}
-		temp = temp->next;
+		_puts(_environ[i]);
+		i++;
 	}
 
-	return (EXT_FAILURE);
+	return (i);
 }
+
 
 /**
  * env_list - creates a linked list of all environ variables

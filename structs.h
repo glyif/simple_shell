@@ -115,11 +115,11 @@ typedef struct env
  * @command: the input command
  * @next: pointer to next command
  */
-typedef struct history_s
+typedef struct history
 {
 	unsigned int number;
 	char *command;
-	struct history_s *next;
+	struct history *next;
 } history_t;
 
 /**
@@ -135,7 +135,7 @@ typedef struct arg_inventory
 	const char **commands;
 	size_t buflimit;
 	int st_mode;
-	history_t **history;
+	history_t *history;
 
 	tokens_t tokens;
 	parser_t parser;

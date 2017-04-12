@@ -7,12 +7,11 @@
 arg_inventory_t *buildarginv(void)
 {
 	arg_inventory_t *arginv;
-	history_t *history = NULL;
 
 	arginv = safe_malloc(sizeof(arg_inventory_t));
 	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
 	arginv->envlist = env_list();
-	arginv->history = &history;
+	arginv->history = history_list();
 	arginv->buflimit = BUFSIZE;
 	arginv->st_mode = _filemode(STDIN_FILENO);
 	arginv->exit = 0;
@@ -40,6 +39,7 @@ int main(void)
 		if (arginv->st_mode)
 			write(STDOUT_FILENO, "$ ", 2);
 		_getline(&arginv->input_commands, &arginv->buflimit);
+		add_node_history(&arginv->history, arginv->input_commands);
 
 		tokenize(&arginv->tokens, arginv->input_commands);
 

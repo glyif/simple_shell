@@ -18,7 +18,8 @@ CFILES=\
 	parse.c\
 	history.c\
 	worker.c\
-	pipeline.c
+	pipeline.c\
+	write.c
 
 GLOBAL_HEADERS=\
 	header.h

@@ -51,20 +51,21 @@ int tokenize(tokens_t *tokens, const char *string);
 int dump_token(tokens_t *tokens);
 const char *dump_get_token_descr(int token_id);
 
-/* linked list functions, support custom environ */
+/* custom environ linked list */
 env_t *env_list(void);
 char **separate_env(char *string);
 unsigned int link_count(env_t *head);
 char **zelda_to_ganondorf(env_t *head);
 env_t *add_node_env(env_t **head, char *var, char *val);
 int modify_node_env(env_t **head, char *new_var, char *new_val);
-size_t print_list(env_t *head);
+int remove_node_env(env_t **head, char *var);
 
 /* builtin functions */
 int the_exit(arg_inventory_t *arginv);
 int _monalisa(arg_inventory_t *arginv);
 int _env(arg_inventory_t *arginv);
 int _setenv(arg_inventory_t *arginv);
+int _history(arg_inventory_t *arginv);
 
 /* string functions */
 char *_strncpy(char *dest, char *src, int n);
@@ -72,9 +73,9 @@ char *_strdup(char *str);
 unsigned int _strlen(const char *str);
 char *_strcpy(char *dest, char *src);
 char *_strncat(char *dest, char *src, int n);
-void _puts(char *str);
 int _strcmp(const char *s1, const char *s2);
 int sp_strncmp(char *s1, char *s2, unsigned int n);
+int _unsetenv(arg_inventory_t *arginv);
 
 /* custom C std lib functions */
 int _putchar(char c);
@@ -86,8 +87,14 @@ void *safe_malloc(int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 /* history functions */
-unsigned int write_history(history_t *head);
+history_t *history_list(void);
 history_t *add_node_history(history_t **head, char *command);
+
+/* write functions */
+int write_uint(unsigned int n);
+unsigned int write_history(history_t *head);
+void _puts(char *str);
+size_t print_list(env_t *head);
 
 /* file input / output functions */
 ssize_t read_textfile(const char *filename, size_t letters);
