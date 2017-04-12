@@ -62,6 +62,7 @@ int main(void)
 
 		delete_tokens(&arginv->tokens);
 	}
+	freeall(arginv);
 
 	return (0);
 }
