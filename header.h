@@ -66,6 +66,7 @@ int _monalisa(arg_inventory_t *arginv);
 int _env(arg_inventory_t *arginv);
 int _setenv(arg_inventory_t *arginv);
 int _history(arg_inventory_t *arginv);
+int _cd(arg_inventory_t *arginv);
 
 /* string functions */
 char *_strncpy(char *dest, char *src, int n);
@@ -89,6 +90,10 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 /* history functions */
 history_t *history_list(void);
 history_t *add_node_history(history_t **head, char *command);
+
+/* cd functions */
+char *yellow_brick_road(char **commands, env_t *envlist);
+env_t *fetch_node(env_t *head, char *var);
 
 /* write functions */
 int write_uint(unsigned int n);

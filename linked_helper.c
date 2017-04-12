@@ -215,3 +215,26 @@ char **zelda_to_ganondorf(env_t *head)
 
 	return (ganondorf);
 }
+
+/**
+ * fetch_node - fetches a node of a given var
+ * @head: head of list
+ * @var: value to match of the node to fetch
+ *
+ * Return: fetched node or head
+ */
+env_t *fetch_node(env_t *head, char *var)
+{
+    env_t *tmp;
+    tmp = head;
+
+    while (tmp->next != NULL)
+    {
+        if (sp_strncmp(tmp->var, var, _strlen(var)) == 0)
+            return (tmp);
+        else
+            tmp = tmp->next;
+    }
+
+    return (head);
+}

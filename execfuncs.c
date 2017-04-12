@@ -15,6 +15,7 @@ int exec_builtins(arg_inventory_t *arginv, int pipein, int pipeout)
 
 		{"exit", the_exit}, {"monalisa", _monalisa}, {"env", _env},
 		{"setenv", _setenv}, {"unsetenv", _unsetenv}, {"history", _history},
+		{"cd", _cd},
 		{NULL, NULL}
 	};
 	int old_stdout = 1;

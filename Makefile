@@ -19,7 +19,8 @@ CFILES=\
 	history.c\
 	worker.c\
 	pipeline.c\
-	write.c
+	write.c\
+	cd.c
 
 GLOBAL_HEADERS=\
 	header.h
