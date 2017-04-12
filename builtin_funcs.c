@@ -55,7 +55,7 @@ int _setenv(arg_inventory_t *arginv)
 	new_var = commands[1];
 	new_val = commands[2];
 
-	if (modify_node_env(&envlist, new_var, new_val) == NULL)
+	if (modify_node_env(&envlist, new_var, new_val) == EXT_FAILURE)
 	{
 		add_node_env(&envlist, new_var, new_val);
 	}

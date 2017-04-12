@@ -57,7 +57,7 @@ char **separate_env(char *string);
 unsigned int link_count(env_t *head);
 char **zelda_to_ganondorf(env_t *head);
 env_t *add_node_env(env_t **head, char *var, char *val);
-env_t *modify_node_env(env_t **head, char *new_var, char *new_val);
+int modify_node_env(env_t **head, char *new_var, char *new_val);
 size_t print_list(env_t *head);
 
 /* builtin functions */

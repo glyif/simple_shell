@@ -33,7 +33,6 @@ unsigned int link_count(env_t *head)
 env_t *add_node_env(env_t **head, char *var, char *val)
 {
 	env_t *new_node, *temp;
-
 	new_node = malloc(sizeof(env_t));
 	if (new_node == NULL)
 		return (NULL);
@@ -43,7 +42,9 @@ env_t *add_node_env(env_t **head, char *var, char *val)
 	new_node->next = NULL;
 
 	if (!*head)
+	{
 		*head = new_node;
+	}
 	else
 	{
 		temp = *head;
@@ -60,12 +61,12 @@ env_t *add_node_env(env_t **head, char *var, char *val)
 /**
  * modify_node_env - checks to see if node exists, and modifies it if so.
  * @head: beginning of linked list
- * @val: value to modify
- * @str: new string to be modified to found node
+ * @new_var: variable to modify
+ * @new_val: new string to be modified to found node
  *
  * Return: pointer to new node or NULL if fail
  */
-env_t *modify_node_env(env_t **head, char *new_var, char *new_val)
+int modify_node_env(env_t **head, char *new_var, char *new_val)
 {
 	env_t *temp_node;
 
@@ -73,18 +74,17 @@ env_t *modify_node_env(env_t **head, char *new_var, char *new_val)
 
 	while (temp_node)
 	{
-		if (sp_strncmp(temp_node->var, new_var, _strlen(new_var)) == 0)
+		if (sp_strncmp(temp_node->var, new_var, _strlen(temp_node->var)) == 0)
 		{
-			free(temp_node->var);
-			temp_node->var = _strdup(new_var);
 			free(temp_node->val);
 			temp_node->val = _strdup(new_val);
-			return (temp_node);
+
+			return (EXT_SUCCESS);
 		}
 		temp_node = temp_node->next;
 	}
 
-	return (NULL);
+	return (EXT_FAILURE);
 }
 
 /**
@@ -97,12 +97,13 @@ size_t print_list(env_t *head)
 {
 	unsigned int i = 0;
 	char **_environ;
+	unsigned int count = link_count(head);
 
 	_environ = zelda_to_ganondorf(head);
 
-	while (_environ[i])
+	while (i < count)
 	{
-		_puts(environ[i]);
+		_puts(_environ[i]);
 		i++;
 	}
 
@@ -138,7 +139,7 @@ env_t *env_list(void)
 /**
  * separate_env - separates environ element to var and val
  * @string: one element of environ list
- * Return: void
+ * Return: array of 2 strings
  */
 char **separate_env(char *string)
 {
@@ -148,6 +149,7 @@ char **separate_env(char *string)
 	while (string[lenvar] != '=')
 		lenvar++;
 	var = safe_malloc(sizeof(char) * lenvar + 1);
+
 	for (i = 0; i < lenvar; i++)
 		var[i] = string[i];
 
@@ -156,10 +158,11 @@ char **separate_env(char *string)
 	while (string[i] != '\0')
 		lenval++, i++;
 	val = safe_malloc(sizeof(char) * lenval + 1);
+
 	for (i = lenvar + 1, j = 0; j < lenval; i++, j++)
 		val[j] = string[i];
 
-	variable = safe_malloc(sizeof(char *) * 2);
+	variable = safe_malloc(sizeof(char *) * 3);
 	variable[0] = var, variable[1] = val;
 
 	return (variable);
