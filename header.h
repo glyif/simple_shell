@@ -130,4 +130,10 @@ int init_pipeline(pipeline_t *pipeline, ptree_t *ptree);
 int worker_execute_core(arg_inventory_t *arginv);
 int worker_execute(arg_inventory_t *arginv);
 int delete_pipeline(pipeline_t * pipeline);
+
+/* free functions */
+int freeall(arg_inventory_t *arginv);
+int free_environ(env_t *head);
+int free_history(history_t *head);
+
 #endif

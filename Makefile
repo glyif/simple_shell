@@ -20,6 +20,7 @@ CFILES=\
 	worker.c\
 	pipeline.c\
 	write.c\
+	free.c\
 	cd.c
 
 GLOBAL_HEADERS=\
