@@ -36,8 +36,7 @@ int _env(arg_inventory_t *arginv)
  */
 int _setenv(arg_inventory_t *arginv)
 {
-	int len1, len2, lenval;
-	char **commands, *var, *val, *new_value;
+	char **commands, *new_var, *new_val;
 	env_t *envlist = arginv->envlist;
 
 	commands = (char**)arginv->commands;
@@ -48,27 +47,18 @@ int _setenv(arg_inventory_t *arginv)
 		return (-1);
 	}
 
-	var = commands[1];
-	val = commands[2];
-
 	if (commands[2]==NULL)
 	{
 		perror("setenv: missing value.");
 		return (-1);
 	}
+	new_var = commands[1];
+	new_val = commands[2];
 
-	len1 = _strlen(var);
-	len2 = _strlen(val);
-
-	lenval = len1 + len2 + 2;
-	new_value = safe_malloc(lenval * sizeof(char));
-
-	_strncat(new_value, var, len1);
-	_strncat(new_value, "=", 1);
-	_strncat(new_value, val, len2);
-
-	if (modify_node_env(&envlist, var, new_value) == NULL)
-		add_node_env(&envlist, new_value);
+	if (modify_node_env(&envlist, new_var, new_val) == NULL)
+	{
+		add_node_env(&envlist, new_var, new_val);
+	}
 
 	return(EXT_SUCCESS);
 }

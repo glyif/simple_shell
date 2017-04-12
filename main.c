@@ -10,20 +10,18 @@ arg_inventory_t *buildarginv(void)
 	history_t *history = NULL;
 
 	arginv = safe_malloc(sizeof(arg_inventory_t));
-
 	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
 	arginv->envlist = env_list();
 	arginv->history = &history;
 	arginv->buflimit = BUFSIZE;
 	arginv->st_mode = _filemode(STDIN_FILENO);
+	arginv->exit = 0;
 
 	if (arginv->envlist == NULL)
 	{
 		perror("No Memory");
 		write(STDOUT_FILENO, "insufficient memory", 19);
 	}
-
-	arginv->exit=0;
 
 	return (arginv);
 }
@@ -37,7 +35,6 @@ int main(void)
 	arg_inventory_t *arginv;
 
 	arginv = buildarginv();
-
 	while (!arginv->exit)
 	{
 		if (arginv->st_mode)

@@ -1,6 +1,65 @@
 #include "header.h"
 
 /**
+ * _puts - prints string from pointer to string
+ * @str: string to print
+ *
+ * Return: void
+ */
+void _puts(char *str)
+{
+	write(STDOUT_FILENO, str, _strlen(str));
+	_putchar('\n');
+}
+
+/**
+ * _strncat - concatenates from src string to dest string
+ * @dest: destination string
+ * @src: source string
+ * @n: number of bytes to concatenate
+ *
+ * Return: pointer to destination
+ */
+char *_strncat(char *dest, char *src, int n)
+{
+	int i = 0, j = 0;
+
+	while (dest[i] != '\0')
+		i++;
+
+	while (j < n && src[j] != '\0')
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+
+	dest[i] = '\0';
+
+	return (dest);
+}
+
+/**
+ * _strcmp - compares string
+ * @s1: first string
+ * @s2: second string
+ *
+ * Return: difference between two ascii valuves
+ */
+
+int _strcmp(const char *s1, const char *s2)
+{
+	int i = 0;
+
+	for (i = 0; s1[i] != '\0' && s2[i] != '\0'; i++)
+	{
+		if (s1[i] != s2[i])
+			return ((int) s1[i] - s2[i]);
+	}
+	return (0);
+}
+
+/**
  * _strlen - finds and returns length of string
  * @str: string to find length
  *
@@ -42,14 +101,14 @@ char *_strdup(char *str)
 }
 
 /**
- * _spstrncmp - checks if 2 strings are of equal value and length
+ * sp_strncmp - checks if 2 strings are of equal value and length
  * @s1: first string
  * @s2: second string
  * @n: number of bytes to compare
  *
  * Return: difference of first characters that are of diff value or 0 on success
  */
-int _spstrncmp(char *s1, char *s2, unsigned int n)
+int sp_strncmp(char *s1, char *s2, unsigned int n)
 {
 	unsigned int j;
 
@@ -62,27 +121,6 @@ int _spstrncmp(char *s1, char *s2, unsigned int n)
 
 	return (0);
 }
-
-
-/**
- * _strncmp - checks if 2 strings are of equal value and length
- * @s1: first string
- * @s2: second string
- * @n: number of bytes to compare
- *
- * Return: difference of first characters that are of diff value or 0 on success
- */
-int _strncmp(char *s1, char *s2, unsigned int n)
-{
-	unsigned int j;
-
-	for (j = 0; s1[j] != '\0' && s2[j] != '\0' && j < n; j++)
-		if (s1[j] != s2[j])
-			return (s1[j] - s2[j]);
-
-	return (0);
-}
-
 
 /**
  * _strcpy - copies a string from src to dest

@@ -10,41 +10,40 @@ int exec_builtins(arg_inventory_t *arginv, int pipein, int pipeout)
 {
 	int i = 0, j;
 	char *str;
-	char **commands = (char**) arginv->commands;
+	char **commands = (char**)arginv->commands;
 	builtins_t builtins_list[] = {
 
 		{"exit", the_exit}, {"monalisa", _monalisa}, {"env", _env},
 		{"setenv", _setenv},
 		{NULL, NULL}
 	};
-	int old_stdout, retval = (EXT_FAILURE);
+	int old_stdout = 1;
 	(void)pipein;
-	
+
 	if (pipeout)
 	{
 		old_stdout = dup(STDOUT_FILENO); /* Save current stdout */
 
-		if (dup2(pipeout,STDOUT_FILENO) == -1) /* redirect stdout */ 
+		if (dup2(pipeout,STDOUT_FILENO) == -1) /* redirect stdout */
 		{
 			perror("dup2");
 			exit(1);
-		}  
+		}
 	}
-		
-	for (i = 0; (str = builtins_list[i].command) != NULL && retval == EXT_FAILURE; i++)
+
+	for (i = 0; (str = builtins_list[i].command) != NULL; i++)
 	{
 		for (j = 0; commands[j] != NULL; j++)
 		{
-			if (_spstrncmp(str, commands[j], _strlen(str)) == 0)
+			if (sp_strncmp(str, commands[j], _strlen(str)) == 0)
 			{
 				builtins_list[i].builtin_func(arginv);
-				retval= EXT_SUCCESS;
-				break;
+				return (EXT_SUCCESS);
 			}
 		}
 	}
 
-	if (pipeout) 
+	if (pipeout)
 	{
 		if (dup2(old_stdout,STDOUT_FILENO) == -1) /* redirect stdout */
 		{
@@ -52,10 +51,10 @@ int exec_builtins(arg_inventory_t *arginv, int pipein, int pipeout)
 			exit(1);
 		}
 
-		close(old_stdout);	
+		close(old_stdout);
 	}
 
-	return (retval);
+	return (EXT_FAILURE);
 }
 
 /**
@@ -82,7 +81,7 @@ pid_t exec_path(char *command, char **commands, env_t *envlist, int pipein, int 
 			{
 				perror("dup2");
 				exit(1);
-			}  
+			}
 		}
 
 		if(pipeout)
@@ -91,13 +90,13 @@ pid_t exec_path(char *command, char **commands, env_t *envlist, int pipein, int 
 			{
 				perror("dup2");
 				exit(1);
-			}  
+			}
 		}
 		_environ = zelda_to_ganondorf(envlist);
 
 		if (execve(command, commands, _environ) < 0)
 		{
-			perror("No Command");
+			perror("No Command from execve");
 			exit(1);
 		}
 	}
@@ -139,10 +138,10 @@ pid_t execute(arg_inventory_t *arginv, int pipein, int pipeout)
 	char *path, *command;
 	parser_t parser;
 	unsigned i;
-	
+
 	command = safe_malloc(BUFSIZE);
 	command = _strcpy(command, *commands);
-	path = safe_malloc(BUFSIZE);
+	path = safe_malloc(sizeof(char) * BUFSIZE);
 
 	if (exec_builtins(arginv,pipein,pipeout) == EXT_FAILURE)
 	{
@@ -154,7 +153,7 @@ pid_t execute(arg_inventory_t *arginv, int pipein, int pipeout)
 		{
 			locate_path(path, envlist);
 			for(i=0; i<_strlen(path); i++)
-				path[i]=(path[i]==':')? ' ' : path[i];			
+				path[i]=(path[i]==':')? ' ' : path[i];
 			tokenize(&path_token, path);
 			if (!parse(&parser, &path_token))
 			{

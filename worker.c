@@ -16,7 +16,7 @@ int worker_execute_core(arg_inventory_t *arginv)
 
 	for (i = 0; i < arginv->pipeline.processesN; i++)
 	{
-		if(!_spstrncmp((char*)arginv->pipeline.processes[i].ptree->strings[0],"exit",4))
+		if(!sp_strncmp((char*)arginv->pipeline.processes[i].ptree->strings[0],"exit",4))
 		{
 			arginv->exit=1;
 			break;

@@ -53,10 +53,11 @@ const char *dump_get_token_descr(int token_id);
 
 /* linked list functions, support custom environ */
 env_t *env_list(void);
+char **separate_env(char *string);
 unsigned int link_count(env_t *head);
 char **zelda_to_ganondorf(env_t *head);
-env_t *add_node_env(env_t **head, char *var);
-env_t *modify_node_env(env_t **head, char *val, char *str);
+env_t *add_node_env(env_t **head, char *var, char *val);
+env_t *modify_node_env(env_t **head, char *new_var, char *new_val);
 size_t print_list(env_t *head);
 
 /* builtin functions */
@@ -71,10 +72,9 @@ char *_strdup(char *str);
 unsigned int _strlen(const char *str);
 char *_strcpy(char *dest, char *src);
 char *_strncat(char *dest, char *src, int n);
-int _strncmp(char *s1, char *s2, unsigned int n);
 void _puts(char *str);
 int _strcmp(const char *s1, const char *s2);
-int _spstrncmp(char *s1, char *s2, unsigned int n);
+int sp_strncmp(char *s1, char *s2, unsigned int n);
 
 /* custom C std lib functions */
 int _putchar(char c);
@@ -95,7 +95,6 @@ int append_text_to_file(const char *filename, char *text_content);
 
 /* path environ variable functions to find custom path */
 int locate_path(char *path, env_t *envlist);
-int path_match(char *path, char *str);
 int cat_path(char **search_path, char *cmd);
 int is_path(char *command);
 

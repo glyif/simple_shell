@@ -105,6 +105,7 @@ typedef struct pipeline
 typedef struct env
 {
 	char *var;
+	char *val;
 	struct env *next;
 } env_t;
 

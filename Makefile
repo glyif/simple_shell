@@ -5,13 +5,11 @@ EXENAME=hsh
 
 CFILES=\
 	strings.c\
-	strings2.c\
 	getline.c\
 	memmalloc.c\
 	linked_helper.c\
 	execfuncs.c\
 	tokenizer.c\
-	env_list.c\
 	builtin_funcs.c\
 	file_io.c\
 	stdlib_funcs.c\
