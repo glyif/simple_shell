@@ -24,43 +24,47 @@ unsigned int link_count(env_t *head)
 }
 
 /**
- * add_node_end - adds new node to end of linked list
+ * add_node_env - adds new node to end of linked list
  * @head: beginning of linked list
  * @str: new string to be added to linked list
  *
  * Return: pointer to new node
  */
-env_t *add_node_end(env_t **head, char *str)
+env_t *add_node_env(env_t **head, char *str)
 {
-	env_t *new_node, *temp_n;
+	env_t *new_node, *temp;
 
 	new_node = malloc(sizeof(env_t));
 	if (new_node == NULL)
 		return (NULL);
+
 	new_node->var = _strdup(str);
 	new_node->next = NULL;
+
 	if (!*head)
 		*head = new_node;
 	else
 	{
-		temp_n = *head;
-		while (temp_n->next)
-			temp_n = temp_n->next;
-		temp_n->next = new_node;
+		temp = *head;
+
+		while (temp->next)
+			temp = temp->next;
+
+		temp->next = new_node;
 	}
+
 	return (new_node);
 }
 
-
 /**
- * modify_node - checks to see if node exists, and modifies it if so.
+ * modify_node_env - checks to see if node exists, and modifies it if so.
  * @head: beginning of linked list
  * @val: value to modify
  * @str: new string to be modified to found node
  *
  * Return: pointer to new node or NULL if fail
  */
-env_t *modify_node(env_t **head, char *val, char *str)
+env_t *modify_node_env(env_t **head, char *val, char *str)
 {
 	env_t *temp_node;
 

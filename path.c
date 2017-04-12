@@ -1,4 +1,5 @@
 #include "header.h"
+
 /**
  * locate_path - sorts through list of environs to find find custom PATH
  * @path: copies path

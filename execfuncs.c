@@ -35,7 +35,7 @@ int exec_builtins(arg_inventory_t *arginv, int pipein, int pipeout)
 	{
 		for (j = 0; commands[j] != NULL; j++)
 		{
-			if (_strncmp(str, commands[j], _strlen(str)) == 0)
+			if (_spstrncmp(str, commands[j], _strlen(str)) == 0)
 			{
 				builtins_list[i].builtin_func(arginv);
 				retval= EXT_SUCCESS;

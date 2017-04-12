@@ -16,15 +16,23 @@
 /* included custom headers */
 #include "structs.h"
 
-/* macros for tokenizer */
-#include "tokenizer.h"
-
-/* MACROS and variables */
+/* MACROS */
 #define BUFSIZE 1024
 #define EXT_SUCCESS 0
 #define EXT_FAILURE 1
 #define TRUE (1 == 1)
 #define FALSE (!TRUE)
+
+/* this defines the macros for token_t struct */
+#define TOKEN_STRING     0
+#define TOKEN_SEMICOLON  1
+#define TOKEN_PIPE       2
+#define TOKEN_REWRITE    3
+#define TOKEN_APPEND     4
+#define TOKEN_CAT        5
+#define TOKEN_BACKGROUND 6
+
+/* environ */
 extern char **environ;
 
 /* main */
@@ -44,12 +52,11 @@ int dump_token(tokens_t *tokens);
 const char *dump_get_token_descr(int token_id);
 
 /* linked list functions, support custom environ */
-env_t *env_node(env_t **head, char *str);
 env_t *env_list(void);
 unsigned int link_count(env_t *head);
 char **zelda_to_ganondorf(env_t *head);
-env_t *add_node_end(env_t **head, char *var);
-env_t *modify_node(env_t **head, char *val, char *str);
+env_t *add_node_env(env_t **head, char *var);
+env_t *modify_node_env(env_t **head, char *val, char *str);
 size_t print_list(env_t *head);
 
 /* builtin functions */
@@ -67,6 +74,7 @@ char *_strncat(char *dest, char *src, int n);
 int _strncmp(char *s1, char *s2, unsigned int n);
 void _puts(char *str);
 int _strcmp(const char *s1, const char *s2);
+int _spstrncmp(char *s1, char *s2, unsigned int n);
 
 /* custom C std lib functions */
 int _putchar(char c);
@@ -76,6 +84,10 @@ char _isspace(char c);
 char *mem_reset(char *str, int bytes);
 void *safe_malloc(int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+
+/* history functions */
+unsigned int write_history(history_t *head);
+history_t *add_node_history(history_t **head, char *command);
 
 /* file input / output functions */
 ssize_t read_textfile(const char *filename, size_t letters);

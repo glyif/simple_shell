@@ -42,6 +42,29 @@ char *_strdup(char *str)
 }
 
 /**
+ * _spstrncmp - checks if 2 strings are of equal value and length
+ * @s1: first string
+ * @s2: second string
+ * @n: number of bytes to compare
+ *
+ * Return: difference of first characters that are of diff value or 0 on success
+ */
+int _spstrncmp(char *s1, char *s2, unsigned int n)
+{
+	unsigned int j;
+
+	for (j = 0; s1[j] != '\0' && s2[j] != '\0' && j < n; j++)
+		if (s1[j] != s2[j])
+			return (s1[j] - s2[j]);
+
+	if (s2[j] != '\0' || s1[j] != '\0')
+		return (1);
+
+	return (0);
+}
+
+
+/**
  * _strncmp - checks if 2 strings are of equal value and length
  * @s1: first string
  * @s2: second string
@@ -59,6 +82,7 @@ int _strncmp(char *s1, char *s2, unsigned int n)
 
 	return (0);
 }
+
 
 /**
  * _strcpy - copies a string from src to dest

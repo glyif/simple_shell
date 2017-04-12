@@ -6,6 +6,7 @@ EXENAME=hsh
 CFILES=\
 	strings.c\
 	strings2.c\
+	getline.c\
 	memmalloc.c\
 	linked_helper.c\
 	execfuncs.c\
@@ -17,6 +18,7 @@ CFILES=\
 	path.c\
 	ptree.c\
 	parse.c\
+	history.c\
 	worker.c\
 	pipeline.c
 

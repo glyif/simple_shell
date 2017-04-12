@@ -41,7 +41,7 @@ int _setenv(arg_inventory_t *arginv)
 	env_t *envlist = arginv->envlist;
 
 	commands = (char**)arginv->commands;
-	
+
 	if (commands[1]==NULL)
 	{
 		perror("setenv: missing parameters.");
@@ -67,8 +67,8 @@ int _setenv(arg_inventory_t *arginv)
 	_strncat(new_value, "=", 1);
 	_strncat(new_value, val, len2);
 
-	if (modify_node(&envlist, var, new_value) == NULL)
-		add_node_end(&envlist, new_value);
+	if (modify_node_env(&envlist, var, new_value) == NULL)
+		add_node_env(&envlist, new_value);
 
 	return(EXT_SUCCESS);
 }
@@ -83,7 +83,7 @@ int _monalisa(arg_inventory_t *arginv)
 {
 	(void)arginv;
 
-	if (!read_textfile("monalisa.txt", 3808))
+/*	if (!read_textfile("monalisa.txt", 3808))*/
 		write(STDOUT_FILENO, "Simplicity is the ultimate sophistication\n", 42);
 
 	return (EXT_SUCCESS);
