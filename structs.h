@@ -81,6 +81,10 @@ typedef struct process
 {
 	const ptree_t *ptree;
 	pid_t pid;
+	
+	/* 0 for no redirection, 3 for >, 4 >>, 5 < */
+	int io_redir;
+	char *filename;
 } process_t;
 
 /**

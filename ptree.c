@@ -8,13 +8,8 @@
  */
 ptree_t *ptree_new_node(ptree_t *parent)
 {
-	ptree_t *node = malloc(sizeof(ptree_t));
+	ptree_t *node = safe_malloc(sizeof(ptree_t));
 
-	if (!node)
-	{
-		perror("Memory allocation failed");
-		exit(1);
-	}
 	node->left = NULL;
 	node->right = NULL;
 	node->parent = parent;
@@ -58,11 +53,6 @@ ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens, unsigned int *
 	node->stringsN = finish - start;
 	node->strings = safe_malloc((node->stringsN + 1) * sizeof(const char *));
 
-	if (!node->strings)
-	{
-		perror("Memory allocation failed");
-		exit(1);
-	}
 
 	/* initialize stringsssssssss */
 	for (i = 0; i < node->stringsN; i++)

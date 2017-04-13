@@ -44,15 +44,16 @@ arg_inventory_t *buildarginv(void);
 int _filemode(int fd);
 
 /* ---------------execute--------------- */
-pid_t execute(arg_inventory_t *arginv, int pipein, int pipeout);
-int exec_builtins(arg_inventory_t *arginv, int pipein, int pipeout);
-pid_t exec_path(char *command, char **commands, env_t *envlist, int pipein, int pipeout);
+pid_t execute(arg_inventory_t *arginv);
+int exec_builtins(arg_inventory_t *arginv);
+pid_t exec_path(char *command, arg_inventory_t *arginv);
 
 /* tokenizer functions */
 int delete_tokens(tokens_t *tokens);
 int tokenize(tokens_t *tokens, const char *string);
 int dump_token(tokens_t *tokens);
 const char *dump_get_token_descr(int token_id);
+int is_redirection(int token_id);
 
 /* ---------------custom environ linked list--------------- */
 env_t *env_list(void);
