@@ -6,7 +6,7 @@
  *
  * Return: actual number of letters it could read and print
  */
-ssize_t read_textfile(const char *filename, size_t letters)
+ssize_t read_textfile(char *filename, size_t letters)
 {
 	int fd;
 	ssize_t letters2;
@@ -46,12 +46,12 @@ ssize_t read_textfile(const char *filename, size_t letters)
  *
  * Return: 1 on success, -1 on failure
  */
-int append_text_to_file(const char *filename, char *text_content)
+int append_text_to_file(char *filename, char *text_content)
 {
 	int fd;
 	size_t len;
 
-	fd = open(filename, O_WRONLY | O_APPEND);
+	fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	if (fd == -1)
 		return (-1);
 
