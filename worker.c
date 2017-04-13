@@ -8,7 +8,6 @@
  */
 pid_t worker_execute_core(arg_inventory_t *arginv)
 {
-	int status;
 	unsigned int i;
 	int p[2]; /* Set of pipes' descriptors */
 	const ptree_t *ptree;
@@ -46,11 +45,6 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 		close(p[1]); /* Close non-needed descriptor */
 		fd_input = p[0]; /* The input should be saved for the next comman */
 	}
-
-	if (!arginv->pipeline.background)
-		waitpid(arginv->pipeline.processes[arginv->pipeline.processesN-1].pid,&status,0);
-	else
-		printf("[x] %i\n", arginv->pipeline.processes[arginv->pipeline.processesN-1].pid);
 
 	return (arginv->pipeline.processes[arginv->pipeline.processesN-1].pid);
 }

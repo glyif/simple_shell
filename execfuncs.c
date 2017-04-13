@@ -22,7 +22,7 @@ int exec_builtins(arg_inventory_t *arginv)
 		{NULL, NULL}
 	};
 
-	stdout_fd = 1;
+	stdout_fd = -1;
 	i = 0;
 	retval = EXT_FAILURE;
 
