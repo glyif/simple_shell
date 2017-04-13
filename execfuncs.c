@@ -61,14 +61,15 @@ int exec_builtins(arg_inventory_t *arginv)
 		}  
 	}
 
-	for (i = 0; (str = builtins_list[i].command) != NULL; i++)
+	for (i = 0; ((str = builtins_list[i].command) != NULL) && retval == EXT_FAILURE; i++)
 	{
 		for (j = 0; commands[j] != NULL; j++)
 		{
 			if (sp_strncmp(str, commands[j], _strlen(str)) == 0)
 			{
 				builtins_list[i].builtin_func(arginv);
-				return (EXT_SUCCESS);
+				retval = EXT_SUCCESS;
+				break;
 			}
 		}
 	}
@@ -130,7 +131,7 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 		}
 		else if (arginv->pipein)
 		{
-			if(dup2(arginv->pipein, STDIN_FILENO) == -1)
+			if (dup2(arginv->pipein, STDIN_FILENO) < 0)
 			{
 				/* redirect stdin */
 				perror("dup2");
@@ -151,7 +152,7 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
                 stdout_fd=open(arginv->filename,O_WRONLY | O_CREAT | O_APPEND,0666);
 
 			/* redirect stdin */
-			if (dup2(stdout_fd, STDOUT_FILENO) == -1)
+			if (dup2(stdout_fd, STDOUT_FILENO) < 0)
 			{
 				perror("dup2");
 				exit(1);
@@ -164,7 +165,7 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 		}
 		else if(arginv->pipeout)
 		{
-			if(dup2(arginv->pipeout, STDOUT_FILENO) == -1)
+			if(dup2(arginv->pipeout, STDOUT_FILENO) < 0)
 			{
 				perror("dup2");
 				exit(1);

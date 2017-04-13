@@ -82,7 +82,8 @@ int delete_ptree(ptree_t *node)
 	delete_ptree(node->right);
 
 	/* free strings */
-	free(node->strings);
+	if(node->strings)
+		free(node->strings);
 
 	/* delete input node (could be root node, could be some child node) */
 	free(node);
