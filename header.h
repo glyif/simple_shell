@@ -32,6 +32,8 @@
 #define TOKEN_APPEND     4
 #define TOKEN_CAT        5
 #define TOKEN_BACKGROUND 6
+#define TOKEN_AND        7
+#define TOKEN_OR         8
 
 /* ---------------environ--------------- */
 extern char **environ;
@@ -114,15 +116,14 @@ int cat_path(char **search_path, char *cmd);
 int is_path(char *command);
 
 /* ---------------ptree--------------- */
-ptree_t *ptree_insert_string(ptree_t *parent, tokens_t *tokens, unsigned int *cur_token);
-ptree_t *ptree_insert_token_right(ptree_t *parent, tokens_t *tokens, unsigned int *cur_token);
-ptree_t *ptree_emplace_token(ptree_t *tree, tokens_t *tokens, unsigned int *cur_token);
-ptree_t *ptree_get_root(ptree_t *node);
+ptree_t *ptree_new_node(ptree_t *parent);
+ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens, unsigned int *cur_token);
 int delete_ptree(ptree_t *node);
 int dump_ptree(ptree_t *ptree, unsigned int depth, int side);
 
 /* ---------------parser--------------- */
 int parse_error(const char *error, token_t *near);
+ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int min_prec);
 int parse(parser_t *parser, tokens_t *tokens);
 int delete_parser(parser_t *parser);
 

@@ -23,6 +23,17 @@ void init_tokens(tokens_t *tokens, int length)
 }
 
 /**
+ * is_redirection - checks if token id is a redirection
+ * @token_id: tokenid
+ *
+ * Return: 1 if yes , 0 if no
+ */
+int is_redirection(int token_id)
+{
+    return (token_id == TOKEN_REWRITE || token_id == TOKEN_APPEND || token_id == TOKEN_CAT);
+}
+
+/**
  * tokenize - tokenizes command string
  * @tokens: tokens_t struct containing initial string and array of strings
  * @string: command string
@@ -39,12 +50,14 @@ int tokenize(tokens_t *tokens, const char *string)
 
 	char symbol;
 	token_types token_names[] = {
-		{ TOKEN_SEMICOLON,  ";",  "semicolon" },
-		{ TOKEN_PIPE,       "|",  "pipe" },
-		{ TOKEN_REWRITE,    ">",  "rewrite" },
-		{ TOKEN_APPEND,     ">>", "append" },
-		{ TOKEN_CAT,        "<",  "cat" },
-		{ TOKEN_BACKGROUND, "&",  "background" }
+		{ TOKEN_SEMICOLON,  ";",  "semicolon",  1 },
+		{ TOKEN_BACKGROUND, "&",  "background", 1 },
+		{ TOKEN_AND,        "&&", "and",        2 },
+		{ TOKEN_OR,         "||", "or",         2 },
+		{ TOKEN_PIPE,       "|",  "pipe",       3 },
+		{ TOKEN_REWRITE,    ">",  "rewrite",    4 },
+		{ TOKEN_APPEND,     ">>", "append",     4 },
+		{ TOKEN_CAT,        "<",  "cat",        4 }
 	};
 
 	/* First of all, we need to carefully allocate memory */
@@ -170,6 +183,7 @@ int tokenize(tokens_t *tokens, const char *string)
 			{
 				/* It is a match */
 				tokens->tokens[i].id = token_names[j].token_id;
+				tokens->tokens[i].prec = token_names[j].precedence;
 				break; /* No need to cycle further here, we found corresponding token ID */
 			}
 		}
@@ -190,6 +204,10 @@ int tokenize(tokens_t *tokens, const char *string)
 		} else
 			i++; /* Otherwise, cycle as usual */
 	}
+
+	if (tokens->tokensN && tokens->tokens[tokens->tokensN - 1].id == TOKEN_SEMICOLON)
+		tokens->tokensN--;
+
 
 	return (0); /* All OK */
 }
@@ -238,15 +256,17 @@ int dump_tokens(tokens_t *tokens)
 const char *dump_get_token_descr(int token_id)
 {
 	unsigned int i;
-	
+
 	token_types token_names[] = {
-                { TOKEN_SEMICOLON,  ";",  "semicolon" },
-                { TOKEN_PIPE,       "|",  "pipe" },
-                { TOKEN_REWRITE,    ">",  "rewrite" },
-                { TOKEN_APPEND,     ">>", "append" },
-                { TOKEN_CAT,        "<",  "cat" },
-                { TOKEN_BACKGROUND, "&",  "background" }
-        };
+		{ TOKEN_SEMICOLON,  ";",  "semicolon",  1 },
+		{ TOKEN_BACKGROUND, "&",  "background", 1 },
+		{ TOKEN_AND,        "&&", "and",        2 },
+		{ TOKEN_OR,         "||", "or",         2 },
+		{ TOKEN_PIPE,       "|",  "pipe",       3 },
+		{ TOKEN_REWRITE,    ">",  "rewrite",    4 },
+		{ TOKEN_APPEND,     ">>", "append",     4 },
+		{ TOKEN_CAT,        "<",  "cat",        4 }
+	};
 
 	if (token_id == TOKEN_STRING)
 		return ("string");

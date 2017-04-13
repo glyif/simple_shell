@@ -68,7 +68,7 @@ int _cd(arg_inventory_t *arginv)
 	pwd = safe_malloc(1024);
 
 	getcwd(oldpwd, 1024);
-	
+
 	commands = (char **)arginv->commands;
 
 	path = yellow_brick_road(commands, arginv->envlist);
@@ -86,7 +86,7 @@ int _cd(arg_inventory_t *arginv)
 		getcwd(pwd, 1024);
 		modify_node_env(&arginv->envlist, "PWD", pwd);
 		modify_node_env(&arginv->envlist, "OLDPWD", oldpwd);
-	}	
+	}
 
 	return (0);
 }
