@@ -25,6 +25,13 @@ arg_inventory_t *buildarginv(void)
 	return (arginv);
 }
 
+void sig_handler(int sig)
+{
+	(void) sig;
+	_puts("");
+	write(STDOUT_FILENO, "$ ", 2); 
+}
+
 /**
  * main - custom shell
  * Return: 0
@@ -34,6 +41,8 @@ int main(void)
 	arg_inventory_t *arginv;
 
 	arginv = buildarginv();
+	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sig_handler);
 	while (!arginv->exit)
 	{
 		if (arginv->st_mode)
