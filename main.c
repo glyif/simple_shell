@@ -29,7 +29,7 @@ void sig_handler(int sig)
 {
 	(void) sig;
 	_puts("");
-	write(STDOUT_FILENO, "$ ", 2); 
+	write(STDOUT_FILENO, "$ ", 2);
 }
 
 /**
