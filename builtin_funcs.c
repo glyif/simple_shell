@@ -1,19 +1,6 @@
 #include "header.h"
 
 /**
- * the_exit - exits shell
- * @arginv - arguments inventory
- *
- * Return: 0 on success
- */
-int the_exit(arg_inventory_t *arginv)
-{
-	arginv->exit=1;
-
-	exit(EXT_SUCCESS);
-}
-
-/**
  * _env - writes env to stdout
  * @arginv - arguments inventory
  *
@@ -120,8 +107,46 @@ int _monalisa(arg_inventory_t *arginv)
 {
 	(void)arginv;
 
-/*	if (!read_textfile("monalisa.txt", 3808))*/
-		write(STDOUT_FILENO, "Simplicity is the ultimate sophistication\n", 42);
+	write(STDOUT_FILENO, "Simplicity is the ultimate sophistication\n", 42);
+
+	return (EXT_SUCCESS);
+}
+
+/**
+ * _help - prints mona lisa ascii art
+ * @arginv - arguments inventory
+ *
+ * Return: 0 on success
+ */
+int the_help(arg_inventory_t *arginv)
+{
+	char **commands;
+	int i = 0;
+	bins_t bins[] = {
+		{"exit", h_exit}, {"monalisa", h_monalisa}, {"env", h_env},
+		{"setenv", h_setenv}, {"unsetenv", h_unsetenv},
+		{"history", h_history}, {"cd", h_cd}, {"alias", h_alias},
+		{"help", h_help},
+		{NULL, NULL}
+	};
+
+
+	commands = (char**)arginv->commands;
+	if (commands[2] != NULL)
+	{
+		perror("help: too many input commands.");
+		return (-1);
+	}
+
+	while (bins[i].function != NULL)
+	{
+		if (_strcmp(bins[i].function, commands[1]) == 0)
+		{
+			bins[i].help();
+			break;
+		}
+		i++;
+	}
 
 	return (EXT_SUCCESS);
 }

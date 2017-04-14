@@ -81,8 +81,7 @@ typedef struct process
 {
 	const ptree_t *ptree;
 	pid_t pid;
-	
-	/* 0 for no redirection, 3 for >, 4 >>, 5 < */
+/* 0 for no redirection, 3 for >, 4 >>, 5 < */
 	int io_redir;
 	char *filename;
 } process_t;
@@ -148,27 +147,38 @@ typedef struct arg_inventory
 	pipeline_t pipeline;
 
 	int n_bg_jobs;
-	
+
 	int pipein;
     int pipeout;
 
 	/* 0 for no redirection, 3 for >, 4 >>, 5 < */
 	int io_redir;
     char *filename;
-	
+
 	int exit;
 
 } arg_inventory_t;
 
 /**
- * struct our_builtins - matches command to appropriate builtin function
+ * struct _builtins - matches command to appropriate builtin function
  * @command: string command for builtin
  * @builtin_func: function to handle builtin command
  */
-typedef struct our_builtins
+typedef struct _builtins
 {
 	char *command;
 	int (*builtin_func)(arg_inventory_t *arginv);
 } builtins_t;
+
+/**
+ * struct bins - matches command to appropriate builtin function
+ * @function: string of function name
+ * @file: string of name of file
+ */
+typedef struct bins
+{
+	char *function;
+	void (*help)(void);
+} bins_t;
 
 #endif

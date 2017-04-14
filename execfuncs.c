@@ -8,23 +8,19 @@
  */
 int exec_builtins(arg_inventory_t *arginv)
 {
-	int i, j;
-	int retval;
-	int stdout_fd;
-	int old_stdout;
-	char *str;
-	char **commands = (char**)arginv->commands;
+	int i, retval, stdout_fd, old_stdout;
+	char *str, **commands;
 	builtins_t builtins_list[] = {
 
-		{"exit", the_exit}, {"monalisa", _monalisa}, {"env", _env},
-		{"setenv", _setenv}, {"unsetenv", _unsetenv}, {"history", _history},
-		{"cd", _cd},
+		{"monalisa", _monalisa}, {"env", _env}, {"setenv", _setenv},
+		{"unsetenv", _unsetenv}, {"history", _history}, {"cd", _cd},
+		{"alias", _alias}, {"unalias", _unalias}, {"help", the_help},
 		{NULL, NULL}
 	};
 
-	stdout_fd = -1;
-	i = 0;
 	retval = EXT_FAILURE;
+	commands = (char**)arginv->commands;
+	stdout_fd = -1;
 
 	/** either a  > or a >> */
 	if(arginv->io_redir == TOKEN_REWRITE || arginv->io_redir == TOKEN_APPEND)
@@ -46,31 +42,27 @@ int exec_builtins(arg_inventory_t *arginv)
 		{
 			perror("dup2");
 			exit(1);
-		}  
+		}
 	}
 	else if (arginv->pipeout)
 	{
 		/* save current stdout */
 		old_stdout = dup(STDOUT_FILENO);
-		
+
 		/* redirect stdout */
 		if(dup2(arginv->pipeout,STDOUT_FILENO) < 0)
 		{
 			perror("dup2");
 			exit(1);
-		}  
+		}
 	}
 
-	for (i = 0; ((str = builtins_list[i].command) != NULL) && retval == EXT_FAILURE; i++)
+	for (i = 0; ((str = builtins_list[i].command) != NULL); i++)
 	{
-		for (j = 0; commands[j] != NULL; j++)
+		if (_strcmp(str, commands[0]) == 0)
 		{
-			if (_strcmp(str, commands[j]) == 0)
-			{
-				builtins_list[i].builtin_func(arginv);
-				retval = EXT_SUCCESS;
-				break;
-			}
+			retval = builtins_list[i].builtin_func(arginv);
+			break;
 		}
 	}
 
@@ -83,7 +75,7 @@ int exec_builtins(arg_inventory_t *arginv)
 			exit(1);
 		}
 
-		close(old_stdout);	
+		close(old_stdout);
 	}
 
 	return (retval);
@@ -121,10 +113,10 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 				/* redirect STDIN */
 				perror("dup2");
 				exit(1);
-			}  
+			}
 
             close(stdin_fd);
-            
+
 			if(arginv->pipein)
 				/* unused file descriptor */
                 close(arginv->pipein);
@@ -136,7 +128,7 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 				/* redirect stdin */
 				perror("dup2");
 				exit(1);
-			}  
+			}
 		}
 
 		/* it's a > or a >> */
@@ -160,7 +152,7 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 
             close(stdout_fd);
 
-            if(arginv->pipeout) 
+            if(arginv->pipeout)
                 close(arginv->pipeout);
 		}
 		else if(arginv->pipeout)
@@ -169,7 +161,7 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 			{
 				perror("dup2");
 				exit(1);
-			}  
+			}
 		}
 		_environ = zelda_to_ganondorf(arginv->envlist);
 
@@ -213,13 +205,12 @@ pid_t execute(arg_inventory_t *arginv)
 {
 	tokens_t path_token;
 	env_t *envlist = arginv->envlist;
-	char **commands = (char**) arginv->commands;
-	char *path, *command;
+	char **commands, *path, *command;
 	parser_t parser;
 	unsigned i;
 
-	command = safe_malloc(BUFSIZE);
-	command = _strcpy(command, *commands);
+	commands = (char**) arginv->commands;
+	command = _strdup(*commands);
 	path = safe_malloc(sizeof(char) * BUFSIZE);
 
 	if (exec_builtins(arginv) == EXT_FAILURE)

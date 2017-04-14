@@ -65,12 +65,14 @@ int modify_node_env(env_t **head, char *new_var, char *new_val);
 int remove_node_env(env_t **head, char *var);
 
 /* ---------------builtin--------------- */
-int the_exit(arg_inventory_t *arginv);
 int _monalisa(arg_inventory_t *arginv);
 int _env(arg_inventory_t *arginv);
 int _setenv(arg_inventory_t *arginv);
 int _history(arg_inventory_t *arginv);
 int _cd(arg_inventory_t *arginv);
+int _alias(arg_inventory_t *arginv);
+int _unalias(arg_inventory_t *arginv);
+int the_help(arg_inventory_t *arginv);
 
 /* ---------------strings--------------- */
 char *_strncpy(char *dest, char *src, int n);
@@ -141,5 +143,16 @@ int delete_pipeline(pipeline_t * pipeline);
 int freeall(arg_inventory_t *arginv);
 int free_environ(env_t *head);
 int free_history(history_t *head);
+
+/* ----help---- */
+void h_exit(void);
+void h_monalisa(void);
+void h_env(void);
+void h_setenv(void);
+void h_unsetenv(void);
+void h_history(void);
+void h_cd(void);
+void h_alias(void);
+void h_help(void);
 
 #endif
