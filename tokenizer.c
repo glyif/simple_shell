@@ -81,7 +81,7 @@ int tokenize(tokens_t *tokens, const char *string)
 	is_token = 0;   /* If it is set to 1, then we are currently processing a token. If 0, then we are processing whitespace symbols */
 
 	/* Cycle for each symbol from the original string */
-	while (string[string_idx] != '\0')
+	while (string[string_idx] != '\0' && string[string_idx] != '#')
 	{
 		/* Cycle until the end */
 		/* Retrieve current symbol and advance further */

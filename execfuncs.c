@@ -65,7 +65,7 @@ int exec_builtins(arg_inventory_t *arginv)
 	{
 		for (j = 0; commands[j] != NULL; j++)
 		{
-			if (sp_strncmp(str, commands[j], _strlen(str)) == 0)
+			if (_strcmp(str, commands[j]) == 0)
 			{
 				builtins_list[i].builtin_func(arginv);
 				retval = EXT_SUCCESS;

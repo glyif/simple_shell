@@ -37,13 +37,21 @@ char *_strncat(char *dest, char *src, int n)
 
 int _strcmp(const char *s1, const char *s2)
 {
-	int i = 0;
+	int i;
 
-	for (i = 0; s1[i] != '\0' && s2[i] != '\0'; i++)
+	i = 0;
+
+	while (1)
 	{
 		if (s1[i] != s2[i])
-			return ((int) s1[i] - s2[i]);
+			return (s1[i] - s2[i]);
+
+		if (s1[i] == '\0' || s2[i] == '\0')
+			break;
+
+		i++;
 	}
+
 	return (0);
 }
 
@@ -100,12 +108,9 @@ int sp_strncmp(char *s1, char *s2, unsigned int n)
 {
 	unsigned int j;
 
-	for (j = 0; s1[j] != '\0' && s2[j] != '\0' && j < n; j++)
+	for (j = 0; j < n; j++)
 		if (s1[j] != s2[j])
 			return (s1[j] - s2[j]);
-
-	if (s2[j] != '\0' || s1[j] != '\0')
-		return (1);
 
 	return (0);
 }

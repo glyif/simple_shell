@@ -82,13 +82,15 @@ int init_pipeline_push_processes(pipeline_t *pipeline, ptree_t *tree)
 		init_pipeline_push_processes(pipeline, tree->right);
 		return (0);
 	}
-
+	
+	/*
 	if (tree->token_id == TOKEN_BACKGROUND)
 	{
-		/* there is a background task so adjust */
+		/ * there is a background task so adjust * /
 		pipeline->background = 1;
 		return (0);
 	}
+	*/
 
 	return (0);
 }
