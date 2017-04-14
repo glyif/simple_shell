@@ -1,5 +1,0 @@
-you have found help
-(1) read the bash help page on equivalent command
-(2) email the authors:
-Bobby Yang - https://github.com/bobstermyang/
-David John Coleman II - http://www.davidjohncoleman.com/

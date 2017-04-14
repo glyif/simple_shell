@@ -178,7 +178,7 @@ typedef struct _builtins
 typedef struct bins
 {
 	char *function;
-	char *file;
+	void (*help)(void);
 } bins_t;
 
 #endif

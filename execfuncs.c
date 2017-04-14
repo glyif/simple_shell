@@ -13,9 +13,9 @@ int exec_builtins(arg_inventory_t *arginv)
 	char **commands = (char**)arginv->commands;
 	builtins_t builtins_list[] = {
 
-		{"exit", the_exit}, {"monalisa", _monalisa}, {"env", _env},
-		{"setenv", _setenv}, {"unsetenv", _unsetenv}, {"history", _history},
-		{"cd", _cd}, {"alias", _alias}, {"help", _help},
+		{"monalisa", _monalisa}, {"env", _env}, {"setenv", _setenv},
+		{"unsetenv", _unsetenv}, {"history", _history}, {"cd", _cd},
+		{"alias", _alias}, {"unalias", _unalias}, {"help", the_help},
 		{NULL, NULL}
 	};
 

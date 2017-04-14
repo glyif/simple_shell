@@ -1,19 +1,6 @@
 #include "header.h"
 
 /**
- * the_exit - exits shell
- * @arginv - arguments inventory
- *
- * Return: 0 on success
- */
-int the_exit(arg_inventory_t *arginv)
-{
-	arginv->exit=1;
-
-	exit(EXT_SUCCESS);
-}
-
-/**
  * _env - writes env to stdout
  * @arginv - arguments inventory
  *
@@ -131,19 +118,19 @@ int _monalisa(arg_inventory_t *arginv)
  *
  * Return: 0 on success
  */
-int _help(arg_inventory_t *arginv)
+int the_help(arg_inventory_t *arginv)
 {
-	char **commands, *path, *name;
+	char **commands;
 	int i = 0;
 	bins_t bins[] = {
-		{"exit", "exit.txt"}, {"monalisa", "monalisa.txt"}, {"env", "env.txt"},
-		{"setenv", "setenv.txt"}, {"unsetenv", "unsetenv.txt"},
-		{"history", "history.txt"}, {"cd", "cd.txt"}, {"alias", "alias.txt"},
-		{"help", "help.txt"},
+		{"exit", h_exit}, {"monalisa", h_monalisa}, {"env", h_env},
+		{"setenv", h_setenv}, {"unsetenv", h_unsetenv},
+		{"history", h_history}, {"cd", h_cd}, {"alias", h_alias},
+		{"help", h_help},
 		{NULL, NULL}
 	};
 
-	path = "./help/";
+
 	commands = (char**)arginv->commands;
 	if (commands[2] != NULL)
 	{
@@ -155,14 +142,11 @@ int _help(arg_inventory_t *arginv)
 	{
 		if (_strcmp(bins[i].function, commands[1]) == 0)
 		{
-			name = safe_malloc(sizeof(char) * (_strlen(bins[i].file) + 8));
-			name = _strncat(name, path, 7);
-			name = _strncat(name, bins[i].file, _strlen(bins[i].file));
+			bins[i].help();
 			break;
 		}
 		i++;
 	}
 
-	read_textfile(name, arginv->buflimit);
-	return (1);
+	return (EXT_SUCCESS);
 }
