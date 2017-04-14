@@ -11,7 +11,7 @@ arg_inventory_t *buildarginv(void)
 	arginv = safe_malloc(sizeof(arg_inventory_t));
 	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
 	arginv->envlist = env_list();
-	arginv->history = history_list();
+	arginv->history = history_list(arginv);
 	arginv->buflimit = BUFSIZE;
 	arginv->st_mode = _filemode(STDIN_FILENO);
 	arginv->exit = 0;

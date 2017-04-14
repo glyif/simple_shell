@@ -33,7 +33,7 @@
 #define TOKEN_CAT        5
 #define TOKEN_BACKGROUND 6
 
-/* ---------------environ--------------- */
+/* -----environ----- */
 extern char **environ;
 
 /* ---------------main--------------- */
@@ -46,13 +46,13 @@ pid_t execute(arg_inventory_t *arginv, int pipein, int pipeout);
 int exec_builtins(arg_inventory_t *arginv, int pipein, int pipeout);
 pid_t exec_path(char *command, char **commands, env_t *envlist, int pipein, int pipeout);
 
-/* tokenizer functions */
+/* ---------------tokenizer--------------- */
 int delete_tokens(tokens_t *tokens);
 int tokenize(tokens_t *tokens, const char *string);
 int dump_token(tokens_t *tokens);
 const char *dump_get_token_descr(int token_id);
 
-/* ---------------custom environ linked list--------------- */
+/* -------custom environ------- */
 env_t *env_list(void);
 char **separate_env(char *string);
 unsigned int link_count(env_t *head);
@@ -79,7 +79,7 @@ int _strcmp(const char *s1, const char *s2);
 int sp_strncmp(char *s1, char *s2, unsigned int n);
 int _unsetenv(arg_inventory_t *arginv);
 
-/* ---------------custom C std lib--------------- */
+/* -----custom C std lib----- */
 char _isspace(char c);
 
 /* ---------------custom malloc--------------- */
@@ -88,10 +88,11 @@ void *safe_malloc(int size);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 /* ---------------history--------------- */
-history_t *history_list(void);
+history_t *history_list(arg_inventory_t *arginv);
 history_t *add_node_history(history_t **head, char *command);
 int file_history(arg_inventory_t *arginv);
 char *history_to_string(history_t *head);
+history_t *init_history(history_t *head, char *buffer);
 
 /* ---------------cd--------------- */
 char *yellow_brick_road(char **commands, env_t *envlist);
@@ -106,9 +107,9 @@ int _putchar(char c);
 
 /* ---------------file I/O--------------- */
 ssize_t read_textfile(char *filename, size_t letters);
-int append_text_to_file(char *filename, char *text_content);
+int trunc_text_to_file(char *filename, char *text_content);
 
-/* path environ variable functions to find custom path */
+/* ---------------path--------------- */
 int locate_path(char *path, env_t *envlist);
 int cat_path(char **search_path, char *cmd);
 int is_path(char *command);

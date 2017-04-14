@@ -5,11 +5,64 @@
  *
  * Return: head (pointer to first node of linked list of environ variables)
  */
-history_t *history_list(void)
+history_t *history_list(arg_inventory_t *arginv)
 {
 	history_t *head;
-	head = NULL;
+	char *name = "/.simple_shell_history";
+	char *file, *home, *buffer;
+	env_t *home_node;
+	int lenhome, fd, lenname = _strlen(name);
 
+	head = NULL;
+	home_node = fetch_node(arginv->envlist, "HOME");
+	home = home_node->val;
+	lenhome = _strlen(home);
+
+	file = safe_malloc(sizeof(char) * (_strlen(home) + lenname + 1));
+	file = _strncat(file, home, lenhome);
+	file = _strncat(file, name, lenname);
+
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		return (head);
+	buffer = malloc(sizeof(char) * 1024);
+	if (buffer == NULL)
+		return (head);
+
+	if (read(fd, buffer, 1023) <= 0)
+	{
+		free(buffer);
+		return (head);
+	}
+	head = init_history(head, buffer);
+	close(fd);
+
+	return (head);
+}
+
+history_t *init_history(history_t *head, char *buffer)
+{
+	int marker, sublen, j, i = 0;
+	char *temp;
+
+	while (buffer[i] != '\0')
+	{
+		marker = i;
+		sublen = 0;
+		while (buffer[i] != '\n')
+			sublen++, i++;
+		temp = safe_malloc(sizeof(char) * (sublen + 2));
+		j = 0;
+		while (j <= sublen)
+		{
+			temp[j] = buffer[marker];
+			j++, marker++;
+		}
+		add_node_history(&head, temp);
+		i++;
+		free(temp);
+	}
+	free(buffer);
 	return (head);
 }
 
@@ -52,4 +105,64 @@ history_t *add_node_history(history_t **head, char *command)
 	}
 
 	return (new_node);
+}
+
+/**
+ * file_history - converts history to string to file
+ * @arginv: arguments inventory
+ *
+ * Return: 0 success, 1 failure
+ */
+int file_history(arg_inventory_t *arginv)
+{
+	char *name = "/.simple_shell_history";
+	char *file, *history_text, *home;
+	env_t *home_node;
+	int lenhome, lenname = _strlen(name);
+
+	home_node = fetch_node(arginv->envlist, "HOME");
+	home = home_node->val;
+	lenhome = _strlen(home);
+
+	file = safe_malloc(sizeof(char) * (_strlen(home) + lenname + 1));
+	file = _strncat(file, home, lenhome);
+	file = _strncat(file, name, lenname);
+
+	history_text = history_to_string(arginv->history);
+	trunc_text_to_file(file, history_text);
+
+	free(history_text);
+	free(file);
+
+	return (0);
+}
+
+/**
+ * history_to_string - converts history to string
+ * @history: linked list of history
+ *
+ * Return: linked list converted to string
+ */
+char *history_to_string(history_t *head)
+{
+	history_t *temp = head;
+	char *string;
+	unsigned int size = 0;
+
+	while (temp)
+	{
+		size += _strlen(temp->command);
+		temp = temp->next;
+	}
+
+	string = safe_malloc(sizeof(char) * (size + 1));
+
+	temp = head;
+	while (temp)
+	{
+		_strncat(string, temp->command, _strlen(temp->command));
+		temp = temp->next;
+	}
+
+	return (string);
 }
