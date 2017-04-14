@@ -38,10 +38,9 @@ int cat_path(char **search_path, char *cmd)
 		new[len] = '/';
 
 		new = _strncat(new, cmd, _strlen(cmd));
-		fd = open(new, O_RDONLY);
-		if (fd > 0)
+		fd = access(new, F_OK);
+		if (fd == 0)
 		{
-			close(fd);
 			_strcpy(cmd, new);
 			return (0);
 		}
