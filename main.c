@@ -15,6 +15,7 @@ arg_inventory_t *buildarginv(void)
 	arginv->buflimit = BUFSIZE;
 	arginv->st_mode = _filemode(STDIN_FILENO);
 	arginv->exit = 0;
+	arginv->n_bg_jobs=0;
 
 	if (arginv->envlist == NULL)
 	{
@@ -52,7 +53,7 @@ int main(void)
 
 		tokenize(&arginv->tokens, arginv->input_commands);
 
-		if(arginv->tokens.tokensN>0)
+		if(arginv->tokens.tokensN > 0)
 		{
 			if (parse(&arginv->parser, &arginv->tokens))
 			{
@@ -61,9 +62,7 @@ int main(void)
 				continue;
 			}
 
-			init_pipeline(&arginv->pipeline, arginv->parser.tree);
 			worker_execute(arginv);
-			delete_pipeline(&arginv->pipeline);
 			delete_parser(&arginv->parser);
 		}
 

@@ -71,7 +71,7 @@ void *safe_malloc(int bytes)
 	if (check == NULL)
 	{
 		perror("No Memory");
-		return (check);
+		exit(1);
 	}
 	check = mem_reset(check, bytes);
 

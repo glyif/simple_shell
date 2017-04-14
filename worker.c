@@ -6,9 +6,8 @@
  *
  * Return: 0
  */
-int worker_execute_core(arg_inventory_t *arginv)
+pid_t worker_execute_core(arg_inventory_t *arginv)
 {
-	int status;
 	unsigned int i;
 	int p[2]; /* Set of pipes' descriptors */
 	const ptree_t *ptree;
@@ -27,18 +26,80 @@ int worker_execute_core(arg_inventory_t *arginv)
 		ptree = arginv->pipeline.processes[i].ptree;
 		arginv->commands=ptree->strings;
 
-		arginv->pipeline.processes[i].pid = execute(arginv,fd_input,(i + 1 < arginv->pipeline.processesN)? p[1] : 0);
+		arginv->pipein = fd_input;
+		arginv->pipeout = (i + 1 < arginv->pipeline.processesN)? p[1] : 0;
 
+		if (arginv->pipeline.processes[i].io_redir)
+		{
+            arginv->filename = arginv->pipeline.processes[i].filename;
+            arginv->io_redir = arginv->pipeline.processes[i].io_redir;
+        }
+		else
+		{
+			arginv->filename = NULL;
+            arginv->io_redir = 0;
+		}
+
+		arginv->pipeline.processes[i].pid = execute(arginv);
+		
 		close(p[1]); /* Close non-needed descriptor */
 		fd_input = p[0]; /* The input should be saved for the next comman */
 	}
 
-	if (!arginv->pipeline.background)
-		waitpid(arginv->pipeline.processes[arginv->pipeline.processesN-1].pid,&status,0);
-	else
-		printf("[x] %i\n", arginv->pipeline.processes[arginv->pipeline.processesN-1].pid);
+	return (arginv->pipeline.processes[arginv->pipeline.processesN-1].pid);
+}
 
-	return (0);
+pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t * ptree, unsigned int depth)
+{
+	int status;
+    pid_t last_pid = -1;
+    int execute;
+    
+	if(!ptree)
+	    return last_pid;
+
+	/* execute pipeline */
+	if (ptree->token_id == TOKEN_STRING || ptree->token_id == TOKEN_PIPE || is_redirection(ptree->token_id))
+	{
+	    init_pipeline(&arginv->pipeline, ptree);
+	    last_pid=worker_execute_core(arginv);
+		delete_pipeline(&arginv->pipeline);	    
+		return (last_pid);
+	}
+
+	/* recursive call on each child */
+	if (ptree->left)
+	{
+	    last_pid=worker_execute_tree(arginv,ptree->left,  depth + 1);
+        
+		if(ptree->token_id != TOKEN_BACKGROUND)
+		{
+			/* wait for the child */ 
+            waitpid(last_pid, &status, 0);
+		}
+        else
+		{
+            arginv->n_bg_jobs++;
+		    printf("[%d] %i\n",arginv->n_bg_jobs, last_pid); 
+		    status=0;
+        }
+
+        execute = 1;
+        if (ptree->token_id == TOKEN_AND)
+		{
+            if (status != EXIT_SUCCESS)
+                execute = 0;
+        }
+        else if (ptree->token_id == TOKEN_OR)
+		{
+            if (status == EXIT_SUCCESS)
+                execute = 0;
+        }
+
+        if (execute)
+            last_pid = worker_execute_tree(arginv,ptree->right, depth + 1);
+    }
+    return (last_pid);
 }
 
 /**
@@ -49,5 +110,23 @@ int worker_execute_core(arg_inventory_t *arginv)
  */
 int worker_execute(arg_inventory_t *arginv)
 {
-	return (worker_execute_core(arginv));
+	pid_t last_pid;
+    int status;
+	arginv->n_bg_jobs = 0;
+
+    last_pid = worker_execute_tree(arginv, arginv->parser.tree, 0);
+
+    if (last_pid != -1)
+	{
+        if (arginv->parser.tree->token_id != TOKEN_BACKGROUND) 
+		{
+            waitpid(last_pid, &status, 0);
+		}
+        else
+		{
+            arginv->n_bg_jobs++;
+		    printf("[%d] %i\n",arginv->n_bg_jobs, last_pid); 
+        }    
+    }
+    return (0);
 }

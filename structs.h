@@ -10,6 +10,7 @@ typedef struct token
 {
         int id;
         const char *str;
+		int prec;
 } token_t;
 
 /**
@@ -39,6 +40,7 @@ typedef struct token_id
 	int token_id;
 	const char *token_str;
 	const char *token_descr;
+	int precedence;
 } token_types;
 
 /**
@@ -79,6 +81,10 @@ typedef struct process
 {
 	const ptree_t *ptree;
 	pid_t pid;
+	
+	/* 0 for no redirection, 3 for >, 4 >>, 5 < */
+	int io_redir;
+	char *filename;
 } process_t;
 
 /**
@@ -137,10 +143,21 @@ typedef struct arg_inventory
 	int st_mode;
 	history_t *history;
 
-	tokens_t tokens;
-	parser_t parser;
+	tokens_t   tokens;
+	parser_t   parser;
 	pipeline_t pipeline;
+
+	int n_bg_jobs;
+	
+	int pipein;
+    int pipeout;
+
+	/* 0 for no redirection, 3 for >, 4 >>, 5 < */
+	int io_redir;
+    char *filename;
+	
 	int exit;
+
 } arg_inventory_t;
 
 /**
