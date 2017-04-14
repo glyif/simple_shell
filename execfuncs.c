@@ -8,17 +8,14 @@
  */
 int exec_builtins(arg_inventory_t *arginv)
 {
-	int i, j;
-	int retval;
-	int stdout_fd;
-	int old_stdout;
+	int i, j, retval, stdout_fd, old_stdout;
 	char *str;
 	char **commands = (char**)arginv->commands;
 	builtins_t builtins_list[] = {
 
 		{"exit", the_exit}, {"monalisa", _monalisa}, {"env", _env},
 		{"setenv", _setenv}, {"unsetenv", _unsetenv}, {"history", _history},
-		{"cd", _cd},
+		{"cd", _cd}, {"alias", _alias}, {"help", _help},
 		{NULL, NULL}
 	};
 
@@ -46,19 +43,19 @@ int exec_builtins(arg_inventory_t *arginv)
 		{
 			perror("dup2");
 			exit(1);
-		}  
+		}
 	}
 	else if (arginv->pipeout)
 	{
 		/* save current stdout */
 		old_stdout = dup(STDOUT_FILENO);
-		
+
 		/* redirect stdout */
 		if(dup2(arginv->pipeout,STDOUT_FILENO) < 0)
 		{
 			perror("dup2");
 			exit(1);
-		}  
+		}
 	}
 
 	for (i = 0; ((str = builtins_list[i].command) != NULL) && retval == EXT_FAILURE; i++)
@@ -83,7 +80,7 @@ int exec_builtins(arg_inventory_t *arginv)
 			exit(1);
 		}
 
-		close(old_stdout);	
+		close(old_stdout);
 	}
 
 	return (retval);

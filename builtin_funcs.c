@@ -120,8 +120,49 @@ int _monalisa(arg_inventory_t *arginv)
 {
 	(void)arginv;
 
-/*	if (!read_textfile("monalisa.txt", 3808))*/
-		write(STDOUT_FILENO, "Simplicity is the ultimate sophistication\n", 42);
+	write(STDOUT_FILENO, "Simplicity is the ultimate sophistication\n", 42);
 
 	return (EXT_SUCCESS);
+}
+
+/**
+ * _help - prints mona lisa ascii art
+ * @arginv - arguments inventory
+ *
+ * Return: 0 on success
+ */
+int _help(arg_inventory_t *arginv)
+{
+	char **commands, *path, *name;
+	int i = 0;
+	bins_t bins[] = {
+		{"exit", "exit.txt"}, {"monalisa", "monalisa.txt"}, {"env", "env.txt"},
+		{"setenv", "setenv.txt"}, {"unsetenv", "unsetenv.txt"},
+		{"history", "history.txt"}, {"cd", "cd.txt"}, {"alias", "alias.txt"},
+		{"help", "help.txt"},
+		{NULL, NULL}
+	};
+
+	path = "./help/";
+	commands = (char**)arginv->commands;
+	if (commands[2] != NULL)
+	{
+		perror("help: too many input commands.");
+		return (-1);
+	}
+
+	while (bins[i].function != NULL)
+	{
+		if (_strcmp(bins[i].function, commands[1]) == 0)
+		{
+			name = safe_malloc(sizeof(char) * (_strlen(bins[i].file) + 8));
+			name = _strncat(name, path, 7);
+			name = _strncat(name, bins[i].file, _strlen(bins[i].file));
+			break;
+		}
+		i++;
+	}
+
+	read_textfile(name, arginv->buflimit);
+	return (1);
 }

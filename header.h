@@ -71,6 +71,9 @@ int _env(arg_inventory_t *arginv);
 int _setenv(arg_inventory_t *arginv);
 int _history(arg_inventory_t *arginv);
 int _cd(arg_inventory_t *arginv);
+int _alias(arg_inventory_t *arginv);
+int _unalias(arg_inventory_t *arginv);
+int _help(arg_inventory_t *arginv);
 
 /* ---------------strings--------------- */
 char *_strncpy(char *dest, char *src, int n);

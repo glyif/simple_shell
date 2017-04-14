@@ -21,6 +21,7 @@ CFILES=\
 	pipeline.c\
 	write.c\
 	free.c\
+	alias.c\
 	cd.c
 
 GLOBAL_HEADERS=\
