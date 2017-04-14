@@ -21,7 +21,6 @@ int exec_builtins(arg_inventory_t *arginv)
 
 	stdout_fd = -1;
 	i = 0;
-	retval = EXT_FAILURE;
 
 	/** either a  > or a >> */
 	if(arginv->io_redir == TOKEN_REWRITE || arginv->io_redir == TOKEN_APPEND)
@@ -58,14 +57,13 @@ int exec_builtins(arg_inventory_t *arginv)
 		}
 	}
 
-	for (i = 0; ((str = builtins_list[i].command) != NULL) && retval == EXT_FAILURE; i++)
+	for (i = 0; ((str = builtins_list[i].command) != NULL); i++)
 	{
 		for (j = 0; commands[j] != NULL; j++)
 		{
 			if (_strcmp(str, commands[j]) == 0)
 			{
-				builtins_list[i].builtin_func(arginv);
-				retval = EXT_SUCCESS;
+				retval = builtins_list[i].builtin_func(arginv);
 				break;
 			}
 		}
