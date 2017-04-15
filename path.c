@@ -12,7 +12,7 @@ int locate_path(char *path, env_t *envlist)
 
 	while(tmp)
 	{
-		if (sp_strncmp(tmp->var, "PATH", 4) == 0)
+		if (_strcmp(tmp->var, "PATH") == 0)
 		{
 			_strcpy(path, tmp->val);
 			return (1);

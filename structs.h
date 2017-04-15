@@ -128,6 +128,19 @@ typedef struct history
 } history_t;
 
 /**
+ * struct alias - matches command with appropriate help text output
+ * @alias: the alias
+ * @command: the actual command
+ * @next: address of next node of alias if present
+ */
+typedef struct alias
+{
+	char *alias;
+	char *command;
+	struct alias *next;
+} alias_t;
+
+/**
  * struct arg_inventory - inventory of support arguments for immediate access
  * @input_commands: string of input commands
  * @envlist: custom davinci environ linked list
@@ -141,6 +154,7 @@ typedef struct arg_inventory
 	size_t buflimit;
 	int st_mode;
 	history_t *history;
+	alias_t *alias;
 
 	tokens_t   tokens;
 	parser_t   parser;
