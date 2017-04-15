@@ -21,7 +21,6 @@ alias_t *alias_list(void)
  */
 int _alias(arg_inventory_t *arginv)
 {
-	alias_t *aliaslist = arginv->alias;
 	char *input, **combo, **commands;
 
 	commands = (char**)arginv->commands;
@@ -36,9 +35,9 @@ int _alias(arg_inventory_t *arginv)
 
 	combo = separate_string(input);
 
-	add_node_alias(&aliaslist, combo[0], combo[1]);
+	add_node_alias(&arginv->alias, combo[0], combo[1]);
 
-	write_alias(aliaslist);
+	write_alias(arginv->alias);
 
 	return (EXT_SUCCESS);
 }
@@ -102,6 +101,7 @@ int write_alias(alias_t *head)
 {
 	int i = 0;
 	alias_t *temp = head;
+
 	while (temp)
 	{
 		_putchar('[');
