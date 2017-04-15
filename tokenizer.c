@@ -63,7 +63,7 @@ int tokenize(tokens_t *tokens, const char *string)
 	/* First of all, we need to carefully allocate memory */
 	/* It does not matter if we allocate too much, it is better than constant reallocations, */
 	/* because they take too much time, and memory is not a concern */
-	length = strlen(string);
+	length = _strlen(string);
 	if (length == 0)
 		length = 1; /* Empty string should be properly processed too! */
 

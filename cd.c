@@ -22,8 +22,8 @@ char *yellow_brick_road(char **commands, env_t *envlist)
 
 	if (commands[1] != NULL)
 	{
-		tilda = sp_strncmp(commands[1], "~", 1);
-		hyphen = sp_strncmp(commands[1], "-", 1);
+		tilda = _strcmp(commands[1], "~");
+		hyphen = _strcmp(commands[1], "-");
 	}
 
 	if (tilda == 0 || commands[1] == NULL)
