@@ -83,6 +83,10 @@ char *_strncat(char *dest, char *src, int n);
 int _strcmp(const char *s1, const char *s2);
 int sp_strncmp(char *s1, char *s2, unsigned int n);
 int _unsetenv(arg_inventory_t *arginv);
+char *_strcat(char *dest, char *src);
+char *int_to_str(unsigned int n);
+char *_str_replace(char *string, unsigned int start, unsigned int end, char *rep);
+
 
 /* -----custom C std lib----- */
 char _isspace(char c);
@@ -130,6 +134,7 @@ int parse_error(const char *error, token_t *near);
 ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int min_prec);
 int parse(parser_t *parser, tokens_t *tokens);
 int delete_parser(parser_t *parser);
+void expand_bash_vars(arg_inventory_t *arginv);
 
 /* ---------------worker--------------- */
 unsigned int init_pipeline_count_processes(ptree_t *tree);

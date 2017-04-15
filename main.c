@@ -55,6 +55,8 @@ int main(void)
 
 		if(arginv->tokens.tokensN > 0)
 		{
+			expand_bash_vars(arginv);
+
 			if (parse(&arginv->parser, &arginv->tokens))
 			{
 				delete_parser(&arginv->parser);

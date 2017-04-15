@@ -15,16 +15,16 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 
 	for (i = 0; i < arginv->pipeline.processesN; i++)
 	{
-		if(!sp_strncmp((char*)arginv->pipeline.processes[i].ptree->strings[0],"exit",4))
+		ptree = arginv->pipeline.processes[i].ptree;
+		arginv->commands=ptree->strings;
+		
+		if(!_strcmp((char*)arginv->commands[0],"exit"))
 		{
 			arginv->exit=1;
 			break;
 		}
-		pipe(p); /* Create the two-way pipe */
 
-		/* Actual execution */
-		ptree = arginv->pipeline.processes[i].ptree;
-		arginv->commands=ptree->strings;
+		pipe(p); /* Create the two-way pipe */
 
 		arginv->pipein = fd_input;
 		arginv->pipeout = (i + 1 < arginv->pipeline.processesN)? p[1] : 0;
@@ -76,13 +76,21 @@ pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t * ptree, unsigned int
 		{
 			/* wait for the child */ 
             waitpid(last_pid, &status, 0);
+
+			if (WIFEXITED(status))
+                status = WEXITSTATUS(status);
+            else
+                status = 1;
 		}
         else
 		{
             arginv->n_bg_jobs++;
 		    printf("[%d] %i\n",arginv->n_bg_jobs, last_pid); 
-		    status=0;
+			arginv->last_bg_pid = last_pid;
+		    status = 0;
         }
+
+		arginv->last_exit_code = status;
 
         execute = 1;
         if (ptree->token_id == TOKEN_AND)
@@ -121,12 +129,21 @@ int worker_execute(arg_inventory_t *arginv)
         if (arginv->parser.tree->token_id != TOKEN_BACKGROUND) 
 		{
             waitpid(last_pid, &status, 0);
+			
+			if (WIFEXITED(status))
+				status = WEXITSTATUS(status);
+			else
+				status = 1;
 		}
         else
 		{
             arginv->n_bg_jobs++;
-		    printf("[%d] %i\n",arginv->n_bg_jobs, last_pid); 
-        }    
+		    printf("[%d] %i\n",arginv->n_bg_jobs, last_pid);
+			arginv->last_bg_pid = last_pid;
+			status = 0;
+        }
+
+		arginv->last_exit_code = status;
     }
     return (0);
 }
