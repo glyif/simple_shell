@@ -15,7 +15,31 @@ int freeall(arg_inventory_t *arginv)
 
 	free_environ(arginv->envlist);
 
+	free_alias(arginv->alias);
+
 	free(arginv->input_commands);
+
+	return (EXT_SUCCESS);
+}
+
+/**
+ * free_alias - function to free all allocated memory
+ * @head - head of alias
+ *
+ * Return: 0 on success, 1 on failure
+ */
+int free_alias(alias_t *head)
+{
+	alias_t *temp = head;
+
+	while (head)
+	{
+		temp = temp->next;
+		free(head->alias);
+		free(head->command);
+		free(head);
+		head = temp;
+	}
 
 	return (EXT_SUCCESS);
 }

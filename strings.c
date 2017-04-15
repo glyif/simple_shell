@@ -41,12 +41,12 @@ int _strcmp(const char *s1, const char *s2)
 
 	i = 0;
 
-	while (1)
+	while (TRUE)
 	{
 		if (s1[i] != s2[i])
 			return (s1[i] - s2[i]);
 
-		if (s1[i] == '\0' || s2[i] == '\0')
+		if (s1[i] == '\0' && s2[i] == '\0')
 			break;
 
 		i++;
@@ -97,14 +97,14 @@ char *_strdup(char *str)
 }
 
 /**
- * sp_strncmp - checks if 2 strings are of equal value and length
+ * _strncmp - checks if 2 strings are of equal value and length
  * @s1: first string
  * @s2: second string
  * @n: number of bytes to compare
  *
  * Return: difference of first characters that are of diff value or 0 on success
  */
-int sp_strncmp(char *s1, char *s2, unsigned int n)
+int _strncmp(char *s1, char *s2, unsigned int n)
 {
 	unsigned int j;
 
@@ -156,4 +156,92 @@ char *_strncpy(char *dest, char *src, int n)
 	}
 
 	return (dest);
+}
+
+/**
+ * _strcat - concatenates from src string to dest string
+ * @dest: destination string
+ * @src: source string
+ *
+ * Return: pointer to destination
+ */
+char *_strcat(char *dest, char *src)
+{
+	while (*dest)
+		dest++;
+
+	while (*src)
+		*(dest++) = *(src++);
+
+	*dest = '\0';
+
+	return (dest);
+}
+
+/**
+ * int_to_str - convert an integer to a string
+ * @n: unsigned integer to print
+ * Return: string with converted integer
+ */
+char *int_to_str(unsigned int n)
+{
+	unsigned int copy, size;
+	int nth, chars_written;
+	char *str;
+	int  chars;
+
+	size = 1;
+	chars_written = 0;
+	copy = n;
+
+	if (n < 10)
+	{
+		str = safe_malloc(2);
+		str[0] = ('0' + n);
+		return (str);
+	}
+
+	chars = 0;
+	while (copy / 10 != 0)
+	{
+		copy /= 10, size *= 10;
+		chars++;
+	}
+
+	str = safe_malloc(chars + 1);
+	while (size > 0)
+	{
+		nth = n / size;
+		str[chars_written] = ('0' + nth);
+		n -= nth * size;
+		size /= 10;
+		chars_written++;
+	}
+	str[chars_written] = '\0';
+	return (str);
+}
+
+/**
+ * str_replace - replaces part of a string for another
+ * @string: string to replace
+ * @start: where to start
+ * @end: where to end
+ * @rep: string to replace with
+ *
+ * Return: replaced string
+ */
+char *_str_replace(char *string, unsigned int start, unsigned int end, char *rep)
+{
+	char *new_str;
+
+	new_str = safe_malloc(_strlen(string) + _strlen(rep) + 1);
+
+	_strncpy(new_str, string, start);
+
+	_strcat(new_str, rep);
+
+	if (end < _strlen(string) - 1)
+		_strcat(new_str, &string[end + 1]);
+
+	return (new_str);
 }

@@ -9,8 +9,8 @@ void init_tokens(tokens_t *tokens, int length)
 {
 	/* For the extreme case, such as 'a;a;a;a;a;a', we'll need to allocate twice as much memory for data + 1 byte for terminator */
 	/* Maximum amount of tokens is the same as length */
-	tokens->data = malloc((length * 2 + 1) * sizeof(char));
-	tokens->tokens = malloc(length * sizeof(token_t));
+	tokens->data = safe_malloc((length * 2 + 1) * sizeof(char));
+	tokens->tokens = safe_malloc(length * sizeof(token_t));
 
 	if (!tokens->data || !tokens->tokens)
 	{
@@ -63,7 +63,7 @@ int tokenize(tokens_t *tokens, const char *string)
 	/* First of all, we need to carefully allocate memory */
 	/* It does not matter if we allocate too much, it is better than constant reallocations, */
 	/* because they take too much time, and memory is not a concern */
-	length = strlen(string);
+	length = _strlen(string);
 	if (length == 0)
 		length = 1; /* Empty string should be properly processed too! */
 

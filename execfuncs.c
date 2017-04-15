@@ -204,13 +204,19 @@ int is_path(char *command)
 pid_t execute(arg_inventory_t *arginv)
 {
 	tokens_t path_token;
-	env_t *envlist = arginv->envlist;
-	char **commands, *path, *command;
+	env_t *envlist;
+	char **commands;
+	char *path, *command;
 	parser_t parser;
 	unsigned i;
 
+	envlist = arginv->envlist;
+
 	commands = (char**) arginv->commands;
-	command = _strdup(*commands);
+
+	command = safe_malloc(sizeof(char) * BUFSIZE);
+	command = _strcpy(command, *commands);
+	
 	path = safe_malloc(sizeof(char) * BUFSIZE);
 
 	if (exec_builtins(arginv) == EXT_FAILURE)

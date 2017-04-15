@@ -12,6 +12,7 @@ arg_inventory_t *buildarginv(void)
 	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
 	arginv->envlist = env_list();
 	arginv->history = history_list(arginv);
+	arginv->alias = alias_list();
 	arginv->buflimit = BUFSIZE;
 	arginv->st_mode = _filemode(STDIN_FILENO);
 	arginv->exit = 0;
@@ -55,6 +56,8 @@ int main(void)
 
 		if(arginv->tokens.tokensN > 0)
 		{
+			expand_bash_vars(arginv);
+
 			if (parse(&arginv->parser, &arginv->tokens))
 			{
 				delete_parser(&arginv->parser);
