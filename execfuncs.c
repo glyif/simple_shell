@@ -8,60 +8,170 @@
  */
 int exec_builtins(arg_inventory_t *arginv)
 {
-	int i = 0, j;
-	char *str;
-	char **commands = arginv->tokens->tokens;
+	int i, retval, stdout_fd, old_stdout;
+	char *str, **commands;
 	builtins_t builtins_list[] = {
 
-		{"exit", the_exit}, {"monalisa", _monalisa}, {"env", _env},
-		{"setenv", _setenv},
+		{"monalisa", _monalisa}, {"env", _env}, {"setenv", _setenv},
+		{"unsetenv", _unsetenv}, {"history", _history}, {"cd", _cd},
+		{"alias", _alias}, {"unalias", _unalias}, {"help", the_help},
 		{NULL, NULL}
 	};
 
-	for (i = 0; (str = builtins_list[i].command) != NULL; i++)
-	{
-		for (j = 0; commands[j] != NULL; j++)
-		{
-			if (_strncmp(str, commands[j], _strlen(str)) == 0)
-			{
-				builtins_list[i].builtin_func(arginv);
+	retval = EXT_FAILURE;
+	commands = (char**)arginv->commands;
+	stdout_fd = -1;
 
-				return (EXT_SUCCESS);
-			}
+	/** either a  > or a >> */
+	if(arginv->io_redir == TOKEN_REWRITE || arginv->io_redir == TOKEN_APPEND)
+	{
+		/* it's a > */
+		if(arginv->io_redir == TOKEN_REWRITE)
+			/* create file for write, create and truncate */
+            stdout_fd=open(arginv->filename,O_WRONLY | O_CREAT | O_TRUNC,0666);
+		/* it's a >> */
+		else
+			/** create file for create and append, does not truncate */
+            stdout_fd=open(arginv->filename,O_WRONLY | O_CREAT | O_APPEND,0666);
+
+		/* save current stdout */
+		old_stdout = dup(STDOUT_FILENO);
+
+		/* redirect stdout */
+		if (dup2(stdout_fd, STDOUT_FILENO) < 0)
+		{
+			perror("dup2");
+			exit(1);
+		}
+	}
+	else if (arginv->pipeout)
+	{
+		/* save current stdout */
+		old_stdout = dup(STDOUT_FILENO);
+
+		/* redirect stdout */
+		if(dup2(arginv->pipeout,STDOUT_FILENO) < 0)
+		{
+			perror("dup2");
+			exit(1);
 		}
 	}
 
-	return (EXT_FAILURE);
+	for (i = 0; ((str = builtins_list[i].command) != NULL); i++)
+	{
+		if (_strcmp(str, commands[0]) == 0)
+		{
+			retval = builtins_list[i].builtin_func(arginv);
+			break;
+		}
+	}
+
+	if (arginv->io_redir == TOKEN_REWRITE || arginv->io_redir == TOKEN_APPEND || arginv->pipeout)
+	{
+		/* revert back to old_stdout */
+		if(dup2(old_stdout,STDOUT_FILENO) < 0)
+		{
+			perror("dup2");
+			exit(1);
+		}
+
+		close(old_stdout);
+	}
+
+	return (retval);
 }
 
 /**
  * exec_path - custom function to execute from PATH
- * @command: arguments inventory
- * @commands: input commands
- * @envlist: linked list to environ variables
+ * @command: command to execute
+ * @arginv: arg inventory
  */
-void exec_path(char *command, char **commands, env_t *envlist)
+pid_t exec_path(char *command, arg_inventory_t *arginv)
 {
 	pid_t pid;
-	int status;
 	char **_environ;
+    int stdin_fd = -1;
+    int stdout_fd = -1;
 
 	pid = fork();
+	if (pid < 0)
+	{
+		perror("Critical error: unable to fork()!");
+		exit(1);
+	}
 
 	if (pid == 0)
 	{
-		_environ = zelda_to_ganondorf(envlist);
+		/* it's a < */
+		if (arginv->io_redir == TOKEN_CAT)
+		{
+			/* open file to read */
+            stdin_fd = open(arginv->filename,O_RDONLY);
 
-		if (execve(command, commands, _environ) < 0)
+			if(dup2(stdin_fd, STDIN_FILENO) == -1)
+			{
+				/* redirect STDIN */
+				perror("dup2");
+				exit(1);
+			}
+
+            close(stdin_fd);
+
+			if(arginv->pipein)
+				/* unused file descriptor */
+                close(arginv->pipein);
+		}
+		else if (arginv->pipein)
+		{
+			if (dup2(arginv->pipein, STDIN_FILENO) < 0)
+			{
+				/* redirect stdin */
+				perror("dup2");
+				exit(1);
+			}
+		}
+
+		/* it's a > or a >> */
+		if (arginv->io_redir == TOKEN_REWRITE || arginv->io_redir == TOKEN_APPEND)
+		{
+			/* it's a > */
+    		if (arginv->io_redir == TOKEN_REWRITE)
+				/* create file for write, create and truncate */
+                stdout_fd=open(arginv->filename,O_WRONLY | O_CREAT | O_TRUNC,0666);
+			/* it's a >> */
+    		else
+				/* create file for write and append, do not truncate */
+                stdout_fd=open(arginv->filename,O_WRONLY | O_CREAT | O_APPEND,0666);
+
+			/* redirect stdin */
+			if (dup2(stdout_fd, STDOUT_FILENO) < 0)
+			{
+				perror("dup2");
+				exit(1);
+			}
+
+            close(stdout_fd);
+
+            if(arginv->pipeout)
+                close(arginv->pipeout);
+		}
+		else if(arginv->pipeout)
+		{
+			if(dup2(arginv->pipeout, STDOUT_FILENO) < 0)
+			{
+				perror("dup2");
+				exit(1);
+			}
+		}
+		_environ = zelda_to_ganondorf(arginv->envlist);
+
+		if (execve(command, (char**)arginv->commands, _environ) < 0)
 		{
 			perror("No Command");
 			exit(1);
 		}
 	}
-	else
-	{
-		wait(&status);
-	}
+	return (pid);
 }
 
 /**
@@ -91,29 +201,36 @@ int is_path(char *command)
  *
  * Return: void
  */
-void execute(arg_inventory_t *arginv)
+pid_t execute(arg_inventory_t *arginv)
 {
-    tokens_t path_token;
-    env_t *envlist = arginv->envlist;
-    char **commands = arginv->tokens->tokens;
-    char *path, *command;
+	tokens_t path_token;
+	env_t *envlist = arginv->envlist;
+	char **commands, *path, *command;
+	parser_t parser;
+	unsigned i;
 
-    command = safe_malloc(BUFSIZE);
-    command = _strcpy(command, *commands);
-    path = safe_malloc(BUFSIZE);
+	commands = (char**) arginv->commands;
+	command = _strdup(*commands);
+	path = safe_malloc(sizeof(char) * BUFSIZE);
 
-    if (exec_builtins(arginv) == EXT_FAILURE)
-    {
+	if (exec_builtins(arginv) == EXT_FAILURE)
+	{
 		if(is_path(command))
 		{
-			exec_path(command, commands, envlist);
+			return (exec_path(command, arginv));
 		}
 		else
 		{
 			locate_path(path, envlist);
+			for (i = 0; i < _strlen(path); i++)
+				path[i] = (path[i] == ':') ? ' ' : path[i];
 			tokenize(&path_token, path);
-			cat_path(path_token.tokens, command);
-			exec_path(command, commands, envlist);
+			if (!parse(&parser, &path_token))
+			{
+				cat_path((char**)parser.tree->strings, command);
+				return (exec_path(command, arginv));
+			}
 		}
 	}
+	return (-1);
 }

@@ -1,6 +1,61 @@
 #include "header.h"
 
 /**
+ * _strncat - concatenates from src string to dest string
+ * @dest: destination string
+ * @src: source string
+ * @n: number of bytes to concatenate
+ *
+ * Return: pointer to destination
+ */
+char *_strncat(char *dest, char *src, int n)
+{
+	int i = 0, j = 0;
+
+	while (dest[i] != '\0')
+		i++;
+
+	while (j < n && src[j] != '\0')
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+
+	dest[i] = '\0';
+
+	return (dest);
+}
+
+/**
+ * _strcmp - compares string
+ * @s1: first string
+ * @s2: second string
+ *
+ * Return: difference between two ascii valuves
+ */
+
+int _strcmp(const char *s1, const char *s2)
+{
+	int i;
+
+	i = 0;
+
+	while (1)
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+
+		if (s1[i] == '\0' || s2[i] == '\0')
+			break;
+
+		i++;
+	}
+
+	return (0);
+}
+
+/**
  * _strlen - finds and returns length of string
  * @str: string to find length
  *
@@ -42,18 +97,18 @@ char *_strdup(char *str)
 }
 
 /**
- * _strncmp - checks if 2 strings are of equal value and length
+ * sp_strncmp - checks if 2 strings are of equal value and length
  * @s1: first string
  * @s2: second string
  * @n: number of bytes to compare
  *
  * Return: difference of first characters that are of diff value or 0 on success
  */
-int _strncmp(char *s1, char *s2, unsigned int n)
+int sp_strncmp(char *s1, char *s2, unsigned int n)
 {
 	unsigned int j;
 
-	for (j = 0; s1[j] != '\0' && s2[j] != '\0' && j < n; j++)
+	for (j = 0; j < n; j++)
 		if (s1[j] != s2[j])
 			return (s1[j] - s2[j]);
 

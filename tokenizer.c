@@ -7,14 +7,10 @@
  */
 void init_tokens(tokens_t *tokens, int length)
 {
-	int i;
 	/* For the extreme case, such as 'a;a;a;a;a;a', we'll need to allocate twice as much memory for data + 1 byte for terminator */
 	/* Maximum amount of tokens is the same as length */
-	tokens->data = safe_malloc((length * 2 + 1) * sizeof(char));
-	tokens->tokens = safe_malloc(length * sizeof(const char *));
-
-	for (i = 0; i < length; ++ i)
-		tokens->tokens[i] = NULL;
+	tokens->data = malloc((length * 2 + 1) * sizeof(char));
+	tokens->tokens = malloc(length * sizeof(token_t));
 
 	if (!tokens->data || !tokens->tokens)
 	{
@@ -27,41 +23,14 @@ void init_tokens(tokens_t *tokens, int length)
 }
 
 /**
- * delete_tokens - frees tokens_t struct
- * @tokens: tokens_t struct that gets freed
+ * is_redirection - checks if token id is a redirection
+ * @token_id: tokenid
  *
- * Return: 0
+ * Return: 1 if yes , 0 if no
  */
-int delete_tokens(tokens_t *tokens)
+int is_redirection(int token_id)
 {
-	free(tokens->data);
-	tokens->data = NULL;
-
-	free(tokens->tokens);
-	tokens->tokens = NULL;
-	tokens->tokensN = 0;
-
-	return (0);
-}
-
-/**
- * print_tokens - prints all tokens from tokens_t struct
- * @tokens: tokens_t struct that you want to print
- *
- * Return: 0
- */
-int print_tokens(tokens_t *tokens)
-{
-	unsigned int i;
-
-	printf("There are %u tokens in token structure: ======================\n", tokens->tokensN);
-
-	for (i = 0; i < tokens->tokensN; i++)
-	{
-		printf("\"%s\"\n", tokens->tokens[i]);
-	}
-
-	return (0);
+    return (token_id == TOKEN_REWRITE || token_id == TOKEN_APPEND || token_id == TOKEN_CAT);
 }
 
 /**
@@ -76,17 +45,33 @@ int tokenize(tokens_t *tokens, const char *string)
 	unsigned int length, string_idx, data_idx, tokens_idx;
 	unsigned int skip_next, skip_quote;
 	unsigned int is_token;
+	unsigned int tokens_to_move;
+	unsigned int i, j;
 
 	char symbol;
-	length = _strlen(string);
+	token_types token_names[] = {
+		{ TOKEN_SEMICOLON,  ";",  "semicolon",  1 },
+		{ TOKEN_BACKGROUND, "&",  "background", 1 },
+		{ TOKEN_AND,        "&&", "and",        2 },
+		{ TOKEN_OR,         "||", "or",         2 },
+		{ TOKEN_PIPE,       "|",  "pipe",       3 },
+		{ TOKEN_REWRITE,    ">",  "rewrite",    4 },
+		{ TOKEN_APPEND,     ">>", "append",     4 },
+		{ TOKEN_CAT,        "<",  "cat",        4 }
+	};
+
+	/* First of all, we need to carefully allocate memory */
+	/* It does not matter if we allocate too much, it is better than constant reallocations, */
+	/* because they take too much time, and memory is not a concern */
+	length = strlen(string);
 	if (length == 0)
-		length = 1;
+		length = 1; /* Empty string should be properly processed too! */
 
 	/* Initializes struct */
 	init_tokens(tokens, length);
 
 	/* Set up current indexes; */
-	string_idx = 0; /* Current p$osition in original string */
+	string_idx = 0; /* Current position in original string */
 	data_idx = 0;   /* Current position in resulting data string */
 	tokens_idx = 0; /* Current token */
 
@@ -96,7 +81,7 @@ int tokenize(tokens_t *tokens, const char *string)
 	is_token = 0;   /* If it is set to 1, then we are currently processing a token. If 0, then we are processing whitespace symbols */
 
 	/* Cycle for each symbol from the original string */
-	while (string[string_idx] != '\0')
+	while (string[string_idx] != '\0' && string[string_idx] != '#')
 	{
 		/* Cycle until the end */
 		/* Retrieve current symbol and advance further */
@@ -111,11 +96,11 @@ int tokenize(tokens_t *tokens, const char *string)
 			/* Note that we'll handle ';' later, this is the special case */
 			/* New token has been started */
 			/* We need to set up pointer properly so it points to current location in data */
-			tokens->tokens[tokens_idx] = tokens->data + data_idx;
+			tokens->tokens[tokens_idx].str = tokens->data + data_idx;
 			tokens_idx++;
 			is_token = 1; /* The token has started. We need to process it carefully */
 		}
-		
+
 		if (is_token && _isspace(symbol) && !skip_next && !skip_quote)
 		{
 			/* Previous token has been ended */
@@ -142,7 +127,7 @@ int tokenize(tokens_t *tokens, const char *string)
 			}
 
 			/* Next, we need to add new token */
-			tokens->tokens[tokens_idx] = tokens->data + data_idx;
+			tokens->tokens[tokens_idx].str = tokens->data + data_idx;
 			tokens_idx++;
 
 			/* And fill it with ';' */
@@ -184,5 +169,111 @@ int tokenize(tokens_t *tokens, const char *string)
 	/* Set current amount of tokens properly */
 	tokens->tokensN = tokens_idx;
 
+	/* Next - tokenize all tokens */
+	/* By default, every token is TOKEN_STRING, but in case if equals to some predefined token, */
+	/* its ID should change */
+	for (i = 0; i < tokens->tokensN; i++)
+	{
+		tokens->tokens[i].id = TOKEN_STRING; /* Set default value */
+
+		/* Compare each token with pre-defined token names */
+		for (j = 0; j < sizeof(token_names) / sizeof(token_names[0]); j++)
+		{
+			if (_strcmp(token_names[j].token_str, tokens->tokens[i].str) == 0)
+			{
+				/* It is a match */
+				tokens->tokens[i].id = token_names[j].token_id;
+				tokens->tokens[i].prec = token_names[j].precedence;
+				break; /* No need to cycle further here, we found corresponding token ID */
+			}
+		}
+	}
+
+	/* The last thing we'll need to do here is to delete duplicates */
+	/* At the moment, we'll only need to delete ; token, turning ;; into ; */
+	for (i = 0; i + 1 < tokens->tokensN;)
+	{ /* The increment is inside of the cycle... or, rather, increment or decrement */
+		if ((tokens->tokens[i].id == tokens->tokens[i + 1].id) && (tokens->tokens[i].id == TOKEN_SEMICOLON))
+		{
+			/* Carefully shift the array one element */
+			tokens_to_move = tokens->tokensN - i - 1;
+			memmove(tokens->tokens + i, tokens->tokens + i + 1, tokens_to_move * sizeof(token_t));
+
+			/* Also decrease amount of tokens left */
+			tokens->tokensN--;
+		} else
+			i++; /* Otherwise, cycle as usual */
+	}
+
+	if (tokens->tokensN && tokens->tokens[tokens->tokensN - 1].id == TOKEN_SEMICOLON)
+		tokens->tokensN--;
+
+
 	return (0); /* All OK */
+}
+
+/**
+ * delete_tokens - freeing tokens
+ * @tokens: tokens_t struct with tokens
+ * Return: 0
+ */
+int delete_tokens(tokens_t *tokens)
+{
+	free(tokens->data);
+	tokens->data = NULL;
+
+	free(tokens->tokens);
+	tokens->tokens = NULL;
+	tokens->tokensN = 0;
+
+	return (0);
+}
+
+/**
+ * dump_tokens - prints tokens for debugging
+ * @tokens: tokens_t struct
+ *
+ * Return: 0
+ */
+int dump_tokens(tokens_t *tokens)
+{
+	unsigned int i;
+
+	printf("There are %u tokens in token structure: ======================\n", tokens->tokensN);
+
+	for (i = 0; i < tokens->tokensN; i++)
+		printf("%14s token \"%s\"\n", dump_get_token_descr(tokens->tokens[i].id), tokens->tokens[i].str);
+
+	return (0);
+}
+
+/**
+ * dump_get_token_descr - prints token description for debugging)
+ * @token_id: macro token
+ *
+ * Return: token_descr or error message
+ */
+const char *dump_get_token_descr(int token_id)
+{
+	unsigned int i;
+
+	token_types token_names[] = {
+		{ TOKEN_SEMICOLON,  ";",  "semicolon",  1 },
+		{ TOKEN_BACKGROUND, "&",  "background", 1 },
+		{ TOKEN_AND,        "&&", "and",        2 },
+		{ TOKEN_OR,         "||", "or",         2 },
+		{ TOKEN_PIPE,       "|",  "pipe",       3 },
+		{ TOKEN_REWRITE,    ">",  "rewrite",    4 },
+		{ TOKEN_APPEND,     ">>", "append",     4 },
+		{ TOKEN_CAT,        "<",  "cat",        4 }
+	};
+
+	if (token_id == TOKEN_STRING)
+		return ("string");
+
+	for (i = 0; i < sizeof(token_names) / sizeof(token_names[0]); i++)
+		if (token_names[i].token_id == token_id)
+			return (token_names[i].token_descr);
+
+	return ("Done messed up A-Aron");
 }

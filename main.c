@@ -1,46 +1,4 @@
 #include "header.h"
-/**
- * _getline - custom getline currently reads 1 char at a time
- * @buffer: address of pointer to input commands buffer
- * @limit: maxsize of input character string, realloc if necessary
- *
- * Return: number of characters written
- */
-ssize_t _getline(char **buffer, size_t *limit)
-{
-	unsigned int i, j;
-	size_t charcount, iterations;
-
-	charcount = 0;
-	iterations = 1;
-	j = 0;
-	i = -1;
-
-	while (i != 0)
-	{
-		i = read(STDIN_FILENO, (*buffer + j), 1);
-
-		if ((*buffer + j++)[0] == '\n')
-		{
-			charcount++;
-			break;
-		}
-
-		if (charcount++ % *limit == 0)
-		{
-			iterations++;
-			*buffer = _realloc(*buffer, charcount, (*limit * iterations));
-		}
-	}
-
-	if (i == 0)
-	{
-		free(*buffer);
-		exit(EXT_SUCCESS);
-	}
-
-	return ((ssize_t)charcount);
-}
 
 /**
  * buildarginv - function to build a struct of the arguments inventory
@@ -51,12 +9,13 @@ arg_inventory_t *buildarginv(void)
 	arg_inventory_t *arginv;
 
 	arginv = safe_malloc(sizeof(arg_inventory_t));
-
 	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
 	arginv->envlist = env_list();
-	arginv->tokens = safe_malloc(sizeof(tokens_t));
+	arginv->history = history_list(arginv);
 	arginv->buflimit = BUFSIZE;
 	arginv->st_mode = _filemode(STDIN_FILENO);
+	arginv->exit = 0;
+	arginv->n_bg_jobs=0;
 
 	if (arginv->envlist == NULL)
 	{
@@ -67,32 +26,11 @@ arg_inventory_t *buildarginv(void)
 	return (arginv);
 }
 
-/**
- * _filemode - finds file mode of standard input
- * @fd: STDIN_FILENO
- *
- * Return: 1 a device like a terminal, 0 a FIFO special file, or a pipe
- */
-int _filemode(int fd)
+void sig_handler(int sig)
 {
-	int result = -1;
-	struct stat buf;
-
-	fstat(fd, &buf);
-
-	switch (buf.st_mode & S_IFMT)
-	{
-	case S_IFCHR:
-		result = 1;
-		break;
-	case S_IFIFO:
-		result = 0;
-		break;
-	default:
-		break;
-	}
-
-	return (result);
+	(void) sig;
+	_puts("");
+	write(STDOUT_FILENO, "$ ", 2);
 }
 
 /**
@@ -104,16 +42,35 @@ int main(void)
 	arg_inventory_t *arginv;
 
 	arginv = buildarginv();
-
-	while (TRUE)
+	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sig_handler);
+	while (!arginv->exit)
 	{
 		if (arginv->st_mode)
 			write(STDOUT_FILENO, "$ ", 2);
 		_getline(&arginv->input_commands, &arginv->buflimit);
-		tokenize(arginv->tokens, arginv->input_commands);
-		execute(arginv);
+		add_node_history(&arginv->history, arginv->input_commands);
+
+		tokenize(&arginv->tokens, arginv->input_commands);
+
+		if(arginv->tokens.tokensN > 0)
+		{
+			if (parse(&arginv->parser, &arginv->tokens))
+			{
+				delete_parser(&arginv->parser);
+				delete_tokens(&arginv->tokens);
+				continue;
+			}
+
+			worker_execute(arginv);
+			delete_parser(&arginv->parser);
+		}
+
 		mem_reset(arginv->input_commands, BUFSIZE);
-		delete_tokens(arginv->tokens);
+
+		delete_tokens(&arginv->tokens);
 	}
+	freeall(arginv);
+
 	return (0);
 }
