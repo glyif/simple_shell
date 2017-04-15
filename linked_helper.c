@@ -74,7 +74,7 @@ int modify_node_env(env_t **head, char *new_var, char *new_val)
 
 	while (temp)
 	{
-		if (sp_strncmp(temp->var, new_var, _strlen(temp->var)) == 0)
+		if (_strcmp(temp->var, new_var) == 0)
 		{
 			free(temp->val);
 			temp->val = _strdup(new_val);
@@ -100,7 +100,7 @@ int remove_node_env(env_t **head, char *var)
 
 	while (temp)
 	{
-		if (sp_strncmp(temp->var, var, _strlen(temp->var)) == 0)
+		if (_strcmp(temp->var, var) == 0)
 		{
 			while (copy_head->next != temp)
 				copy_head = copy_head->next;
@@ -133,7 +133,7 @@ env_t *env_list(void)
 
 	for (i = 0; environ[i] != NULL; i++)
 	{
-		variable = separate_env(environ[i]);
+		variable = separate_string(environ[i]);
 		if (add_node_env(&head, variable[0], variable[1]) == NULL)
 			return (NULL);
 		free(variable[0]);
@@ -145,35 +145,36 @@ env_t *env_list(void)
 }
 
 /**
- * separate_env - separates environ element to var and val
- * @string: one element of environ list
+ * separate_string - separates string at first '='
+ * @string: one string from environ or alias input
+ *
  * Return: array of 2 strings
  */
-char **separate_env(char *string)
+char **separate_string(char *string)
 {
-	char **variable, *var, *val;
-	int i, j, lenvar = 0, lenval = 0;
+	char **result, *left, *right;
+	int i, j, lenleft = 0, lenright = 0;
 
-	while (string[lenvar] != '=')
-		lenvar++;
-	var = safe_malloc(sizeof(char) * lenvar + 1);
+	while (string[lenleft] != '=')
+		lenleft++;
+	left = safe_malloc(sizeof(char) * lenleft + 1);
 
-	for (i = 0; i < lenvar; i++)
-		var[i] = string[i];
+	for (i = 0; i < lenleft; i++)
+		left[i] = string[i];
 
-	i = lenvar + 1;
+	i = lenleft + 1;
 
 	while (string[i] != '\0')
-		lenval++, i++;
-	val = safe_malloc(sizeof(char) * lenval + 1);
+		lenright++, i++;
+	right = safe_malloc(sizeof(char) * lenright + 1);
 
-	for (i = lenvar + 1, j = 0; j < lenval; i++, j++)
-		val[j] = string[i];
+	for (i = lenleft + 1, j = 0; j < lenright; i++, j++)
+		right[j] = string[i];
 
-	variable = safe_malloc(sizeof(char *) * 3);
-	variable[0] = var, variable[1] = val;
+	result = safe_malloc(sizeof(char *) * 3);
+	result[0] = left, result[1] = right;
 
-	return (variable);
+	return (result);
 }
 
 /**
@@ -230,7 +231,7 @@ env_t *fetch_node(env_t *head, char *var)
 
     while (tmp->next != NULL)
     {
-        if (sp_strncmp(tmp->var, var, _strlen(var)) == 0)
+        if (_strcmp(tmp->var, var) == 0)
             return (tmp);
         else
             tmp = tmp->next;

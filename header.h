@@ -57,7 +57,7 @@ int is_redirection(int token_id);
 
 /* -------custom environ------- */
 env_t *env_list(void);
-char **separate_env(char *string);
+char **separate_string(char *string);
 unsigned int link_count(env_t *head);
 char **zelda_to_ganondorf(env_t *head);
 env_t *add_node_env(env_t **head, char *var, char *val);
@@ -81,7 +81,7 @@ unsigned int _strlen(const char *str);
 char *_strcpy(char *dest, char *src);
 char *_strncat(char *dest, char *src, int n);
 int _strcmp(const char *s1, const char *s2);
-int sp_strncmp(char *s1, char *s2, unsigned int n);
+int _strncmp(char *s1, char *s2, unsigned int n);
 int _unsetenv(arg_inventory_t *arginv);
 char *_strcat(char *dest, char *src);
 char *int_to_str(unsigned int n);
@@ -102,6 +102,11 @@ history_t *add_node_history(history_t **head, char *command);
 int file_history(arg_inventory_t *arginv);
 char *history_to_string(history_t *head);
 history_t *init_history(history_t *head, char *buffer);
+
+/* -----alias----- */
+int write_alias(alias_t *head);
+alias_t *alias_list(void);
+alias_t *add_node_alias(alias_t **head, char *alias, char *command);
 
 /* ---------------cd--------------- */
 char *yellow_brick_road(char **commands, env_t *envlist);
@@ -148,6 +153,7 @@ int delete_pipeline(pipeline_t * pipeline);
 int freeall(arg_inventory_t *arginv);
 int free_environ(env_t *head);
 int free_history(history_t *head);
+int free_alias(alias_t *head);
 
 /* ----help---- */
 void h_exit(void);

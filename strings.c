@@ -41,12 +41,12 @@ int _strcmp(const char *s1, const char *s2)
 
 	i = 0;
 
-	while (1)
+	while (TRUE)
 	{
 		if (s1[i] != s2[i])
 			return (s1[i] - s2[i]);
 
-		if (s1[i] == '\0' || s2[i] == '\0')
+		if (s1[i] == '\0' && s2[i] == '\0')
 			break;
 
 		i++;
@@ -97,14 +97,14 @@ char *_strdup(char *str)
 }
 
 /**
- * sp_strncmp - checks if 2 strings are of equal value and length
+ * _strncmp - checks if 2 strings are of equal value and length
  * @s1: first string
  * @s2: second string
  * @n: number of bytes to compare
  *
  * Return: difference of first characters that are of diff value or 0 on success
  */
-int sp_strncmp(char *s1, char *s2, unsigned int n)
+int _strncmp(char *s1, char *s2, unsigned int n)
 {
 	unsigned int j;
 
