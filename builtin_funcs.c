@@ -81,7 +81,7 @@ int _unsetenv(arg_inventory_t *arginv)
 
 	if (commands[1] == NULL)
 	{
-		perror("setenv: missing parameters.");
+		perror("unsetenv: missing parameters.");
 		return (-1);
 	}
 
@@ -92,9 +92,9 @@ int _unsetenv(arg_inventory_t *arginv)
 	}
 
 	if (remove_node_env(&envlist, commands[1]))
-		return (EXT_SUCCESS);
+		return (EXT_FAILURE);
 
-	return(EXT_FAILURE);
+	return(EXT_SUCCESS);
 }
 
 /**
