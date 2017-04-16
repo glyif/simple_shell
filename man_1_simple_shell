@@ -25,49 +25,84 @@ daVinci is Public Domain, no copyright protection
 .SH DESCRIPTION
 
 daVinci replicates a 'shell' or command line interpreter, which is a user\
-interface used for access to an operating system's services.  This shell has\
+interface program for access to an operating system's services.  This shell has\
 a set of custom built-in commands, and also integrates with other commands\
-located in the system's PATH.
+located in the system's PATH.  The output is designed to exactly or as close\
+as possible replicate the shell 'sh' or 'dash' ($ man dash).  daVinci takes\
+commands from files, shell scripts or user input in either an interactive or\
+non-interactive mode (explained in INVOCATION section).
 
-
-
-.SH OPTIONS
-.IP -b
-Do not write `busy' to stdout while processing.
-.IP "-c config-file"
-Use the alternate system wide
-.I config-file
-instead of
-.IR /etc/foo.conf .
-This overrides any
-.B FOOCONF
-environment variable.
-.IP -a
-In addition to the baz segments, also parse the
-blurfl headers.
-.IP -r
-Recursive mode. Operates as fast as lightning
-at the expense of a megabyte of virtual memory.
-
-
-
-.SH ENVIRONMENT
-
-.IP FOOCONF
-If non-null the full pathname for an alternate system wide
-.IR foo.conf .
-Overridden by the
-.B -c
-option.
 
 
 
 .SH INVOCATION
 
-invocation here
+to initialize daVinci, you must compile all the included files using gcc.\
+Then run the output file, with a command such as this: $ ./a.out.  daVinci is\
+designed to be compiled like with this command:
 
-.SS subheader
-paragraph here
+gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
+
+if daVinci is exectured, it will initialize in what is considered 'interactive\
+mode.'  In this scenario, the user is prompted for a command and then the\
+command is executed after the newline or 'enter' is input.  daVinci can also\
+function in non-interactive mode by using shell scripts, such as a '|' before
+the daVinci executable file ('hsh').  This is an example:
+
+echo 'ls' | ./hsh
+
+Commands may also be input into daVinci through a file containing commands:
+
+cat aFile | ./hsh
+
+
+
+
+.SH OPTIONS
+
+daVinci does not take any options but does utilize the variable extern char\
+**environ.  This is currently part of the future goals of daVinci
+
+
+.SH BUILT-IN commands
+
+
+
+.IP monalisa
+easter egg
+
+.IP env
+writes environment to stdout
+
+.IP setenv
+sets or changes an environmental variable. example: 'setenv USER=bobby'
+
+.IP unsetenv
+removes environmental variable. example: 'unsetenv USER'
+
+.IP history
+writes history to stdout
+
+.IP exit
+exits daVinci
+
+.IP cd
+changes working directory
+
+.IP help
+used with another command prints help message.  example: 'help env'
+
+.IP alias
+creates an alias.  example 'alias ll='ls -la''
+
+.IP unalias
+removes an alias.  exmample 'unalias ll'
+
+.IR foo.conf .
+Overridden by the
+.B -c
+option.
+
 
 
 
@@ -103,17 +138,14 @@ for further details.
 
 .SH "SEE ALSO"
 
-.BR bar (1),
-.BR foo (5),
-.BR xyzzy (1)
+.BR sh (1),
+.BR bash (1),
 
 
 
 .SH BUGS
 
-here is where we write the bugs and missing functions from maryanning
-
-
+none known.  daVinci does not currently replicate these tasks:
 
 .SH AUTHOR
 
