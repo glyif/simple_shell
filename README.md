@@ -1,4 +1,6 @@
-# <img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-low_level_programming/235/shell.png" alt="screen shot of custom printf function" style="width:128px;height:128px;"> daVinci
+# daVinci
+
+<img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-low_level_programming/235/shell.png" alt="screen shot of custom printf function">
 
 ## Description
 
@@ -123,27 +125,44 @@ our blog posting here:
   #### execute file input and output
 
   * ``ssize_t read_textfile(char *filename, size_t letters)``
+  
+  	reads text file and writes to stdout
   * ``int trunc_text_to_file(char *filename, char *text_content)``
+  
+  	truncates text to file for history list
 
 * ``free.c``
 
   #### functions to free up all linked list and buffers
 
   * ``int freeall(arg_inventory_t *arginv)``
+  
+  	function to execute all free functions
   * ``int free_environ(env_t *head)``
+  
+  	frees custom environ linked list
   * ``int free_history(history_t *head)``
+  
+  	frees history linked list
   * ``int free_alias(alias_t *head)``
+  
+  	frees alias linked list
 
 * ``getline.c``
 
   #### custom getline
 
   * ``ssize_t _getline(char **buffer, size_t *limit)``
+  
+  	custom getline reads one char at a time and writes to a buffer one at a time
   * ``int _filemode(int fd)``
+  
+  	checks the st_mode that the shell is being executed from either from terminal or pipe
 
 * ``help.c``
 
   #### functions to print help information on each function
+  These functions write the help builtins help text to stdout.  Each function is named after the help text that it writes.
 
   * ``void h_exit(void)``
   * ``void h_monalisa(void)``
@@ -160,37 +179,72 @@ our blog posting here:
   #### prints running total of history
 
   * ``history_t *history_list(arg_inventory_t *arginv)``
+  
+  initializes history linked list
   * ``history_t *add_node_history(history_t **head, char *command)``
+  
+  adds new node (struct of linked list) to the history list
   * ``int file_history(arg_inventory_t *arginv)``
+  
+  stores history into a file in the $HOME directory
+  
   * ``char *history_to_string(history_t *head)``
+  
+  converts history list to a string
   * ``history_t *init_history(history_t *head, char *buffer)``
+  
+  used in the initialization function, this function copies old history into current history linked list
 
 * ``linked_helper.c``
 
   #### custom environmental variables list, add variables, and change variables
 
   * ``env_t *env_list(void)``
+  
+  initializes custom enviromental variable list
   * ``char **separate_string(char *string)``
+  
+  separates a string at the first '=' sign into 2 strings of a ``char **`` type
   * ``unsigned int link_count(env_t *head)``
+  
+  counts number of nodes in environ
   * ``char **zelda_to_ganondorf(env_t *head)``
+  
+  converts linked list into ``char **`` type
   * ``env_t *add_node_env(env_t **head, char *var, char *val)``
+  
+  adds new node (struct of linked list) to custom environmental variable list
   * ``int modify_node_env(env_t **head, char *new_var, char *new_val)``
+  
+  modifies a node from custom environmental variable list (environ)
   * ``int remove_node_env(env_t **head, char *var)``
+  
+  removes a node from env list
 
 * ``main.c``
 
   #### main function and arguments inventory function
 
   * ``int main(void)``
+  
+  main function that is first initialized in our shell
   * ``arg_inventory_t *buildarginv(void)``
+  
+  arguments inventory with main arguments utilized throughout our program.  Used to pass multiple arguments into many functions.
 
 * ``memmalloc.c``
 
-  #### allocate memory and set mem to '\0' NULL bytes
+  #### allocate memory
 
   * ``char *mem_reset(char *str, int bytes)``
+  
+  sets all bytes of memory to '\0' NULL byte, similar to half of calloc() function
   * ``void *safe_malloc(int size)``
+  
+  mallocs memory and calls mem_reset()
   * ``void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)``
+  
+  reallocates new memory, used for buffer for large inputs
 
 * ``parse.c``
 
@@ -233,10 +287,14 @@ our blog posting here:
   #### functions contianed in this file:
 
   * ``char _isspace(char c)``
+  
+  replicates standard library
 
 * ``strings.c``
 
   #### functions contianed in this file:
+  
+  These functions are mostly all functions that replicate C standard library sting functions.  They are named accordingly
 
   * ``char *_strncpy(char *dest, char *src, int n)``
   * ``char *_strdup(char *str)``
@@ -270,12 +328,24 @@ our blog posting here:
 * ``write.c``
 
   #### functions contianed in this file:
+  
+  These functions all write to standard output
 
   * ``int write_uint(unsigned int n)``
+  
+  writes an integer to string to stdout
   * ``unsigned int write_history(history_t *head)``
+  
+  writes history linked list to stdout
   * ``void _puts(char *str)``
-  * ``size_t print_list(env_t *head)``
-  * ``int _putchar(char c)``
+  
+  replicates `puts()` from C standard library
+  * `size_t print_list(env_t *head)`
+  
+  writes environment linked list to stdout
+  * `int _putchar(char c)`
+  
+  replicates C standard library `putchar()`
 
 
 ## Authors
