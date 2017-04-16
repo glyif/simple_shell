@@ -1,5 +1,4 @@
-<img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-low_level_programming/235/shell.png" alt="screen shot of custom printf function">
-# daVinci
+# <img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-low_level_programming/235/shell.png" alt="screen shot of custom printf function" style="width:128px;height:128px;"> daVinci
 
 ## Description
 
@@ -30,16 +29,20 @@ our blog posting here:
 ### support files
 
   * ``man_1_simple_shell``
+
   	This file contains a man page that can be executed and opened with the
 	``man`` command either in bash, sh or in our shell daVinci
 
   * ``AUTHORS``
+
   	Contains information on the authors, also listed below in the README
 
   * ``README.md``
+
   	This file
 
-  * ``.travis.yml
+  * ``.travis.yml``
+
   	supports travis continuous integration for testing github branches before
 	merging
 
@@ -58,51 +61,58 @@ our blog posting here:
 
 * ``alias.c``
 
-  All alias functions
-
-  #### functions contianed in this file:
+  #### All alias functions
 
   * ``int write_alias(alias_t *head)``
+
   	prints aliases for testing purpose
   * ``alias_t *alias_list(void)``
+
   	initializes alias list
   * ``alias_t *add_node_alias(alias_t **head, char *alias, char *command)``
+
   	adds new node (struct from linked list) to alias list
 
 * ``builtin_funcs.c``
 
-  Functions to execute builtins
+  #### Functions to execute builtins
 
-  #### functions contianed in this file:
   * ``int _monalisa(arg_inventory_t *arginv)``
+
   	easter egg
   * ``int _env(arg_inventory_t *arginv)``
+
   	prints custom environment
   * ``int _setenv(arg_inventory_t *arginv)``
+
   	executes command ``setenv`` to set new or edit environmental variable
   * ``int _history(arg_inventory_t *arginv)``
+
   	prints working history
   * ``int _cd(arg_inventory_t *arginv)``
+
   	executes command to change directory
   * ``int _alias(arg_inventory_t *arginv)``
+
   	adds new alias
   * ``int _unalias(arg_inventory_t *arginv)``
+
   	removes alias
   * ``int the_help(arg_inventory_t *arginv)``
+
   	prints help message
 
 * ``cd.c``
 
-  #### functions contianed in this file:
+  #### functions to work with command cd, change directory
 
   * ``char *yellow_brick_road(char **commands, env_t *envlist)``
   * ``env_t *fetch_node(env_t *head, char *var)``
 
 * ``execfuncs.c``
 
-  functions to execute input commands
+  #### functions to execute input commands
 
-  #### functions contianed in this file:
 
   * ``pid_t execute(arg_inventory_t *arginv)``
   * ``int exec_builtins(arg_inventory_t *arginv)``
@@ -110,18 +120,14 @@ our blog posting here:
 
 * ``file_io.c``
 
-  execute file input and output
-
-  #### functions contianed in this file:
+  #### execute file input and output
 
   * ``ssize_t read_textfile(char *filename, size_t letters)``
   * ``int trunc_text_to_file(char *filename, char *text_content)``
 
 * ``free.c``
 
-  functions to free up all linked list and buffers
-
-  #### functions contianed in this file:
+  #### functions to free up all linked list and buffers
 
   * ``int freeall(arg_inventory_t *arginv)``
   * ``int free_environ(env_t *head)``
@@ -130,18 +136,14 @@ our blog posting here:
 
 * ``getline.c``
 
-  custom getline
-
-  #### functions contianed in this file:
+  #### custom getline
 
   * ``ssize_t _getline(char **buffer, size_t *limit)``
   * ``int _filemode(int fd)``
 
 * ``help.c``
 
-  functions to print help information on each function
-
-  #### functions contianed in this file:
+  #### functions to print help information on each function
 
   * ``void h_exit(void)``
   * ``void h_monalisa(void)``
@@ -155,9 +157,7 @@ our blog posting here:
 
 * ``history.c``
 
-  prints running total of history
-
-  #### functions contianed in this file:
+  #### prints running total of history
 
   * ``history_t *history_list(arg_inventory_t *arginv)``
   * ``history_t *add_node_history(history_t **head, char *command)``
@@ -167,9 +167,7 @@ our blog posting here:
 
 * ``linked_helper.c``
 
-  custom environmental variables list, add variables, and change variables
-
-  #### functions contianed in this file:
+  #### custom environmental variables list, add variables, and change variables
 
   * ``env_t *env_list(void)``
   * ``char **separate_string(char *string)``
@@ -181,18 +179,14 @@ our blog posting here:
 
 * ``main.c``
 
-  main function and arguments inventory function
-
-  #### functions contianed in this file:
+  #### main function and arguments inventory function
 
   * ``int main(void)``
   * ``arg_inventory_t *buildarginv(void)``
 
 * ``memmalloc.c``
 
-  allocate memory and set mem to '\0' NULL bytes
-
-  #### functions contianed in this file:
+  #### allocate memory and set mem to '\0' NULL bytes
 
   * ``char *mem_reset(char *str, int bytes)``
   * ``void *safe_malloc(int size)``
@@ -200,7 +194,7 @@ our blog posting here:
 
 * ``parse.c``
 
-  #### functions contianed in this file:
+  #### functions working with parser:
 
   * ``int parse_error(const char *error, token_t *near)``
   * ``ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int min_prec)``
