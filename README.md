@@ -180,20 +180,20 @@ our blog posting here:
 
   * `history_t *history_list(arg_inventory_t *arginv)`
   
-  initializes history linked list
+  	initializes history linked list
   * `history_t *add_node_history(history_t **head, char *command)`
   
-  adds new node (struct of linked list) to the history list
+  	adds new node (struct of linked list) to the history list
   * `int file_history(arg_inventory_t *arginv)`
   
-  stores history into a file in the $HOME directory
+  	stores history into a file in the $HOME directory
   
   * `char *history_to_string(history_t *head)`
   
-  converts history list to a string
+  	converts history list to a string
   * `history_t *init_history(history_t *head, char *buffer)`
   
-  used in the initialization function, this function copies old history into current history linked list
+  	used in the initialization function, this function copies old history into current history linked list
 
 * `linked_helper.c`
 
@@ -201,22 +201,22 @@ our blog posting here:
 
   * `env_t *env_list(void)`
   
-  initializes custom enviromental variable list
+  	initializes custom enviromental variable list
   * `char **separate_string(char *string)`
   
-  separates a string at the first '=' sign into 2 strings of a `char **` type
+  	separates a string at the first '=' sign into 2 strings of a `char **` type
   * `unsigned int link_count(env_t *head)`
   
-  counts number of nodes in environ
+  	counts number of nodes in environ
   * `char **zelda_to_ganondorf(env_t *head)`
   
-  converts linked list into `char **` type
+  	converts linked list into `char **` type
   * `env_t *add_node_env(env_t **head, char *var, char *val)`
   
-  adds new node (struct of linked list) to custom environmental variable list
+  	adds new node (struct of linked list) to custom environmental variable list
   * `int modify_node_env(env_t **head, char *new_var, char *new_val)`
   
-  modifies a node from custom environmental variable list (environ)
+  	modifies a node from custom environmental variable list (environ)
   * `int remove_node_env(env_t **head, char *var)`
   
   removes a node from env list
@@ -227,10 +227,10 @@ our blog posting here:
 
   * `int main(void)`
   
-  main function that is first initialized in our shell
+  	main function that is first initialized in our shell
   * `arg_inventory_t *buildarginv(void)`
   
-  arguments inventory with main arguments utilized throughout our program.  Used to pass multiple arguments into many functions.
+  	arguments inventory with main arguments utilized throughout our program.  Used to pass multiple arguments into many functions.
 
 * `memmalloc.c`
 
@@ -238,13 +238,13 @@ our blog posting here:
 
   * `char *mem_reset(char *str, int bytes)`
   
-  sets all bytes of memory to '\0' NULL byte, similar to half of calloc() function
+  	sets all bytes of memory to '\0' NULL byte, similar to half of calloc() function
   * `void *safe_malloc(int size)`
   
-  mallocs memory and calls mem_reset()
+  	mallocs memory and calls mem_reset()
   * `void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)`
   
-  reallocates new memory, used for buffer for large inputs
+  	reallocates new memory, used for buffer for large inputs
 
 * `parse.c`
 
@@ -333,19 +333,19 @@ our blog posting here:
 
   * `int write_uint(unsigned int n)`
   
-  writes an integer to string to stdout
+  	writes an integer to string to stdout
   * `unsigned int write_history(history_t *head)`
   
-  writes history linked list to stdout
+  	writes history linked list to stdout
   * `void _puts(char *str)`
   
-  replicates `puts()` from C standard library
+  	replicates `puts()` from C standard library
   * `size_t print_list(env_t *head)`
   
-  writes environment linked list to stdout
+  	writes environment linked list to stdout
   * `int _putchar(char c)`
   
-  replicates C standard library `putchar()`
+  	replicates C standard library `putchar()`
 
 
 ## Authors
