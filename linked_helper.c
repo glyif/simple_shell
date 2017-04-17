@@ -97,15 +97,20 @@ int modify_node_env(env_t **head, char *new_var, char *new_val)
 int remove_node_env(env_t **head, char *var)
 {
 	env_t *copy_head = *head, *temp = *head;
+	
+	if (head == NULL)
+		return (EXT_FAILURE);
+	
+	copy_head=NULL;
 
 	while (temp)
 	{
 		if (_strcmp(temp->var, var) == 0)
 		{
-			while (copy_head->next != temp)
-				copy_head = copy_head->next;
-
-			copy_head->next = temp->next;
+			if (copy_head)
+				copy_head->next = temp->next;
+			else
+				*head = temp->next;
 
 			free(temp->var);
 			free(temp->val);
@@ -113,6 +118,7 @@ int remove_node_env(env_t **head, char *var)
 
 			return (EXT_SUCCESS);
 		}
+		copy_head = temp;
 		temp = temp->next;
 	}
 
@@ -229,7 +235,7 @@ env_t *fetch_node(env_t *head, char *var)
     env_t *tmp;
     tmp = head;
 
-    while (tmp->next != NULL)
+    while (tmp != NULL)
     {
         if (_strcmp(tmp->var, var) == 0)
             return (tmp);
@@ -237,5 +243,5 @@ env_t *fetch_node(env_t *head, char *var)
             tmp = tmp->next;
     }
 
-    return (head);
+    return (NULL);
 }

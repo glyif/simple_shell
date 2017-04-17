@@ -2,7 +2,7 @@
 
 /**
  * _env - writes env to stdout
- * @arginv - arguments inventory
+ * @arginv: arguments inventory
  *
  * Return: 0 on success
  */
@@ -12,12 +12,12 @@ int _env(arg_inventory_t *arginv)
 
 	print_list(envlist);
 
-	return(EXT_SUCCESS);
+	return (EXT_SUCCESS);
 }
 
 /**
  * _history - writes history to stdout
- * @arginv - arguments inventory
+ * @arginv: arguments inventory
  *
  * Return: 0 on success
  */
@@ -27,12 +27,12 @@ int _history(arg_inventory_t *arginv)
 
 	write_history(historylist);
 
-	return(EXT_SUCCESS);
+	return (EXT_SUCCESS);
 }
 
 /**
  * _setenv - sets new environmental variable
- * @arginv - arguments inventory
+ * @arginv: arguments inventory
  *
  * Return: 0 on success
  */
@@ -41,7 +41,7 @@ int _setenv(arg_inventory_t *arginv)
 	char **commands, *new_var, *new_val;
 	env_t *envlist = arginv->envlist;
 
-	commands = (char**)arginv->commands;
+	commands = (char **)arginv->commands;
 
 	if (commands[1] == NULL || commands[2] == NULL)
 	{
@@ -63,12 +63,12 @@ int _setenv(arg_inventory_t *arginv)
 		add_node_env(&envlist, new_var, new_val);
 	}
 
-	return(EXT_SUCCESS);
+	return (EXT_SUCCESS);
 }
 
 /**
  * _unsetenv - sets new environmental variable
- * @arginv - arguments inventory
+ * @arginv: arguments inventory
  *
  * Return: 0 on success
  */
@@ -77,7 +77,7 @@ int _unsetenv(arg_inventory_t *arginv)
 	char **commands;
 	env_t *envlist = arginv->envlist;
 
-	commands = (char**)arginv->commands;
+	commands = (char **)arginv->commands;
 
 	if (commands[1] == NULL)
 	{
@@ -94,12 +94,12 @@ int _unsetenv(arg_inventory_t *arginv)
 	if (remove_node_env(&envlist, commands[1]))
 		return (EXT_FAILURE);
 
-	return(EXT_SUCCESS);
+	return (EXT_SUCCESS);
 }
 
 /**
  * _monalisa - prints mona lisa ascii art
- * @arginv - arguments inventory
+ * @arginv: arguments inventory
  *
  * Return: 0 on success
  */
@@ -113,8 +113,8 @@ int _monalisa(arg_inventory_t *arginv)
 }
 
 /**
- * _help - prints mona lisa ascii art
- * @arginv - arguments inventory
+ * the_help - prints mona lisa ascii art
+ * @arginv: arguments inventory
  *
  * Return: 0 on success
  */
@@ -131,7 +131,7 @@ int the_help(arg_inventory_t *arginv)
 	};
 
 
-	commands = (char**)arginv->commands;
+	commands = (char **)arginv->commands;
 	if (commands[2] != NULL)
 	{
 		perror("help: too many input commands.");

@@ -11,7 +11,6 @@ char *yellow_brick_road(char **commands, env_t *envlist)
 {
 	env_t *fetched_home;
 	env_t *fetched_old;
-	int tilda;
 	int hyphen;
 	char *path;
 
@@ -22,11 +21,10 @@ char *yellow_brick_road(char **commands, env_t *envlist)
 
 	if (commands[1] != NULL)
 	{
-		tilda = _strcmp(commands[1], "~");
-		hyphen = _strcmp(commands[1], "-");
+		hyphen = _strncmp(commands[1], "-", 1);
 	}
 
-	if (tilda == 0 || commands[1] == NULL)
+	if (commands[1] == NULL)
 	{
 		path = _strcpy(path, fetched_home->val);
 	}
