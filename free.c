@@ -11,9 +11,11 @@ int freeall(arg_inventory_t *arginv)
 
 	file_history(arginv);
 
-   	free_history(arginv->history);
+	free_history(arginv->history);
 
 	free_environ(arginv->envlist);
+
+	save_alias(arginv);
 
 	free_alias(arginv->alias);
 

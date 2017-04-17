@@ -42,6 +42,7 @@ extern char **environ;
 ssize_t _getline(char **buffer, size_t *limit);
 arg_inventory_t *buildarginv(void);
 int _filemode(int fd);
+ssize_t _readline(int fd,char **buffer, size_t *limit);
 
 /* ---------------execute--------------- */
 pid_t execute(arg_inventory_t *arginv);
@@ -73,6 +74,9 @@ int _cd(arg_inventory_t *arginv);
 int _alias(arg_inventory_t *arginv);
 int _unalias(arg_inventory_t *arginv);
 int the_help(arg_inventory_t *arginv);
+int load_alias(arg_inventory_t *arginv);
+int save_alias(arg_inventory_t *arginv);
+
 
 /* ---------------strings--------------- */
 char *_strncpy(char *dest, char *src, int n);
@@ -107,6 +111,9 @@ history_t *init_history(history_t *head, char *buffer);
 int write_alias(alias_t *head);
 alias_t *alias_list(void);
 alias_t *add_node_alias(alias_t **head, char *alias, char *command);
+int modify_node_alias(alias_t **head, char *new_var, char *new_val);
+int remove_node_alias(alias_t **head, char *var);
+alias_t *fetch_node_alias(alias_t *head, char *var);
 
 /* ---------------cd--------------- */
 char *yellow_brick_road(char **commands, env_t *envlist);
@@ -122,11 +129,15 @@ int _putchar(char c);
 /* ---------------file I/O--------------- */
 ssize_t read_textfile(char *filename, size_t letters);
 int trunc_text_to_file(char *filename, char *text_content);
+int append_text_to_file(char *filename, char *text_content);
 
 /* ---------------path--------------- */
 int locate_path(char *path, env_t *envlist);
 int cat_path(char **search_path, char *cmd);
 int is_path(char *command);
+int count_paths(char *path_str);
+char **tokenize_path(char *path_str);
+void free_paths(char **paths);
 
 /* ---------------ptree--------------- */
 ptree_t *ptree_new_node(ptree_t *parent);
@@ -140,6 +151,7 @@ ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int mi
 int parse(parser_t *parser, tokens_t *tokens);
 int delete_parser(parser_t *parser);
 void expand_bash_vars(arg_inventory_t *arginv);
+void expand_alias(arg_inventory_t *arginv);
 
 /* ---------------worker--------------- */
 unsigned int init_pipeline_count_processes(ptree_t *tree);

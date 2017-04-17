@@ -15,6 +15,8 @@ arg_inventory_t *buildarginv(void)
 	arginv->alias = alias_list();
 	arginv->buflimit = BUFSIZE;
 	arginv->st_mode = _filemode(STDIN_FILENO);
+	arginv->last_exit_code = 0;
+	arginv->last_bg_pid = -1;
 	arginv->exit = 0;
 	arginv->n_bg_jobs=0;
 
@@ -23,6 +25,8 @@ arg_inventory_t *buildarginv(void)
 		perror("No Memory");
 		write(STDOUT_FILENO, "insufficient memory", 19);
 	}
+
+	load_alias(arginv);
 
 	return (arginv);
 }

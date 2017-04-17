@@ -9,6 +9,29 @@
  */
 ssize_t _getline(char **buffer, size_t *limit)
 {
+	ssize_t count;
+
+	count = _readline(STDIN_FILENO, buffer, limit);
+
+	if (count == 0)
+	{
+		free(*buffer);
+		exit(EXT_SUCCESS);
+	}
+
+	return (count);
+}
+
+/**
+ * _readline - custom getline currently reads 1 char at a time from a file descriptor
+ * @fd: file descriptor of the file to use for reading
+ * @buffer: address of pointer to input commands buffer
+ * @limit: maxsize of input character string, realloc if necessary
+ *
+ * Return: number of characters written
+ */
+ssize_t _readline(int fd, char **buffer, size_t *limit)
+{
 	unsigned int i, j;
 	size_t charcount, iterations;
 
@@ -19,25 +42,21 @@ ssize_t _getline(char **buffer, size_t *limit)
 
 	while (i != 0)
 	{
-		i = read(STDIN_FILENO, (*buffer + j), 1);
+		i = read(fd, (*buffer + j), 1);
+
+		if (i <= 0)
+			break;
+
+		charcount++;
 
 		if ((*buffer + j++)[0] == '\n')
-		{
-			charcount++;
 			break;
-		}
 
-		if (charcount++ % *limit == 0)
+		if (charcount % *limit == 0)
 		{
 			iterations++;
 			*buffer = _realloc(*buffer, charcount, (*limit * iterations));
 		}
-	}
-
-	if (i == 0)
-	{
-		free(*buffer);
-		exit(EXT_SUCCESS);
 	}
 
 	return ((ssize_t)charcount);

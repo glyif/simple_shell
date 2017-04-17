@@ -11,8 +11,8 @@ unsigned int init_pipeline_count_processes(ptree_t *tree)
 	if (!tree)
 		return (0);
 
-	if (is_redirection(tree->token_id)) 
-	    return (1);
+	if (is_redirection(tree->token_id))
+		return (1);
 
 	if (tree->token_id == TOKEN_STRING)
 		return (1);
@@ -39,27 +39,27 @@ int init_pipeline_push_processes(pipeline_t *pipeline, ptree_t *tree)
 		pipeline->processes[pipeline->processesN].ptree = tree;
 		pipeline->processes[pipeline->processesN].io_redir = tree->token_id;
 
-        filename = safe_malloc(strlen(tree->right->strings[0])+1);
+		filename = safe_malloc(strlen(tree->right->strings[0]) + 1);
 
 		/* copy filename from right child */
-        _strcpy(filename, (char*)tree->right->strings[0]);
+		_strcpy(filename, (char *)tree->right->strings[0]);
 		pipeline->processes[pipeline->processesN].filename = filename;
 		pipeline->processesN++;
 
 		tree->token_id = TOKEN_STRING;
 		tree->strings = tree->left->strings;
 		tree->stringsN = tree->left->stringsN;
-        tree->left->strings = NULL;
-        tree->left->stringsN = 0;
-		
+		tree->left->strings = NULL;
+		tree->left->stringsN = 0;
+
 		/* clean up */
 		delete_ptree(tree->left);
 		delete_ptree(tree->right);
 		tree->left = NULL;
-		tree->right = NULL; 
+		tree->right = NULL;
 
 		return (0);
-    }
+	}
 
 	if (tree->token_id == TOKEN_STRING)
 	{
@@ -82,15 +82,6 @@ int init_pipeline_push_processes(pipeline_t *pipeline, ptree_t *tree)
 		init_pipeline_push_processes(pipeline, tree->right);
 		return (0);
 	}
-	
-	/*
-	if (tree->token_id == TOKEN_BACKGROUND)
-	{
-		/ * there is a background task so adjust * /
-		pipeline->background = 1;
-		return (0);
-	}
-	*/
 
 	return (0);
 }
