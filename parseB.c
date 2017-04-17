@@ -1,6 +1,54 @@
 #include "header.h"
 
 /**
+ * bash_replace - replaces env vars
+ * @arginv: arg inventory
+ * @index: index of token_t struct array
+ */
+void bash_replace(arg_inventory_t *arginv, int index)
+{
+	unsigned int j;
+	env_t *node;
+	tokens_t t = arginv->tokens;
+
+	for (j = 0; j < _strlen(t.tokens[index].str); j++)
+		if (t.tokens[index].str[j] == '$' && t.tokens[index].str[j + 1] != '\0')
+			switch (t.tokens[index].str[j + 1])
+			{
+				case '$':
+					replace_str((char **)&t.tokens[index].str,
+						int_to_str(getpid()), j, j + 1, 1);
+					break;
+				case '?':
+					replace_str((char **)&t.tokens[index].str,
+						int_to_str(arginv->last_exit_code), j,
+						j + 1, 1);
+					break;
+				case '!':
+						replace_str((char **)&t.tokens[index].str,
+						(arginv->last_bg_pid == -1) ? "" :
+						int_to_str(arginv->last_bg_pid), j,
+						j + 1, 1);
+					break;
+				case '0':
+					replace_str((char **)&t.tokens[index].str, "hsh", j,
+						j + 1, 0);
+						break;
+				default:
+					node = fetch_node(arginv->envlist,
+							(char *)&t.tokens[index].str[j + 1]);
+					replace_str((char **)&t.tokens[index].str,
+							(node == NULL) ? "" : node->val, j,
+							_strlen(t.tokens[index].str) - 1, 0);
+					}
+				else if (t.tokens[index].str[j] == '~' && j == 0)
+				{
+					node = fetch_node(arginv->envlist, "HOME");
+					replace_str((char **)&t.tokens[index].str, node->val, j, j, 0);
+				}
+}
+
+/**
  * expand_bash_vars - expand all variables found in the arginv strings
  *
  * @arginv: args inventory
@@ -8,49 +56,12 @@
  */
 void expand_bash_vars(arg_inventory_t *arginv)
 {
-	unsigned int i, j;
-	env_t *node;
+	unsigned int i;
 	tokens_t t = arginv->tokens;
 
 	for (i = 0; i < t.tokensN; i++)
 		if (t.tokens[i].id == TOKEN_STRING)
-		{
-			for (j = 0; j < _strlen(t.tokens[i].str); j++)
-				if (t.tokens[i].str[j] == '$')
-					switch (t.tokens[i].str[j + 1])
-					{
-						case '$':
-							replace_str((char **)&t.tokens[i].str,
-										int_to_str(getpid()), j, j + 1, 1);
-							break;
-						case '?':
-							replace_str((char **)&t.tokens[i].str,
-										int_to_str(arginv->last_exit_code), j,
-										j + 1, 1);
-							break;
-						case '!':
-							replace_str((char **)&t.tokens[i].str,
-										(arginv->last_bg_pid == -1) ? "" :
-										int_to_str(arginv->last_bg_pid), j,
-										j + 1, 1);
-							break;
-						case '0':
-							replace_str((char **)&t.tokens[i].str, "hsh", j,
-										j + 1, 0);
-							break;
-						default:
-							node = fetch_node(arginv->envlist,
-											  (char *)&t.tokens[i].str[j + 1]);
-							replace_str((char **)&t.tokens[i].str,
-										(node == NULL) ? "" : node->val, j,
-										_strlen(t.tokens[i].str) - 1, 0);
-					}
-				else if (t.tokens[i].str[j] == '~' && j == 0)
-				{
-					node = fetch_node(arginv->envlist, "HOME");
-					replace_str((char **)&t.tokens[i].str, node->val, j, j, 0);
-				}
-		}
+			bash_replace(arginv, i);
 }
 
 /**
