@@ -26,14 +26,16 @@ int parse_error(const char *error, token_t *near)
  *
  * Return: pointer to built tree
  */
-ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int min_prec)
+ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs,
+					int min_prec)
 {
 	int lookahead, op;
 	ptree_t *rhs, *new;
 
 	lookahead = *ntoken;
 
-	while (*ntoken < tokens->tokensN && tokens->tokens[lookahead].prec >= min_prec)
+	while (*ntoken < tokens->tokensN && tokens->tokens[lookahead].prec >=
+		   min_prec)
 	{
 		op = *ntoken;
 		*ntoken = *ntoken + 1;
@@ -42,9 +44,11 @@ ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int mi
 
 		if (rhs == NULL)
 		{
-			if (*ntoken < tokens->tokensN || tokens->tokens[op].id != TOKEN_BACKGROUND)
+			if (*ntoken < tokens->tokensN || tokens->tokens[op].id !=
+				TOKEN_BACKGROUND)
 			{
-				parse_error("Line starts with operator, expected command", &tokens->tokens[*ntoken]);
+				parse_error("Line starts with operator, expected command",
+							&tokens->tokens[*ntoken]);
 				return (NULL);
 			}
 		}
@@ -52,9 +56,12 @@ ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int mi
 		{
 			lookahead = *ntoken;
 
-			while (*ntoken < tokens->tokensN && tokens->tokens[lookahead].id != TOKEN_STRING && tokens->tokens[lookahead].prec > tokens->tokens[op].prec)
+			while (*ntoken < tokens->tokensN && tokens->tokens[lookahead].id !=
+				   TOKEN_STRING && tokens->tokens[lookahead].prec >
+				   tokens->tokens[op].prec)
 			{
-				rhs = parse_expr(ntoken, tokens, rhs, tokens->tokens[lookahead].prec);
+				rhs = parse_expr(ntoken, tokens, rhs,
+								 tokens->tokens[lookahead].prec);
 
 				if (rhs == NULL)
 					return (NULL);
@@ -93,7 +100,8 @@ int parse(parser_t *parser, tokens_t *tokens)
 	ptree = ptree_new_string_node(NULL, tokens, &cur_token);
 
 	if (!ptree)
-		return (parse_error("Line starts with operator, expected command", tokens->tokens + 0));
+		return (parse_error("Line starts with operator, expected command",
+							tokens->tokens + 0));
 
 	parser->tree = ptree;
 

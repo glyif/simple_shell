@@ -32,7 +32,8 @@ int exec_builtins(arg_inventory_t *arginv)
 		}
 	}
 
-	if (arginv->io_redir == TOKEN_REWRITE || arginv->io_redir == TOKEN_APPEND || arginv->pipeout)
+	if (arginv->io_redir == TOKEN_REWRITE || arginv->io_redir ==
+		TOKEN_APPEND || arginv->pipeout)
 	{
 		/* revert back to old_stdout */
 		safe_dup2(old_stdout, STDOUT_FILENO);

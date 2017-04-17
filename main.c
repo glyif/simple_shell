@@ -18,7 +18,7 @@ arg_inventory_t *buildarginv(void)
 	arginv->last_exit_code = 0;
 	arginv->last_bg_pid = -1;
 	arginv->exit = 0;
-	arginv->n_bg_jobs=0;
+	arginv->n_bg_jobs = 0;
 
 	if (arginv->envlist == NULL)
 	{
@@ -58,7 +58,7 @@ int main(void)
 
 		tokenize(&arginv->tokens, arginv->input_commands);
 
-		if(arginv->tokens.tokensN > 0)
+		if (arginv->tokens.tokensN > 0)
 		{
 			expand_bash_vars(arginv);
 

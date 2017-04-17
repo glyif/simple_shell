@@ -16,7 +16,7 @@ void safe_dup2(int new_fd, int old_fd)
 }
 
 /**
- * redirect_output - redirect stdout depending on the pipeline and the redirection token
+ * redirect_output - redirect stdout depending on the pipeline & redirect token
  * @arginv: arguments inventory
  * @close_dup: if 1 closes duplicated fd
  *
@@ -33,18 +33,17 @@ int redirect_output(arg_inventory_t *arginv, int close_dup)
 		/* it's a > */
 		if (arginv->io_redir == TOKEN_REWRITE)
 			/* create file for write, create and truncate */
-			stdout_fd = open(arginv->filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+			stdout_fd = open(arginv->filename, O_WRONLY | O_CREAT | O_TRUNC,
+							 0666);
 		/* it's a >> */
 		else
 			/** create file for create and append, does not truncate */
-			stdout_fd = open(arginv->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
-
+			stdout_fd = open(arginv->filename, O_WRONLY | O_CREAT | O_APPEND,
+							 0666);
 	    /* save current stdout */
 	    old_stdout = dup(STDOUT_FILENO);
-
 	    /* redirect stdout */
 	    safe_dup2(stdout_fd, STDOUT_FILENO);
-
 		if (close_dup)
 		{
 			close(stdout_fd);
@@ -52,7 +51,6 @@ int redirect_output(arg_inventory_t *arginv, int close_dup)
 				close(arginv->pipeout);
 		}
 	}
-
 	else if (arginv->pipeout)
 	{
 		/* save current stdout */
@@ -61,12 +59,11 @@ int redirect_output(arg_inventory_t *arginv, int close_dup)
 		/* redirect stdout */
 		safe_dup2(arginv->pipeout, STDOUT_FILENO);
 	}
-
 	return (old_stdout);
 }
 
 /**
- * redirect_input - redirect stdin depending on the pipeline and the redirection token
+ * redirect_input - redirect stdin depending on the pipeline & redirect token
  * @arginv: arguments inventory
  *
  */

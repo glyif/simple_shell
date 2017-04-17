@@ -33,8 +33,8 @@ env_t *env_list(void)
 	int i;
 	env_t *head;
 	char **variable;
-	head = NULL;
 
+	head = NULL;
 	for (i = 0; environ[i] != NULL; i++)
 	{
 		variable = separate_string(environ[i]);
