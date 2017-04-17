@@ -14,7 +14,6 @@ char _isspace(char c)
 	{
 	case ' ': case '\t': case '\n':
 	case '\v': case '\f': case '\r':
-	case ':':
 		i = 1;
 		break;
 	default:

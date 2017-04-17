@@ -123,70 +123,102 @@ int delete_parser(parser_t *parser)
 }
 
 /**
+ * replace_str - replace part of string by another
+ *
+ * @old_str: string that will be modified
+ * @new_str: string to be used as replacement
+ * @i: starting position to replace in old_str
+ * @j: ending position to replace in old_str
+ * @flg: indicates if new_str should be freed
+ *
+ */
+void replace_str(char **old_str, char *new_str, int i, int j, int flg)
+{
+	*old_str = _str_replace(*old_str, i, j, new_str);
+	if (flg)
+	{
+		if (new_str[0])
+			free(new_str);
+	}
+}
+
+/**
  * expand_bash_vars - expand all variables found in the arginv strings
- * 
+ *
  * @arginv: args inventory
- * 
- */ 
+ *
+ */
 void expand_bash_vars(arg_inventory_t *arginv)
 {
-    unsigned int i, j;
-	char *new_string, *str;
+	unsigned int i, j;
 	env_t *node;
-    tokens_t *tokens = &arginv->tokens;
 
-    for (i = 0; i < tokens->tokensN; i++)
-	{
-        if (tokens->tokens[i].id==TOKEN_STRING)
+	for (i = 0; i < arginv->tokens.tokensN; i++)
+		if (arginv->tokens.tokens[i].id == TOKEN_STRING)
 		{
-            for (j = 0; j < _strlen(tokens->tokens[i].str); j++)
-			{
-                if (tokens->tokens[i].str[j] == '$')
+			for (j = 0; j < _strlen(arginv->tokens.tokens[i].str); j++)
+				if (arginv->tokens.tokens[i].str[j] == '$')
+					switch (arginv->tokens.tokens[i].str[j + 1])
+					{
+						case '$':
+							replace_str((char **)&arginv->tokens.tokens[i].str, int_to_str(getpid()), j, j + 1, 1);
+							break;
+						case '?':
+							replace_str((char **)&arginv->tokens.tokens[i].str, int_to_str(arginv->last_exit_code), j, j + 1, 1);
+							break;
+						case '!':
+							replace_str((char **)&arginv->tokens.tokens[i].str, (arginv->last_bg_pid == -1) ? "" : int_to_str(arginv->last_bg_pid), j, j + 1, 1);
+							break;
+						case '0':
+							replace_str((char **)&arginv->tokens.tokens[i].str, "hsh", j, j + 1, 0);
+							break;
+						default:
+							node = fetch_node(arginv->envlist, (char *)&arginv->tokens.tokens[i].str[j + 1]);
+							replace_str((char **)&arginv->tokens.tokens[i].str, (node == NULL) ? "" : node->val, j, _strlen(arginv->tokens.tokens[i].str) - 1, 0);
+					}
+				else if (arginv->tokens.tokens[i].str[j] == '~' && j == 0)
 				{
-                    if (tokens->tokens[i].str[j + 1] == '$')
-					{
-						str = int_to_str(getpid());
-						new_string = _str_replace((char*)tokens->tokens[i].str, j, j + 1, str);
-                        free(str);
-                        tokens->tokens[i].str = new_string;
-                    }
-                    else if (tokens->tokens[i].str[j + 1] == '?')
-					{
-                        str = int_to_str(arginv->last_exit_code);
-                        new_string = _str_replace((char*)tokens->tokens[i].str,j , j + 1, str);
-                        free(str);
-                        tokens->tokens[i].str = new_string;
-                    }
-                    else if (tokens->tokens[i].str[j + 1] == '!')
-					{
-                        if (arginv->last_bg_pid == -1)
-                            new_string=_str_replace((char*)tokens->tokens[i].str, j, j + 1, "");
-                        else
-						{
-                            str = int_to_str(arginv->last_bg_pid);
-                            new_string = _str_replace((char*)tokens->tokens[i].str, j, j + 1, str);
-                            free(str);
-                        }
-                        tokens->tokens[i].str = new_string;
-                    }
-                    else if (tokens->tokens[i].str[j + 1] == '0')
-					{
-                        new_string = _str_replace((char*)tokens->tokens[i].str, j, j + 1, "hsh");
-                        tokens->tokens[i].str = new_string;
-                    }
-                    else
-					{
-                        node = fetch_node(arginv->envlist, (char*)&tokens->tokens[i].str[j + 1]);
-                        
-                        if (node == NULL)
-                            new_string = _str_replace((char*)tokens->tokens[i].str, j, _strlen(tokens->tokens[i].str) - 1, "");
-                        else
-                            new_string= _str_replace((char*)tokens->tokens[i].str, j, _strlen(tokens->tokens[i].str) - 1, node->val);
+					node = fetch_node(arginv->envlist, "HOME");
+					replace_str((char **)&arginv->tokens.tokens[i].str, node->val, j, j, 0);
+				}
+		}
+}
 
-                        tokens->tokens[i].str=new_string;                           
-                    }                        
-                }
-			}
-        }        
-    }
+/**
+ * expand_alias - expand the alias found in the command strings
+ *
+ * @arginv: args inventory
+ *
+ */
+void expand_alias(arg_inventory_t *arginv)
+{
+	alias_t *node;
+	tokens_t cmd_tokens;
+	unsigned int i;
+	char **commands;
+	unsigned int count = 0;
+
+	node = fetch_node_alias(arginv->alias, (char *)arginv->commands[0]);
+
+	if (node != NULL)
+	{
+		tokenize(&cmd_tokens, node->command);
+		count = 0;
+		while (arginv->commands[count] != NULL)
+		{
+			count++;
+		}
+		commands = safe_malloc((count + cmd_tokens.tokensN) * sizeof(char *));
+		for (i = count - 1; i >= 1; i--)
+		{
+			commands[i + cmd_tokens.tokensN - 1] = (char *)_strdup((char *)arginv->commands[i]);
+		}
+
+		for (i = 0; i < cmd_tokens.tokensN; i++)
+		{
+			commands[i] = _strdup((char *)cmd_tokens.tokens[i].str);
+		}
+		arginv->commands = (const char **)commands;
+		delete_tokens(&cmd_tokens);
+	}
 }
