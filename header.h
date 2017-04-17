@@ -48,6 +48,9 @@ ssize_t _readline(int fd,char **buffer, size_t *limit);
 pid_t execute(arg_inventory_t *arginv);
 int exec_builtins(arg_inventory_t *arginv);
 pid_t exec_path(char *command, arg_inventory_t *arginv);
+void safe_dup2(int new_fd, int old_fd);
+int redirect_output(arg_inventory_t *arginv, int close_dup);
+void redirect_input(arg_inventory_t *arginv);
 
 /* ---------------tokenizer--------------- */
 int delete_tokens(tokens_t *tokens);
@@ -55,6 +58,7 @@ int tokenize(tokens_t *tokens, const char *string);
 int dump_token(tokens_t *tokens);
 const char *dump_get_token_descr(int token_id);
 int is_redirection(int token_id);
+void init_tokens(tokens_t *tokens, int length);
 
 /* -------custom environ------- */
 env_t *env_list(void);
@@ -89,8 +93,8 @@ int _strncmp(char *s1, char *s2, unsigned int n);
 int _unsetenv(arg_inventory_t *arginv);
 char *_strcat(char *dest, char *src);
 char *int_to_str(unsigned int n);
+void replace_str(char **old_str, char *new_str, int i, int j, int flg);
 char *_str_replace(char *string, unsigned int start, unsigned int end, char *rep);
-
 
 /* -----custom C std lib----- */
 char _isspace(char c);

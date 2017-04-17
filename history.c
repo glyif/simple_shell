@@ -1,7 +1,8 @@
 #include "header.h"
 
 /**
- * history_list - initializes linked list
+ * history_list - initializes linked list of history from history file in $HOME
+ * @arginv: arguments inventory
  *
  * Return: head (pointer to first node of linked list of environ variables)
  */
@@ -40,6 +41,13 @@ history_t *history_list(arg_inventory_t *arginv)
 	return (head);
 }
 
+/**
+ * init_history - initializes history using history file converted to buffer
+ * @head: head of linked list of history commands
+ * @buffer: old history backup converted to string
+ *
+ * Return: head (pointer to first node of linked list of environ variables)
+ */
 history_t *init_history(history_t *head, char *buffer)
 {
 	int marker, sublen, j, i = 0;
@@ -68,7 +76,7 @@ history_t *init_history(history_t *head, char *buffer)
 
 /**
  * add_node_history - adds new node to end of linked list of input history
- * @arginv: head of history linked list
+ * @head: head of history linked list
  * @command: new command
  *
  * Return: pointer to new node
@@ -108,7 +116,7 @@ history_t *add_node_history(history_t **head, char *command)
 }
 
 /**
- * file_history - converts history to string to file
+ * file_history - converts history to string to file in history file
  * @arginv: arguments inventory
  *
  * Return: 0 success, 1 failure
@@ -138,8 +146,8 @@ int file_history(arg_inventory_t *arginv)
 }
 
 /**
- * history_to_string - converts history to string
- * @history: linked list of history
+ * history_to_string - converts history linked list to string
+ * @head: head of linked list of history
  *
  * Return: linked list converted to string
  */

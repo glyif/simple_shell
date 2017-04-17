@@ -61,7 +61,7 @@ our blog posting here:
 
 ### C language files (`.c`)
 
-* `alias.c`
+* `aliasA.c` and `aliasB.c`
 
   #### All alias functions
 
@@ -75,13 +75,10 @@ our blog posting here:
 
   	adds new node (struct from linked list) to alias list
 
-* `builtin_funcs.c`
+* `builtinA.c` and `builtinB.c`
 
   #### Functions to execute builtins
 
-  * `int _monalisa(arg_inventory_t *arginv)`
-
-  	easter egg
   * `int _env(arg_inventory_t *arginv)`
 
   	prints custom environment
@@ -114,7 +111,7 @@ our blog posting here:
   * `char *yellow_brick_road(char **commands, env_t *envlist)`
   * `env_t *fetch_node(env_t *head, char *var)`
 
-* `execfuncs.c`
+* `executeA.c` and `executeB.c`
 
   #### functions to execute input commands
 
@@ -122,6 +119,35 @@ our blog posting here:
   * `pid_t execute(arg_inventory_t *arginv)`
   * `int exec_builtins(arg_inventory_t *arginv)`
   * `pid_t exec_path(char *command, arg_inventory_t *arginv)`
+  * `void safe_dup2(int new_fd, int old_fd)`
+  * `int redirect_output(arg_inventory_t *arginv, int close_dup)`
+  * `void redirect_input(arg_inventory_t *arginv)`
+
+* `environA.c` and `environB.c`
+
+  #### custom environmental variables list, add variables, and change variables
+
+  * `env_t *env_list(void)`
+
+  	initializes custom enviromental variable list
+  * `char **separate_string(char *string)`
+
+  	separates a string at the first '=' sign into 2 strings of a `char **` type
+  * `unsigned int link_count(env_t *head)`
+
+  	counts number of nodes in environ
+  * `char **zelda_to_ganondorf(env_t *head)`
+
+  	converts linked list into `char **` type
+  * `env_t *add_node_env(env_t **head, char *var, char *val)`
+
+  	adds new node (struct of linked list) to custom environmental variable list
+  * `int modify_node_env(env_t **head, char *new_var, char *new_val)`
+
+  	modifies a node from custom environmental variable list (environ)
+  * `int remove_node_env(env_t **head, char *var)`
+
+  removes a node from env list
 
 * `file_io.c`
 
@@ -162,7 +188,7 @@ our blog posting here:
 
   	checks the st_mode that the shell is being executed from either from terminal or pipe
 
-* `help.c`
+* `helpA.c` and `helpB.c`
 
   #### functions to print help information on each function
   These functions write the help builtins help text to stdout.  Each function is named after the help text that it writes.
@@ -198,32 +224,6 @@ our blog posting here:
 
   	used in the initialization function, this function copies old history into current history linked list
 
-* `linked_helper.c`
-
-  #### custom environmental variables list, add variables, and change variables
-
-  * `env_t *env_list(void)`
-
-  	initializes custom enviromental variable list
-  * `char **separate_string(char *string)`
-
-  	separates a string at the first '=' sign into 2 strings of a `char **` type
-  * `unsigned int link_count(env_t *head)`
-
-  	counts number of nodes in environ
-  * `char **zelda_to_ganondorf(env_t *head)`
-
-  	converts linked list into `char **` type
-  * `env_t *add_node_env(env_t **head, char *var, char *val)`
-
-  	adds new node (struct of linked list) to custom environmental variable list
-  * `int modify_node_env(env_t **head, char *new_var, char *new_val)`
-
-  	modifies a node from custom environmental variable list (environ)
-  * `int remove_node_env(env_t **head, char *var)`
-
-  removes a node from env list
-
 * `main.c`
 
   #### main function and arguments inventory function
@@ -249,7 +249,7 @@ our blog posting here:
 
   	reallocates new memory, used for buffer for large inputs
 
-* `parse.c`
+* `parseA.c` and `parseB.c
 
   #### functions working with parser:
 
@@ -293,7 +293,7 @@ our blog posting here:
 
   replicates standard library
 
-* `strings.c`
+* `stringsA.c`, `stringsB.c` and `stringsC.c`
 
   #### functions contianed in this file:
 
@@ -309,8 +309,9 @@ our blog posting here:
   * `char *_strcat(char *dest, char *src)`
   * `char *int_to_str(unsigned int n)`
   * `char *_str_replace(char *string, unsigned int start, unsigned int end, char *rep)`
+  * `void replace_str(char **old_str, char *new_str, int i, int j, int flg)`
 
-* `tokenizer.c`
+* `tokenize.c` and `tokenizer.c`
 
   #### functions contianed in this file:
 
@@ -319,12 +320,13 @@ our blog posting here:
   * `int dump_token(tokens_t *tokens)`
   * `const char *dump_get_token_descr(int token_id)`
   * `int is_redirection(int token_id)`
+  * `void init_tokens(tokens_t *tokens, int length)`
 
 * `worker.c`
 
   #### functions contianed in this file:
 
-*  `int worker_execute_core(arg_inventory_t *arginv)`
+* `int worker_execute_core(arg_inventory_t *arginv)`
 * `int worker_execute(arg_inventory_t *arginv)`
 
 * `write.c`
@@ -358,3 +360,5 @@ David John Coleman II - http://www.davidjohncoleman.com/
 ## License
 
 Public Domain, no copyright protection
+
+_special thanks to monalisa_

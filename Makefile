@@ -4,26 +4,35 @@ LIBS=
 EXENAME=hsh
 
 CFILES=\
-	strings.c\
-	getline.c\
-	memmalloc.c\
-	linked_helper.c\
-	execfuncs.c\
-	tokenizer.c\
-	builtin_funcs.c\
+	aliasA.c\
+	aliasB.c\
+	builtinA.c\
+	builtinB.c\
+	cd.c\
+	environA.c\
+	environB.c\
+	executeA.c\
+	executeB.c\
 	file_io.c\
-	stdlib_funcs.c\
-	path.c\
-	ptree.c\
-	parse.c\
-	history.c\
-	worker.c\
-	pipeline.c\
-	write.c\
 	free.c\
-	alias.c\
-	help.c\
-	cd.c
+	getline.c\
+	helpA.c\
+	helpB.c\
+	history.c\
+	memmalloc.c\
+	parseA.c\
+	parseB.c\
+	path.c\
+	pipeline.c\
+	ptree.c\
+	stdlib_funcs.c\
+	stringsA.c\
+	stringsB.c\
+	stringsC.c\
+	tokenize.c\
+	tokenizer.c\
+	worker.c\
+	write.c
 
 GLOBAL_HEADERS=\
 	header.h
