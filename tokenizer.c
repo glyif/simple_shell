@@ -12,12 +12,6 @@ void init_tokens(tokens_t *tokens, int length)
 	tokens->data = safe_malloc((length * 2 + 1) * sizeof(char));
 	tokens->tokens = safe_malloc(length * sizeof(token_t));
 
-	if (!tokens->data || !tokens->tokens)
-	{
-		perror("Unable to allocate memory for tokens");
-		exit(1); /* This is a critical error */
-	}
-
 	/* Initialize the rest of the structure */
 	tokens->tokensN = 0;
 }
