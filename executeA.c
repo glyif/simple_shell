@@ -90,10 +90,10 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 
 		redirect_output(arginv, 1);
 		if (redirect_input(arginv))
-			exec_error_exit("No such file or directory", command, _environ, arginv);
+			exec_error_exit("No such file or directory\n", command, _environ, arginv);
 
 		if (execve(command, (char **)arginv->commands, _environ) < 0)
-			exec_error_exit("No Command", command, _environ, arginv);
+			exec_error_exit("No Command\n", command, _environ, arginv);
 	}
 	free(command);
 	return (pid);

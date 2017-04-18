@@ -8,17 +8,26 @@
  */
 int save_alias(arg_inventory_t *arginv)
 {
-	char *file = ".simple_shell_alias";
-	char *buffer;
 	alias_t *tmp = arginv->alias;
-	int fd;
+	char *name = "/.simple_shell_alias";
+	char *file, *home, *buffer;
+	env_t *home_node;
+	int lenhome, fd, lenname = _strlen(name);
+	
+	home_node = fetch_node(arginv->envlist, "HOME");
+	home = home_node->val;
+	lenhome = _strlen(home);
+
+	file = safe_malloc(sizeof(char) * (_strlen(home) + lenname + 1));
+	file = _strncat(file, home, lenhome);
+	file = _strncat(file, name, lenname);
 
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	close(fd);
 
 	while (tmp)
 	{
-		buffer = (char *)safe_malloc(_strlen(tmp->alias) + _strlen(tmp->alias)
+		buffer = (char *)safe_malloc(_strlen(tmp->alias) + _strlen(tmp->command)
 									 + 4);
 		_strcpy(buffer, tmp->alias);
 		_strcat(buffer, ":");
@@ -26,8 +35,10 @@ int save_alias(arg_inventory_t *arginv)
 		_strcat(buffer, "\n");
 		append_text_to_file(file, buffer);
 		tmp = tmp->next;
+		free(buffer);
 	}
 
+	free(file);
 	return (0);
 }
 
