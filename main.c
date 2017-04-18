@@ -31,6 +31,10 @@ arg_inventory_t *buildarginv(void)
 	return (arginv);
 }
 
+/**
+ * sig_handler - handles user input of ^C with the following
+ * Return: void
+ */
 void sig_handler(int sig)
 {
 	(void) sig;
@@ -47,7 +51,6 @@ int main(void)
 	arg_inventory_t *arginv;
 
 	arginv = buildarginv();
-	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, sig_handler);
 	while (!arginv->exit)
 	{

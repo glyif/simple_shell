@@ -168,9 +168,9 @@ typedef struct arg_inventory
 	/* 0 for no redirection, 3 for >, 4 >>, 5 < */
 	int io_redir;
     char *filename;
-	
+
 	int last_exit_code;
-	pid_t last_bg_pid;	
+	pid_t last_bg_pid;
 
 	int exit;
 

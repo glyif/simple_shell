@@ -26,11 +26,11 @@ history_t *history_list(arg_inventory_t *arginv)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (head);
-	buffer = malloc(sizeof(char) * 1024);
+	buffer = malloc(sizeof(char) * (BUFSIZE * 20));
 	if (buffer == NULL)
 		return (head);
 
-	if (read(fd, buffer, 1023) <= 0)
+	if (read(fd, buffer, BUFSIZE * 20) <= 0)
 	{
 		free(buffer);
 		return (head);
@@ -92,12 +92,9 @@ history_t *add_node_history(history_t **head, char *command)
 
 	new_node->command = _strdup(command);
 	new_node->next = NULL;
-
+	new_node->number = 0;
 	if (!*head)
-	{
-		new_node->number = 0;
 		*head = new_node;
-	}
 	else
 	{
 		temp = *head;
@@ -107,7 +104,11 @@ history_t *add_node_history(history_t **head, char *command)
 			temp = temp->next;
 			i++;
 		}
-
+		if (temp->number > 4096)
+		{
+			free_history(*head);
+			*head = new_node;
+		}
 		new_node->number = i;
 		temp->next = new_node;
 	}
