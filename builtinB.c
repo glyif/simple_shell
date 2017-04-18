@@ -111,12 +111,12 @@ int the_help(arg_inventory_t *arginv)
  */
 int the_exit(arg_inventory_t *arginv)
 {
-	char ** commands;
+	char **commands;
 	int es;
 
 	commands = (char **)arginv->commands;
 	if (commands[1] == '\0')
-		es = 0;
+		arginv->exit = 1;
 	else if (commands[1][0] > 47 && commands[1][0] < 58)
 	{
 		es = _atoi(commands[1]);

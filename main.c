@@ -17,9 +17,9 @@ arg_inventory_t *buildarginv(void)
 	arginv->st_mode = _filemode(STDIN_FILENO);
 	arginv->last_exit_code = 0;
 	arginv->last_bg_pid = -1;
-	arginv->exit = 0;
 	arginv->n_bg_jobs = 0;
-
+	arginv->exit = 0;
+	arginv->exit_status = 0;
 	if (arginv->envlist == NULL)
 	{
 		perror("No Memory");
