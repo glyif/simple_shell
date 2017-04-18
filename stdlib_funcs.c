@@ -47,3 +47,18 @@ int _atoi(char *s)
 	}
 	return (result *= sign % 2 == 0 ? -1 : 1);
 }
+
+/**
+ * _perror - custom perror
+ * @string: input error string to write to stderr
+ *
+ * Return: void
+ */
+void _perror(char *string)
+{
+	unsigned int len;
+
+	len = _strlen(string);
+
+	write(STDOUT_FILENO, string, len);
+}

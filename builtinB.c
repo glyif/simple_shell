@@ -19,7 +19,7 @@ int _alias(arg_inventory_t *arginv)
 	}
 	else if (commands[2] != NULL)
 	{
-		perror("alias: too many arguments.");
+		_perror("alias: too many arguments.\n");
 		return (-1);
 	}
 
@@ -48,13 +48,13 @@ int _unalias(arg_inventory_t *arginv)
 
 	if (commands[1] == NULL)
 	{
-		perror("unalias: missing arguments.");
+		_perror("unalias: missing arguments.\n");
 		return (-1);
 	}
 
 	if (commands[2] != NULL)
 	{
-		perror("unalias: too many arguments.");
+		_perror("unalias: too many arguments.\n");
 		return (-1);
 	}
 
@@ -86,7 +86,7 @@ int the_help(arg_inventory_t *arginv)
 	commands = (char **)arginv->commands;
 	if (commands[2] != NULL)
 	{
-		perror("help: too many input commands.");
+		_perror("help: too many input commands.\n");
 		return (-1);
 	}
 
@@ -111,14 +111,20 @@ int the_help(arg_inventory_t *arginv)
  */
 int the_exit(arg_inventory_t *arginv)
 {
-	char ** commands;
+	char **commands;
 	int es;
 
 	commands = (char **)arginv->commands;
-	es = _atoi(commands[1]);
-
-	arginv->exit = 1;
-	arginv->exit_status = es;
+	if (commands[1] == '\0')
+		arginv->exit = 1;
+	else if (commands[1][0] > 47 && commands[1][0] < 58)
+	{
+		es = _atoi(commands[1]);
+		arginv->exit = 1;
+		arginv->exit_status = es;
+	}
+	else
+		_perror("exit: Illegal number\n");
 
 	return (EXT_SUCCESS);
 }

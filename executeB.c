@@ -10,7 +10,7 @@ void safe_dup2(int new_fd, int old_fd)
 {
 	if (dup2(new_fd, old_fd) < 0)
 	{
-		perror("dup2");
+		_perror("cannot duplicate\n");
 		exit(1);
 	}
 }

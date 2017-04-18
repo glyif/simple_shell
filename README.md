@@ -101,6 +101,9 @@ our blog posting here:
   * `int the_help(arg_inventory_t *arginv)`
 
   	prints help message
+  * `int the_exit(arg_inventory_t *arginv)`
+
+  	exits arsine
 
 * `cd.c`
 
@@ -288,6 +291,7 @@ our blog posting here:
   #### functions contianed in this file:
 
   * `char _isspace(char c)`
+  * `void _perror(char *string)`
 
   replicates standard library
 

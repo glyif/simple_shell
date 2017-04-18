@@ -9,6 +9,15 @@
 int _env(arg_inventory_t *arginv)
 {
 	env_t *envlist = arginv->envlist;
+	char **commands;
+
+	commands = (char **)arginv->commands;
+
+	if (commands[1] != NULL)
+	{
+		_perror("env: error extra command\n");
+		return (-1);
+	}
 
 	print_list(envlist);
 
@@ -45,13 +54,13 @@ int _setenv(arg_inventory_t *arginv)
 
 	if (commands[1] == NULL || commands[2] == NULL)
 	{
-		perror("setenv: missing parameters.");
+		_perror("setenv: missing parameters.\n");
 		return (-1);
 	}
 
 	if (commands[3] != NULL)
 	{
-		perror("setenv: missing value.");
+		_perror("setenv: missing value.\n");
 		return (-1);
 	}
 
@@ -81,13 +90,13 @@ int _unsetenv(arg_inventory_t *arginv)
 
 	if (commands[1] == NULL)
 	{
-		perror("unsetenv: missing parameters.");
+		_perror("unsetenv: missing parameters.\n");
 		return (-1);
 	}
 
 	if (commands[2] != NULL)
 	{
-		perror("unsetenv: too many input commands.");
+		_perror("unsetenv: too many input commands.\n");
 		return (-1);
 	}
 
@@ -98,7 +107,7 @@ int _unsetenv(arg_inventory_t *arginv)
 }
 
 /**
- * _monalisa - prints mona lisa ascii art
+ * _arsine - prints mona lisa ascii art
  * @arginv: arguments inventory
  *
  * Return: 0 on success
@@ -107,7 +116,7 @@ int _arsine(arg_inventory_t *arginv)
 {
 	(void)arginv;
 
-	write(STDOUT_FILENO, "AsH3\n", 5);
+	_puts("AsH3");
 
 	return (EXT_SUCCESS);
 }

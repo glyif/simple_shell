@@ -60,7 +60,7 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 	pid = fork();
 	if (pid < 0)
 	{
-		perror("Critical error: unable to fork()!");
+		_perror("Critical error: unable to fork()!\n");
 		exit(1);
 	}
 
@@ -73,7 +73,7 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 
 		if (execve(command, (char **)arginv->commands, _environ) < 0)
 		{
-			perror("No Command");
+			_perror("No Command\n");
 			exit(1);
 		}
 	}
