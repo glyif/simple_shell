@@ -33,6 +33,8 @@ arg_inventory_t *buildarginv(void)
 
 /**
  * sig_handler - handles user input of ^C with the following
+ * @sig: integer value of signal to change, will be SIGINT = ^C
+ *
  * Return: void
  */
 void sig_handler(int sig)
@@ -49,6 +51,7 @@ void sig_handler(int sig)
 int main(void)
 {
 	arg_inventory_t *arginv;
+	int exit_status;
 
 	arginv = buildarginv();
 	signal(SIGINT, sig_handler);
@@ -80,7 +83,8 @@ int main(void)
 
 		delete_tokens(&arginv->tokens);
 	}
+	exit_status = arginv->exit_status;
 	freeall(arginv);
 
-	return (0);
+	return (exit_status);
 }
