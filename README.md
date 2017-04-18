@@ -1,6 +1,6 @@
 # arsine
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Arsine-underside-3D-vdW.png">
+![](https://upload.wikimedia.org/wikipedia/commons/b/b0/Arsine-underside-3D-vdW.png =250x250)
 
 ## Description
 
