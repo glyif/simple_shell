@@ -127,10 +127,9 @@ int worker_execute(arg_inventory_t *arginv)
 		{
 			waitpid(last_pid, &status, 0);
 
+			status = 1;
 			if (WIFEXITED(status))
 				status = WEXITSTATUS(status);
-			else
-				status = 1;
 		}
 		else
 		{
