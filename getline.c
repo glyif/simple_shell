@@ -18,6 +18,7 @@ ssize_t _getline(char **buffer, size_t *limit)
 		free(*buffer);
 		exit(EXT_SUCCESS);
 	}
+	
 
 	return (count);
 }
@@ -40,7 +41,7 @@ ssize_t _readline(int fd, char **buffer, size_t *limit)
 	j = 0;
 	i = -1;
 
-	while (i != 0)
+	while (TRUE)
 	{
 		i = read(fd, (*buffer + j), 1);
 

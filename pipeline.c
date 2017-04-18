@@ -144,6 +144,12 @@ int init_pipeline(pipeline_t *pipeline, ptree_t *ptree)
  */
 int delete_pipeline(pipeline_t *pipeline)
 {
+	unsigned i;
+
+	for (i = 0; i < pipeline->processesN; i++)
+		if (pipeline->processes[i].filename != NULL)
+			free(pipeline->processes[i].filename);
+
 	free(pipeline->processes);
 	pipeline->processes = NULL;
 	return (0);

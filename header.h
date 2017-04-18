@@ -50,7 +50,7 @@ int exec_builtins(arg_inventory_t *arginv);
 pid_t exec_path(char *command, arg_inventory_t *arginv);
 void safe_dup2(int new_fd, int old_fd);
 int redirect_output(arg_inventory_t *arginv, int close_dup);
-void redirect_input(arg_inventory_t *arginv);
+int redirect_input(arg_inventory_t *arginv);
 
 /* ---------------tokenizer--------------- */
 int delete_tokens(tokens_t *tokens);
