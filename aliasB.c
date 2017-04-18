@@ -18,7 +18,8 @@ int save_alias(arg_inventory_t *arginv)
 
 	while (tmp)
 	{
-		buffer = (char *)safe_malloc(_strlen(tmp->alias) + _strlen(tmp->alias) + 4);
+		buffer = (char *)safe_malloc(_strlen(tmp->alias) + _strlen(tmp->alias)
+									 + 4);
 		_strcpy(buffer, tmp->alias);
 		_strcat(buffer, ":");
 		_strcat(buffer, tmp->command);
