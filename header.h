@@ -55,8 +55,6 @@ void redirect_input(arg_inventory_t *arginv);
 /* ---------------tokenizer--------------- */
 int delete_tokens(tokens_t *tokens);
 int tokenize(tokens_t *tokens, const char *string);
-int dump_token(tokens_t *tokens);
-const char *dump_get_token_descr(int token_id);
 int is_redirection(int token_id);
 void init_tokens(tokens_t *tokens, int length);
 
@@ -70,7 +68,7 @@ int modify_node_env(env_t **head, char *new_var, char *new_val);
 int remove_node_env(env_t **head, char *var);
 
 /* ---------------builtin--------------- */
-int _monalisa(arg_inventory_t *arginv);
+int _arsine(arg_inventory_t *arginv);
 int _env(arg_inventory_t *arginv);
 int _setenv(arg_inventory_t *arginv);
 int _history(arg_inventory_t *arginv);
@@ -147,7 +145,6 @@ void free_paths(char **paths);
 ptree_t *ptree_new_node(ptree_t *parent);
 ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens, unsigned int *cur_token);
 int delete_ptree(ptree_t *node);
-int dump_ptree(ptree_t *ptree, unsigned int depth, int side);
 
 /* ---------------parser--------------- */
 int parse_error(const char *error, token_t *near);

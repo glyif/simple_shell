@@ -1,13 +1,13 @@
-.\" daVinci man page
+.\" arsine man page
 .\"
 .\"
-.TH DAVINCI 1 "09 March 1847" "0.1" "daVinci Shell"
+.TH ARSINE 1 "09 March 1847" "0.1" "arsine"
 
 
 
 .SH NAME
 
-.B daVinci (hsh)
+.B arsine (hsh)
 - command interpreter (shell)
 
 
@@ -20,13 +20,13 @@
 
 .SH COPYRIGHT
 
-daVinci is Public Domain, no copyright protection
+arsine is Public Domain, no copyright protection
 
 
 
 .SH DESCRIPTION
 
-daVinci replicates a command line interpreter (a shell), which is a user \
+arsine replicates a command line interpreter (a shell), which is a user \
 interface program for access to an operating system's services.  This shell \
 is designed to interact with a linux distribution or unix like system that \
 uses linux system calls and other commands found in the linux PATH, for \
@@ -37,11 +37,11 @@ example, the
 .B /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:
 .P
 .RE
-daVinci has a set of custom built-in commands, and also integrates with other \
+arsine has a set of custom built-in commands, and also integrates with other \
 commands located in the system's PATH.  The output is designed to exactly or \
 as close as possible replicate the shell 'sh' or 'dash'
 .B $ man dash
-.  daVinci \
+.  arsine \
 takes commands from files, shell scripts or user input in either an \
 interactive or non-interactive mode (explained in INVOCATION section).
 
@@ -50,20 +50,20 @@ interactive or non-interactive mode (explained in INVOCATION section).
 
 .SH INVOCATION
 
-to initialize daVinci, you must compile all the included files using the GNU \
+to initialize arsine, you must compile all the included files using the GNU \
 compiler collection: gcc.  Then run the output file, with a command such as \
-this: $ ./a.out.  daVinci has been written to pass all of these warning checks \
+this: $ ./a.out.  arsine has been written to pass all of these warning checks \
 and was designed to be compiled with the following command:
 .P
 .RS
 .B $ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
 .P
 .RE
-if daVinci is exectured, it will initialize in what is considered 'interactive \
+if arsine is exectured, it will initialize in what is considered 'interactive \
 mode.'  In this scenario, the user is prompted for a command and then the \
-command is executed after the newline or 'enter' is input.  daVinci can also \
+command is executed after the newline or 'enter' is input.  arsine can also \
 function in non-interactive mode by using shell scripts, such as a '|' before
-the daVinci executable file ('hsh').  This is an example:
+the arsine executable file ('hsh').  This is an example:
 .P
 .RS
 .B $ echo 'ls' | ./hsh
@@ -80,7 +80,7 @@ Commands may also be input into daVinci through a file containing commands:
 
 .SH OPTIONS
 
-daVinci does not take any options but does utilize the variable extern char \
+arsine does not take any options but does utilize the variable extern char \
 **environ.  This is currently part of the future goals of daVinci
 
 
@@ -110,7 +110,7 @@ This secion has information on the included builtin commands with daVinci
 
 .IT
 .B exit
-- exits daVinci
+- exits arsine
 
 .IT
 .B cd
@@ -139,7 +139,7 @@ This secion has information on the included builtin commands with daVinci
 
 .SH BUGS
 
-none known.  daVinci does not currently replicate these tasks:
+none known.  arsine does not currently replicate these tasks:
 
 .SH AUTHOR
 
@@ -147,4 +147,4 @@ Bobby Yang <122@holberton.com>
 
 David John Coleman II <lcsw@davidjohncoleman.com>
 
-special thanks to: monalisa
+special thanks to: walter white

@@ -3,13 +3,15 @@
 /**
  * add_node_env - adds new node to end of linked list
  * @head: beginning of linked list
- * @str: new string to be added to linked list
+ * @var: variable to be added
+ * @val: value to be added
  *
  * Return: pointer to new node
  */
 env_t *add_node_env(env_t **head, char *var, char *val)
 {
 	env_t *new_node, *temp;
+
 	new_node = malloc(sizeof(env_t));
 	if (new_node == NULL)
 		return (NULL);
@@ -74,12 +76,10 @@ int modify_node_env(env_t **head, char *new_var, char *new_val)
 int remove_node_env(env_t **head, char *var)
 {
 	env_t *copy_head = *head, *temp = *head;
-	
+
 	if (head == NULL)
 		return (EXT_FAILURE);
-	
-	copy_head=NULL;
-
+	copy_head = NULL;
 	while (temp)
 	{
 		if (_strcmp(temp->var, var) == 0)
@@ -111,16 +111,17 @@ int remove_node_env(env_t **head, char *var)
  */
 env_t *fetch_node(env_t *head, char *var)
 {
-    env_t *tmp;
-    tmp = head;
+	env_t *tmp;
 
-    while (tmp != NULL)
-    {
-        if (_strcmp(tmp->var, var) == 0)
-            return (tmp);
-        else
-            tmp = tmp->next;
-    }
+	tmp = head;
 
-    return (NULL);
+	while (tmp != NULL)
+	{
+		if (_strcmp(tmp->var, var) == 0)
+			return (tmp);
+
+		tmp = tmp->next;
+	}
+
+	return (NULL);
 }

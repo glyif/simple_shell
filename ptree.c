@@ -25,16 +25,18 @@ ptree_t *ptree_new_node(ptree_t *parent)
  * @tokens: tokens_t struct
  * @cur_token: current non-TOKEN_STRING token
  *
- * Return: pointer to the newly created child node (orrrr root node if root doesn't exist)
+ * Return: pointer to the newly created child node or root node
  */
-ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens, unsigned int *cur_token)
+ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens,
+							   unsigned int *cur_token)
 {
 	unsigned int i;
 	unsigned int start, finish;
 	ptree_t *node;
 
 	/* checks if the current token is a string or if we've run out of tokens */
-	if ((*cur_token >= tokens->tokensN) || (tokens->tokens[*cur_token].id != TOKEN_STRING))
+	if ((*cur_token >= tokens->tokensN) || (tokens->tokens[*cur_token].id !=
+											TOKEN_STRING))
 		return (NULL);
 
 	node = ptree_new_node(parent);
@@ -42,7 +44,8 @@ ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens, unsigned int *
 	/* calculate number of strings after this token */
 	start = *cur_token;
 
-	while ((*cur_token < tokens->tokensN) && (tokens->tokens[*cur_token].id == TOKEN_STRING))
+	while ((*cur_token < tokens->tokensN) && (tokens->tokens[*cur_token].id ==
+											  TOKEN_STRING))
 		(*cur_token)++;
 
 	finish = *cur_token;
@@ -87,54 +90,5 @@ int delete_ptree(ptree_t *node)
 
 	/* delete input node (could be root node, could be some child node) */
 	free(node);
-	return (0);
-}
-
-/**
- * dump_ptree - prints parse MEGA TREE
- * @ptree: pointer to root node
- * @depth: how deep to print
- * @side: left or right child
- * side < 0 is left child
- * side > 0 is right child
- * side 0 is root
- *
- * NOTE: recusion yet again
- * Return: 0
- */
-int dump_ptree(ptree_t *ptree, unsigned int depth, int side)
-{
-	unsigned int i;
-	/* Base Case: when ptree == NULL */
-	if (!ptree)
-		return (0);
-
-	/* Print current part of ptree depending on depth and side */
-	for (i = 0; i < depth; i++)
-		putchar('|');
-
-	/* Print side sign */
-	if (side < 0)
-		putchar('<');
-	else if (side > 0)
-		putchar('>');
-	else
-		putchar('#');
-
-	if (ptree->token_id == TOKEN_STRING)
-	{
-		for (i = 0; i < ptree->stringsN; i++)
-			printf(" %s", ptree->strings[i]);
-		printf("\n");
-	}
-	else
-	{
-		printf(" - %s token\n", dump_get_token_descr(ptree->token_id));
-	}
-
-	/* recursively call on all left and right childs */
-	dump_ptree(ptree->left,  depth + 1, -1);
-	dump_ptree(ptree->right, depth + 1, 1);
-
 	return (0);
 }

@@ -103,11 +103,11 @@ int _unsetenv(arg_inventory_t *arginv)
  *
  * Return: 0 on success
  */
-int _monalisa(arg_inventory_t *arginv)
+int _arsine(arg_inventory_t *arginv)
 {
 	(void)arginv;
 
-	write(STDOUT_FILENO, "Simplicity is the ultimate sophistication\n", 42);
+	write(STDOUT_FILENO, "AsH3\n", 5);
 
 	return (EXT_SUCCESS);
 }

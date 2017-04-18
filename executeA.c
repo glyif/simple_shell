@@ -12,7 +12,7 @@ int exec_builtins(arg_inventory_t *arginv)
 	char *str, **commands;
 	builtins_t builtins_list[] = {
 
-		{"monalisa", _monalisa}, {"env", _env}, {"setenv", _setenv},
+		{"arsine", _arsine}, {"env", _env}, {"setenv", _setenv},
 		{"unsetenv", _unsetenv}, {"history", _history}, {"cd", _cd},
 		{"alias", _alias}, {"unalias", _unalias}, {"help", the_help},
 		{NULL, NULL}
@@ -32,7 +32,8 @@ int exec_builtins(arg_inventory_t *arginv)
 		}
 	}
 
-	if (arginv->io_redir == TOKEN_REWRITE || arginv->io_redir == TOKEN_APPEND || arginv->pipeout)
+	if (arginv->io_redir == TOKEN_REWRITE || arginv->io_redir ==
+		TOKEN_APPEND || arginv->pipeout)
 	{
 		/* revert back to old_stdout */
 		safe_dup2(old_stdout, STDOUT_FILENO);

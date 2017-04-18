@@ -18,7 +18,7 @@ arg_inventory_t *buildarginv(void)
 	arginv->last_exit_code = 0;
 	arginv->last_bg_pid = -1;
 	arginv->exit = 0;
-	arginv->n_bg_jobs=0;
+	arginv->n_bg_jobs = 0;
 
 	if (arginv->envlist == NULL)
 	{
@@ -31,6 +31,10 @@ arg_inventory_t *buildarginv(void)
 	return (arginv);
 }
 
+/**
+ * sig_handler - handles user input of ^C with the following
+ * Return: void
+ */
 void sig_handler(int sig)
 {
 	(void) sig;
@@ -47,7 +51,6 @@ int main(void)
 	arg_inventory_t *arginv;
 
 	arginv = buildarginv();
-	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, sig_handler);
 	while (!arginv->exit)
 	{
@@ -58,7 +61,7 @@ int main(void)
 
 		tokenize(&arginv->tokens, arginv->input_commands);
 
-		if(arginv->tokens.tokensN > 0)
+		if (arginv->tokens.tokensN > 0)
 		{
 			expand_bash_vars(arginv);
 
