@@ -12,7 +12,7 @@ int exec_builtins(arg_inventory_t *arginv)
 	char *str, **commands;
 	builtins_t builtins_list[] = {
 
-		{"monalisa", _monalisa}, {"env", _env}, {"setenv", _setenv},
+		{"arsine", _arsine}, {"env", _env}, {"setenv", _setenv},
 		{"unsetenv", _unsetenv}, {"history", _history}, {"cd", _cd},
 		{"alias", _alias}, {"unalias", _unalias}, {"help", the_help},
 		{NULL, NULL}
