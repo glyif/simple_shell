@@ -68,7 +68,7 @@ int modify_node_env(env_t **head, char *new_var, char *new_val);
 int remove_node_env(env_t **head, char *var);
 
 /* ---------------builtin--------------- */
-int _monalisa(arg_inventory_t *arginv);
+int _arsine(arg_inventory_t *arginv);
 int _env(arg_inventory_t *arginv);
 int _setenv(arg_inventory_t *arginv);
 int _history(arg_inventory_t *arginv);

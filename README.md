@@ -1,6 +1,6 @@
-# daVinci
+# arsine
 
-<img src="https://s3.amazonaws.com/intranet-projects-files/holbertonschool-low_level_programming/235/shell.png" alt="screen shot of custom printf function">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Arsine-underside-3D-vdW.png">
 
 ## Description
 
@@ -33,7 +33,7 @@ our blog posting here:
   * `man_1_simple_shell`
 
   	This file contains a man page that can be executed and opened with the
-	`man` command either in bash, sh or in our shell daVinci
+	`man` command either in bash, sh or in **arsine**.
 
   * `AUTHORS`
 
@@ -361,4 +361,4 @@ David John Coleman II - http://www.davidjohncoleman.com/
 
 Public Domain, no copyright protection
 
-_special thanks to monalisa_
+_special thanks to Walter White_
