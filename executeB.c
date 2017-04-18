@@ -67,7 +67,7 @@ int redirect_output(arg_inventory_t *arginv, int close_dup)
  * @arginv: arguments inventory
  *
  */
-void redirect_input(arg_inventory_t *arginv)
+int redirect_input(arg_inventory_t *arginv)
 {
 	int stdin_fd;
 
@@ -76,6 +76,10 @@ void redirect_input(arg_inventory_t *arginv)
 	{
 		/* open file to read */
 		stdin_fd = open(arginv->filename, O_RDONLY);
+		
+		if (stdin_fd < 0)
+			return -1;
+
 		safe_dup2(stdin_fd, STDIN_FILENO);
 
 		close(stdin_fd);
@@ -88,6 +92,8 @@ void redirect_input(arg_inventory_t *arginv)
 	{
 		safe_dup2(arginv->pipein, STDIN_FILENO);
 	}
+
+	return (0);
 }
 
 /**
