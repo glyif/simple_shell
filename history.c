@@ -9,31 +9,49 @@
 history_t *history_list(arg_inventory_t *arginv)
 {
 	history_t *head;
-	char *name = "/.simple_shell_history";
-	char *file, *home, *buffer;
+	char *name = "/.simple_shell_history", *file, *home, *buffer;
 	env_t *home_node;
 	int lenhome, fd, lenname = _strlen(name);
+	size_t iterations = 1, charcount = 0, i = 0;
 
 	head = NULL;
 	home_node = fetch_node(arginv->envlist, "HOME");
 	home = home_node->val;
 	lenhome = _strlen(home);
-
 	file = safe_malloc(sizeof(char) * (_strlen(home) + lenname + 1));
 	file = _strncat(file, home, lenhome);
 	file = _strncat(file, name, lenname);
-
 	fd = open(file, O_RDONLY);
-	if (fd == -1)
+   	buffer = safe_malloc(sizeof(char) * BUFSIZE);
+	if (fd == -1 || buffer == NULL)
+	{
+		free(file);
+		free(buffer);
 		return (head);
-	buffer = malloc(sizeof(char) * (BUFSIZE * 20));
-	if (buffer == NULL)
-		return (head);
-	if (read(fd, buffer, BUFSIZE * 20) <= 0)
-		return (head);
-	head = init_history(head, buffer);
+	}
+	while (TRUE)
+	{
+		i = read(fd, (buffer + charcount), BUFSIZE);
+		if (i <= 0)
+			break;
+		charcount += i;
+		if (i % BUFSIZE == 0)
+		{
+			iterations++;
+			buffer = _realloc(buffer, charcount, (BUFSIZE * iterations));
+		}
+		else
+			break;
+	}
 	close(fd);
-	
+	if (charcount == 0)
+	{
+		free(file);
+		free(buffer);
+		return (head);
+	}
+	free(file);
+	head = init_history(head, buffer);
 	return (head);
 }
 
@@ -85,7 +103,6 @@ history_t *add_node_history(history_t **head, char *command)
 	new_node = malloc(sizeof(history_t));
 	if (new_node == NULL)
 		return (NULL);
-
 	new_node->command = _strdup(command);
 	new_node->next = NULL;
 	new_node->number = 0;
@@ -100,11 +117,12 @@ history_t *add_node_history(history_t **head, char *command)
 			temp = temp->next;
 			i++;
 		}
-		if (temp->number > 4096)
+		if (i > 4095)
 		{
 			free_history(*head);
 			*head = new_node;
-		}
+			return (new_node);
+		 }
 		new_node->number = i;
 		temp->next = new_node;
 	}
