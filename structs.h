@@ -173,7 +173,7 @@ typedef struct arg_inventory
 	pid_t last_bg_pid;
 
 	int exit;
-
+	int exit_status;
 } arg_inventory_t;
 
 /**
