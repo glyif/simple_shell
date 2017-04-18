@@ -11,20 +11,14 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 	unsigned int i;
 	int p[2]; /* Set of pipes' descriptors */
 	const ptree_t *ptree;
-	int fd_input = 0; /* Input file descriptor; soon to be changed with something if there is < command somewhere */
+	int fd_input = 0; /* Input file descriptor; soon to be changed with
+						 something if there is < command somewhere */
 
 	for (i = 0; i < arginv->pipeline.processesN; i++)
 	{
 		ptree = arginv->pipeline.processes[i].ptree;
 		arginv->commands = ptree->strings;
 			expand_alias(arginv);
-
-		if (!_strcmp((char *)arginv->commands[0], "exit"))
-		{
-			arginv->exit = 1;
-			break;
-		}
-
 		pipe(p); /* Create the two-way pipe */
 
 		arginv->pipein = fd_input;
@@ -50,7 +44,8 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 	return (arginv->pipeline.processes[arginv->pipeline.processesN - 1].pid);
 }
 
-pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree, unsigned int depth)
+pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
+						  unsigned int depth)
 {
 	int status;
 	pid_t last_pid = -1;
@@ -60,7 +55,8 @@ pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree, unsigned int 
 		return (last_pid);
 
 	/* execute pipeline */
-	if (ptree->token_id == TOKEN_STRING || ptree->token_id == TOKEN_PIPE || is_redirection(ptree->token_id))
+	if (ptree->token_id == TOKEN_STRING || ptree->token_id == TOKEN_PIPE ||
+		is_redirection(ptree->token_id))
 	{
 	    init_pipeline(&arginv->pipeline, ptree);
 	    last_pid = worker_execute_core(arginv);

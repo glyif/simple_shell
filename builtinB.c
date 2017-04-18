@@ -102,3 +102,23 @@ int the_help(arg_inventory_t *arginv)
 
 	return (EXT_SUCCESS);
 }
+
+/**
+ * the_exit - exit status to exit
+ * @arginv: arguments inventory
+ *
+ * Return: 0 on success
+ */
+int the_exit(arg_inventory_t *arginv)
+{
+	char ** commands;
+	int es;
+
+	commands = (char **)arginv->commands;
+	es = _atoi(commands[1]);
+
+	arginv->exit = 1;
+	arginv->exit_status = es;
+
+	return (EXT_SUCCESS);
+}

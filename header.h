@@ -78,7 +78,7 @@ int _unalias(arg_inventory_t *arginv);
 int the_help(arg_inventory_t *arginv);
 int load_alias(arg_inventory_t *arginv);
 int save_alias(arg_inventory_t *arginv);
-
+int the_exit(arg_inventory_t *arginv);
 
 /* ---------------strings--------------- */
 char *_strncpy(char *dest, char *src, int n);
@@ -96,6 +96,7 @@ char *_str_replace(char *string, unsigned int start, unsigned int end, char *rep
 
 /* -----custom C std lib----- */
 char _isspace(char c);
+int _atoi(char *s);
 
 /* ---------------custom malloc--------------- */
 char *mem_reset(char *str, int bytes);

@@ -15,6 +15,7 @@ int exec_builtins(arg_inventory_t *arginv)
 		{"arsine", _arsine}, {"env", _env}, {"setenv", _setenv},
 		{"unsetenv", _unsetenv}, {"history", _history}, {"cd", _cd},
 		{"alias", _alias}, {"unalias", _unalias}, {"help", the_help},
+		{"exit", the_exit},
 		{NULL, NULL}
 	};
 
