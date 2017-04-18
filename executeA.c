@@ -46,6 +46,26 @@ int exec_builtins(arg_inventory_t *arginv)
 }
 
 /**
+ * exec_error_exit - frees all and exits if exec error
+ * @msg: message to display
+ * @command: command to free
+ * @_environ: env double pointer to free
+ * @arginv: arg inventory to free
+ */
+void exec_error_exit(char *msg, char *command, char **_environ,
+		arg_inventory_t *arginv)
+{
+	delete_pipeline(&arginv->pipeline);
+	delete_parser(&arginv->parser);
+	delete_tokens(&arginv->tokens);
+	free(command);
+	free_paths(_environ);
+	freeall(arginv);
+	_perror(msg);
+	exit(1);
+}
+
+/**
  * exec_path - custom function to execute from PATH
  * @command: command to execute
  * @arginv: arg inventory
@@ -66,17 +86,16 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 
 	if (pid == 0)
 	{
-		redirect_input(arginv);
-		redirect_output(arginv, 1);
-
 		_environ = zelda_to_ganondorf(arginv->envlist);
 
+		redirect_output(arginv, 1);
+		if (redirect_input(arginv))
+			exec_error_exit("No such file or directory", command, _environ, arginv);
+
 		if (execve(command, (char **)arginv->commands, _environ) < 0)
-		{
-			_perror("No Command\n");
-			exit(1);
-		}
+			exec_error_exit("No Command", command, _environ, arginv);
 	}
+	free(command);
 	return (pid);
 }
 

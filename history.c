@@ -29,15 +29,11 @@ history_t *history_list(arg_inventory_t *arginv)
 	buffer = malloc(sizeof(char) * (BUFSIZE * 20));
 	if (buffer == NULL)
 		return (head);
-
 	if (read(fd, buffer, BUFSIZE * 20) <= 0)
-	{
-		free(buffer);
 		return (head);
-	}
 	head = init_history(head, buffer);
 	close(fd);
-
+	
 	return (head);
 }
 

@@ -52,6 +52,7 @@ int cat_path(char **search_path, char *cmd)
 		if (fd == 0)
 		{
 			_strcpy(cmd, new);
+			free(new);
 			return (0);
 		}
 		else
@@ -60,6 +61,7 @@ int cat_path(char **search_path, char *cmd)
 		}
 	}
 
+	free(new);
 	return (-1);
 }
 

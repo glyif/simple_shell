@@ -18,6 +18,7 @@ ssize_t _getline(char **buffer, size_t *limit)
 		free(*buffer);
 		exit(EXT_SUCCESS);
 	}
+	
 
 	return (count);
 }
