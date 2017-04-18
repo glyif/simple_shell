@@ -115,10 +115,16 @@ int the_exit(arg_inventory_t *arginv)
 	int es;
 
 	commands = (char **)arginv->commands;
-	es = _atoi(commands[1]);
-
-	arginv->exit = 1;
-	arginv->exit_status = es;
+	if (commands[1] == '\0')
+		es = 0;
+	else if (commands[1][0] > 47 && commands[1][0] < 58)
+	{
+		es = _atoi(commands[1]);
+		arginv->exit = 1;
+		arginv->exit_status = es;
+	}
+	else
+		perror("exit: Illegal number");
 
 	return (EXT_SUCCESS);
 }
