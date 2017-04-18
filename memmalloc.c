@@ -70,7 +70,7 @@ void *safe_malloc(int bytes)
 	check = malloc(bytes);
 	if (check == NULL)
 	{
-		perror("No Memory");
+		_perror("No Memory\n");
 		exit(1);
 	}
 	check = mem_reset(check, bytes);

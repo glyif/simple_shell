@@ -97,6 +97,7 @@ char *_str_replace(char *string, unsigned int start, unsigned int end, char *rep
 /* -----custom C std lib----- */
 char _isspace(char c);
 int _atoi(char *s);
+void _perror(char *string);
 
 /* ---------------custom malloc--------------- */
 char *mem_reset(char *str, int bytes);

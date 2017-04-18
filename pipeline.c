@@ -102,7 +102,7 @@ int init_pipeline(pipeline_t *pipeline, ptree_t *ptree)
 	mem_needed = init_pipeline_count_processes(ptree);
 	if (mem_needed == 0)
 	{
-		perror("No elements present in the pipeline!\n");
+		_perror("No elements present in the pipeline!\n");
 		exit(1);
 	}
 
@@ -111,7 +111,7 @@ int init_pipeline(pipeline_t *pipeline, ptree_t *ptree)
 
 	if (!pipeline->processes)
 	{
-		perror("Memory allocation failed!\n");
+		_perror("Memory allocation failed!\n");
 		exit(1);
 	}
 
@@ -126,7 +126,7 @@ int init_pipeline(pipeline_t *pipeline, ptree_t *ptree)
 
 	if (pipeline->processesN != mem_needed)
 	{
-		perror("uhhhhh number of commands does not match");
+		_perror("uhhhhh number of commands does not match\n");
 		exit(1);
 	}
 

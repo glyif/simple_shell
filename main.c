@@ -22,7 +22,7 @@ arg_inventory_t *buildarginv(void)
 	arginv->exit_status = 0;
 	if (arginv->envlist == NULL)
 	{
-		perror("No Memory");
+		_perror("No Memory\n");
 		write(STDOUT_FILENO, "insufficient memory", 19);
 	}
 
