@@ -60,5 +60,5 @@ void _perror(char *string)
 
 	len = _strlen(string);
 
-	write(STDOUT_FILENO, string, len);
+	write(STDERR_FILENO, string, len);
 }
