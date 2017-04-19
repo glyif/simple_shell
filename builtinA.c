@@ -15,7 +15,7 @@ int _env(arg_inventory_t *arginv)
 
 	if (commands[1] != NULL)
 	{
-		_perror("env: error extra command\n");
+		_perror("env: No such file or directory\n");
 		return (-1);
 	}
 
