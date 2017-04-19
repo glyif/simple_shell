@@ -20,6 +20,8 @@ int freeall(arg_inventory_t *arginv)
 
 	free(arginv->input_commands);
 
+	free(arginv);
+
 	return (EXT_SUCCESS);
 }
 

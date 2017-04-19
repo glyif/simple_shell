@@ -14,7 +14,7 @@ int tokenize(tokens_t *tokens, const char *string)
 	unsigned int is_token;
 	unsigned int tokens_to_move;
 	unsigned int i, j;
-
+	char *data;
 	char symbol;
 	token_types token_names[] = {
 		{ TOKEN_SEMICOLON,  ";",  "semicolon",  1 },
@@ -36,7 +36,7 @@ int tokenize(tokens_t *tokens, const char *string)
 
 	/* Initializes struct */
 	init_tokens(tokens, length);
-
+	data = safe_malloc((length * 2 + 1) * sizeof(char));
 	/* Set up current indexes; */
 	string_idx = 0; /* Current position in original string */
 	data_idx = 0;   /* Current position in resulting data string */
@@ -63,7 +63,7 @@ int tokenize(tokens_t *tokens, const char *string)
 			/* Note that we'll handle ';' later, this is the special case */
 			/* New token has been started */
 			/* We need to set up pointer properly so it points to current location in data */
-			tokens->tokens[tokens_idx].str = tokens->data + data_idx;
+			tokens->tokens[tokens_idx].str = data + data_idx;
 			tokens_idx++;
 			is_token = 1; /* The token has started. We need to process it carefully */
 		}
@@ -72,7 +72,7 @@ int tokenize(tokens_t *tokens, const char *string)
 		{
 			/* Previous token has been ended */
 			/* Finish this token */
-			tokens->data[data_idx] = '\0';
+			data[data_idx] = '\0';
 			data_idx++;
 
 			/* Also set token flag to 0 */
@@ -88,18 +88,18 @@ int tokenize(tokens_t *tokens, const char *string)
 			if (is_token)
 			{
 				/* First, we need to close previous token */
-				tokens->data[data_idx] = '\0';
+				data[data_idx] = '\0';
 				data_idx++;
 				/* No need to mark is_token here, it'll be set to 0 afterwards anyway */
 			}
 
 			/* Next, we need to add new token */
-			tokens->tokens[tokens_idx].str = tokens->data + data_idx;
+			tokens->tokens[tokens_idx].str = data + data_idx;
 			tokens_idx++;
 
 			/* And fill it with ';' */
-			tokens->data[data_idx] = ';';
-			tokens->data[data_idx + 1] = '\0';
+			data[data_idx] = ';';
+			data[data_idx + 1] = '\0';
 			data_idx += 2;
 
 			/* Set up is_token to 0 and skip this iteration */
@@ -126,12 +126,12 @@ int tokenize(tokens_t *tokens, const char *string)
 
 		/* When we got here, is_token is 1, and next symbol is not space or we are skipping it */
 		/* We need to add it to current data */
-		tokens->data[data_idx] = symbol;
+		data[data_idx] = symbol;
 		data_idx++;
 	}
 
 	/* Finalize data by placing the last '\0' just to be sure that it has been terminated */
-	tokens->data[data_idx] = '\0';
+	data[data_idx] = '\0';
 
 	/* Set current amount of tokens properly */
 	tokens->tokensN = tokens_idx;
@@ -175,6 +175,9 @@ int tokenize(tokens_t *tokens, const char *string)
 	if (tokens->tokensN && tokens->tokens[tokens->tokensN - 1].id == TOKEN_SEMICOLON)
 		tokens->tokensN--;
 
+	for (i = 0; i < tokens->tokensN; i++)
+		tokens->tokens[i].str = _strdup((char*)tokens->tokens[i].str);
+		/* convert to stand alone pointers */
 
 	return (0); /* All OK */
 }

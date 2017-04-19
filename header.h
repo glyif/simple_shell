@@ -155,7 +155,7 @@ ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int mi
 int parse(parser_t *parser, tokens_t *tokens);
 int delete_parser(parser_t *parser);
 void expand_bash_vars(arg_inventory_t *arginv);
-void expand_alias(arg_inventory_t *arginv);
+int expand_alias(arg_inventory_t *arginv);
 
 /* ---------------worker--------------- */
 unsigned int init_pipeline_count_processes(ptree_t *tree);
