@@ -164,7 +164,7 @@ int tokenize(tokens_t *tokens, const char *string)
 		{
 			/* Carefully shift the array one element */
 			tokens_to_move = tokens->tokensN - i - 1;
-			memmove(tokens->tokens + i, tokens->tokens + i + 1, tokens_to_move * sizeof(token_t));
+			_memmove(tokens->tokens + i, tokens->tokens + i + 1, tokens_to_move * sizeof(token_t));
 
 			/* Also decrease amount of tokens left */
 			tokens->tokensN--;

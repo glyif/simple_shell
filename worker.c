@@ -9,9 +9,9 @@
 pid_t worker_execute_core(arg_inventory_t *arginv)
 {
 	unsigned int i;
-	int p[2]; /* Set of pipes' descriptors */
+	/*int p[2]; Set of pipes' descriptors */
 	const ptree_t *ptree;
-	int fd_input = 0; /* Input file descriptor; soon to be changed with
+	/* int fd_input = 0; */ /* Input file descriptor; soon to be changed with
 						 something if there is < command somewhere */
 
 	for (i = 0; i < arginv->pipeline.processesN; i++)
@@ -19,15 +19,17 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 		ptree = arginv->pipeline.processes[i].ptree;
 		arginv->commands = ptree->strings;
 			expand_alias(arginv);
-		pipe(p); /* Create the two-way pipe */
+		/* pipe(p); Create the two-way pipe */
 
+		/*
 		arginv->pipein = fd_input;
 		arginv->pipeout = (i + 1 < arginv->pipeline.processesN) ? p[1] : 0;
+		*/
 
 		if (arginv->pipeline.processes[i].io_redir)
 		{
 			arginv->filename = arginv->pipeline.processes[i].filename;
-			arginv->io_redir = arginv->pipeline.processes[i].io_redir;
+			/* arginv->io_redir = arginv->pipeline.processes[i].io_redir; */
 		}
 		else
 		{
@@ -36,9 +38,10 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 		}
 
 		arginv->pipeline.processes[i].pid = execute(arginv);
-
-		close(p[1]); /* Close non-needed descriptor */
-		fd_input = p[0]; /* The input should be saved for the next comman */
+		/*
+		close(p[1]);
+		*/
+		/*fd_input = p[0];The input should be saved for the next comman */
 	}
 
 	return (arginv->pipeline.processes[arginv->pipeline.processesN - 1].pid);

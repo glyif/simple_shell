@@ -6,6 +6,7 @@
  * @old_fd: file descriptor to replace
  *
  */
+/*
 void safe_dup2(int new_fd, int old_fd)
 {
 	if (dup2(new_fd, old_fd) < 0)
@@ -14,6 +15,7 @@ void safe_dup2(int new_fd, int old_fd)
 		exit(1);
 	}
 }
+*/
 
 /**
  * redirect_output - redirect stdout depending on the pipeline & redirect token
@@ -22,27 +24,20 @@ void safe_dup2(int new_fd, int old_fd)
  *
  * Return: old stdout file descriptor
  */
-int redirect_output(arg_inventory_t *arginv, int close_dup)
+/*int redirect_output(arg_inventory_t *arginv, int close_dup)
 {
 	int stdout_fd;
 	int old_stdout;
 
-	/** either a  > or a >> */
 	if (arginv->io_redir == TOKEN_REWRITE || arginv->io_redir == TOKEN_APPEND)
 	{
-		/* it's a > */
 		if (arginv->io_redir == TOKEN_REWRITE)
-			/* create file for write, create and truncate */
 			stdout_fd = open(arginv->filename, O_WRONLY | O_CREAT | O_TRUNC,
 							 0666);
-		/* it's a >> */
 		else
-			/** create file for create and append, does not truncate */
 			stdout_fd = open(arginv->filename, O_WRONLY | O_CREAT | O_APPEND,
 							 0666);
-	    /* save current stdout */
 	    old_stdout = dup(STDOUT_FILENO);
-	    /* redirect stdout */
 	    safe_dup2(stdout_fd, STDOUT_FILENO);
 		if (close_dup)
 		{
@@ -53,28 +48,25 @@ int redirect_output(arg_inventory_t *arginv, int close_dup)
 	}
 	else if (arginv->pipeout)
 	{
-		/* save current stdout */
 		old_stdout = dup(STDOUT_FILENO);
 
-		/* redirect stdout */
 		safe_dup2(arginv->pipeout, STDOUT_FILENO);
 	}
 	return (old_stdout);
 }
-
+*/
 /**
  * redirect_input - redirect stdin depending on the pipeline & redirect token
  * @arginv: arguments inventory
  *
  */
+/*
 int redirect_input(arg_inventory_t *arginv)
 {
 	int stdin_fd;
 
-	/* it's a < */
 	if (arginv->io_redir == TOKEN_CAT)
 	{
-		/* open file to read */
 		stdin_fd = open(arginv->filename, O_RDONLY);
 		
 		if (stdin_fd < 0)
@@ -85,7 +77,6 @@ int redirect_input(arg_inventory_t *arginv)
 		close(stdin_fd);
 
 		if (arginv->pipein)
-			/* unused file descriptor */
 			close(arginv->pipein);
 	}
 	else if (arginv->pipein)
@@ -95,6 +86,7 @@ int redirect_input(arg_inventory_t *arginv)
 
 	return (0);
 }
+*/
 
 /**
  * is_path - checks if input command is part of directory PATH
