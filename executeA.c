@@ -119,8 +119,6 @@ pid_t execute(arg_inventory_t *arginv)
 	command = safe_malloc(sizeof(char) * BUFSIZE);
 	command = _strcpy(command, *commands);
 
-	path = safe_malloc(sizeof(char) * BUFSIZE);
-
 	if (exec_builtins(arginv) == EXT_FAILURE)
 	{
 		if (is_path(command))
@@ -129,12 +127,15 @@ pid_t execute(arg_inventory_t *arginv)
 		}
 		else
 		{
+			path = safe_malloc(sizeof(char) * BUFSIZE);
 			locate_path(path, envlist);
 			paths = tokenize_path(path);
 			cat_path(paths, command);
 			free_paths(paths);
+			free(path);
 			return (exec_path(command, arginv));
 		}
 	}
+	free(command);
 	return (-1);
 }

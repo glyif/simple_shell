@@ -28,12 +28,11 @@ int _alias(arg_inventory_t *arginv)
 	combo = separate_string(input);
 
 	if (modify_node_alias(&arginv->alias, combo[0], combo[1]) == EXT_FAILURE)
-	{
 		add_node_alias(&arginv->alias, combo[0], combo[1]);
-		free(combo[0]);
-		free(combo[1]);
-		free(combo);
-	}
+
+	free(combo[0]);
+	free(combo[1]);
+	free(combo);
 	return (EXT_SUCCESS);
 }
 

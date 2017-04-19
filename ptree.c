@@ -54,12 +54,12 @@ ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens,
 	/* Initialize everything else */
 	node->token_id = TOKEN_STRING;
 	node->stringsN = finish - start;
-	node->strings = safe_malloc((node->stringsN + 1) * sizeof(const char *));
+	node->strings = safe_malloc((node->stringsN + 1) * sizeof(char *));
 
 
 	/* initialize stringsssssssss */
 	for (i = 0; i < node->stringsN; i++)
-		node->strings[i] = tokens->tokens[i + start].str;
+		node->strings[i] = _strdup(tokens->tokens[i + start].str);
 
 	node->strings[i] = NULL;
 
@@ -76,6 +76,8 @@ ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens,
  */
 int delete_ptree(ptree_t *node)
 {
+	unsigned int i;
+
 	/* Base case: when node is NULL */
 	if (!node)
 		return (0);
@@ -86,7 +88,15 @@ int delete_ptree(ptree_t *node)
 
 	/* free strings */
 	if (node->strings)
+	{
+		i = 0;
+		while(node->strings[i])
+		{
+			free(node->strings[i]);
+			i++;
+		}
 		free(node->strings);
+	}
 
 	/* delete input node (could be root node, could be some child node) */
 	free(node);

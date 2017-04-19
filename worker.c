@@ -10,7 +10,7 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 {
 	unsigned int i;
 	int p[2]; /* Set of pipes' descriptors */
-	const ptree_t *ptree;
+	ptree_t *ptree;
 	int fd_input = 0; /* Input file descriptor; soon to be changed with
 						 something if there is < command somewhere */
 
@@ -18,7 +18,9 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 	{
 		ptree = arginv->pipeline.processes[i].ptree;
 		arginv->commands = ptree->strings;
-			expand_alias(arginv);
+		ptree->stringsN += expand_alias(arginv);
+		ptree->strings = arginv->commands;
+
 		pipe(p); /* Create the two-way pipe */
 
 		arginv->pipein = fd_input;
@@ -125,9 +127,8 @@ int worker_execute(arg_inventory_t *arginv)
 	{
 		if (arginv->parser.tree->token_id != TOKEN_BACKGROUND)
 		{
-			waitpid(last_pid, &status, 0);
-
 			status = 1;
+			waitpid(last_pid, &status, 0);
 			if (WIFEXITED(status))
 				status = WEXITSTATUS(status);
 		}
