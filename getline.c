@@ -41,7 +41,7 @@ ssize_t _readline(int fd, char **buffer, size_t *limit)
 	j = 0;
 	i = -1;
 
-	while (TRUE)
+	while (i != 0)
 	{
 		i = read(fd, (*buffer + j), 1);
 

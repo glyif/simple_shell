@@ -9,7 +9,7 @@
 typedef struct token
 {
         int id;
-        const char *str;
+        char *str;
 		int prec;
 } token_t;
 
@@ -24,7 +24,6 @@ typedef struct token
  */
 typedef struct tokens
 {
-        char *data;
         token_t *tokens;
         unsigned int tokensN;
 } tokens_t;
@@ -59,7 +58,7 @@ typedef struct ptree
 	struct ptree *parent;
 
 	int token_id;
-	const char **strings;
+	char **strings;
 	unsigned int stringsN;
 } ptree_t;
 
@@ -79,7 +78,7 @@ typedef struct parser
  */
 typedef struct process
 {
-	const ptree_t *ptree;
+	ptree_t *ptree;
 	pid_t pid;
 /* 0 for no redirection, 3 for >, 4 >>, 5 < */
 	int io_redir;
@@ -150,7 +149,7 @@ typedef struct arg_inventory
 {
 	char *input_commands;
 	env_t *envlist;
-	const char **commands;
+	char **commands;
 	size_t buflimit;
 	int st_mode;
 	history_t *history;

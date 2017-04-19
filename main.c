@@ -58,7 +58,8 @@ int main(void)
 	{
 		if (arginv->st_mode)
 			write(STDOUT_FILENO, "$ ", 2);
-		_getline(&arginv->input_commands, &arginv->buflimit);
+		if(!_getline(&arginv->input_commands, &arginv->buflimit))
+			break;
 		add_node_history(&arginv->history, arginv->input_commands);
 
 		tokenize(&arginv->tokens, arginv->input_commands);

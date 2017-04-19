@@ -70,7 +70,7 @@ void expand_bash_vars(arg_inventory_t *arginv)
  * @arginv: args inventory
  *
  */
-void expand_alias(arg_inventory_t *arginv)
+int expand_alias(arg_inventory_t *arginv)
 {
 	alias_t *node;
 	tokens_t cmd_tokens;
@@ -92,14 +92,18 @@ void expand_alias(arg_inventory_t *arginv)
 		for (i = count - 1; i >= 1; i--)
 		{
 			commands[i + cmd_tokens.tokensN - 1] =
-				(char *)_strdup((char *)arginv->commands[i]);
+				(char *)arginv->commands[i];
 		}
 
 		for (i = 0; i < cmd_tokens.tokensN; i++)
-		{
 			commands[i] = _strdup((char *)cmd_tokens.tokens[i].str);
-		}
-		arginv->commands = (const char **)commands;
+		free(arginv->commands[0]);
+		free(arginv->commands);
+		commands[count + cmd_tokens.tokensN - 1] = NULL;
+		count = cmd_tokens.tokensN;
+		arginv->commands = commands;
 		delete_tokens(&cmd_tokens);
+		return (count - 1);
 	}
+	return (0);
 }

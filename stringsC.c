@@ -12,12 +12,15 @@
  */
 void replace_str(char **old_str, char *new_str, int i, int j, int flg)
 {
-	*old_str = _str_replace(*old_str, i, j, new_str);
+	char *tmp;
+
+	tmp = _str_replace(*old_str, i, j, new_str);
+	free(*old_str);
+	*old_str = tmp;
+	
 	if (flg)
-	{
 		if (new_str[0])
 			free(new_str);
-	}
 }
 
 /**
@@ -83,7 +86,7 @@ char *int_to_str(unsigned int n)
 		chars++;
 	}
 
-	str = safe_malloc(chars + 1);
+	str = safe_malloc(chars + 2);
 	while (size > 0)
 	{
 		nth = n / size;

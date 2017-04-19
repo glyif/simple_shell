@@ -7,7 +7,6 @@
  */
 void init_tokens(tokens_t *tokens, int length)
 {
-	tokens->data = safe_malloc((length * 2 + 1) * sizeof(char));
 	tokens->tokens = safe_malloc(length * sizeof(token_t));
 
 	/* Initialize the rest of the structure */
@@ -33,8 +32,10 @@ int is_redirection(int token_id)
  */
 int delete_tokens(tokens_t *tokens)
 {
-	free(tokens->data);
-	tokens->data = NULL;
+	unsigned int i;
+
+	for (i = 0; i < tokens->tokensN; i++)
+		free(tokens->tokens[i].str);
 
 	free(tokens->tokens);
 	tokens->tokens = NULL;

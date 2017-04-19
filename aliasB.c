@@ -13,7 +13,7 @@ int save_alias(arg_inventory_t *arginv)
 	char *file, *home, *buffer;
 	env_t *home_node;
 	int lenhome, fd, lenname = _strlen(name);
-	
+
 	home_node = fetch_node(arginv->envlist, "HOME");
 	home = home_node->val;
 	lenhome = _strlen(home);
@@ -50,16 +50,27 @@ int save_alias(arg_inventory_t *arginv)
  */
 int load_alias(arg_inventory_t *arginv)
 {
-	char *file = ".simple_shell_alias";
-	char *buffer, *val;
-	int fd;
 	ssize_t count;
 	size_t sz = BUFSIZE;
+	char *name = "/.simple_shell_alias";
+	char *file, *home, *buffer, *val;
+	env_t *home_node;
+	int lenhome, fd, lenname = _strlen(name);
+
+	home_node = fetch_node(arginv->envlist, "HOME");
+	home = home_node->val;
+	lenhome = _strlen(home);
+
+	file = safe_malloc(sizeof(char) * (_strlen(home) + lenname + 1));
+	file = _strncat(file, home, lenhome);
+	file = _strncat(file, name, lenname);
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
+	{
+		free(file);
 		return (1);
-
+	}
 	buffer = (char *)safe_malloc(sz);
 
 	while ((count = _readline(fd, &buffer, &sz)) != 0)
@@ -79,6 +90,7 @@ int load_alias(arg_inventory_t *arginv)
 
 		add_node_alias(&arginv->alias, buffer, val);
 	}
+	free(file);
 	free(buffer);
 	close(fd);
 	return (0);
