@@ -48,9 +48,9 @@ ssize_t _readline(int fd,char **buffer, size_t *limit);
 pid_t execute(arg_inventory_t *arginv);
 int exec_builtins(arg_inventory_t *arginv);
 pid_t exec_path(char *command, arg_inventory_t *arginv);
-void safe_dup2(int new_fd, int old_fd);
-int redirect_output(arg_inventory_t *arginv, int close_dup);
-int redirect_input(arg_inventory_t *arginv);
+/*void safe_dup2(int new_fd, int old_fd);*/
+/* int redirect_output(arg_inventory_t *arginv, int close_dup); */
+/* int redirect_input(arg_inventory_t *arginv); */
 
 /* ---------------tokenizer--------------- */
 int delete_tokens(tokens_t *tokens);
@@ -150,7 +150,7 @@ ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens, unsigned int *
 int delete_ptree(ptree_t *node);
 
 /* ---------------parser--------------- */
-int parse_error(const char *error, token_t *near);
+int parse_error(token_t *near);
 ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int min_prec);
 int parse(parser_t *parser, tokens_t *tokens);
 int delete_parser(parser_t *parser);

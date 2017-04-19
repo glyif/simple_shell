@@ -85,7 +85,6 @@ pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 		else
 		{
 			arginv->n_bg_jobs++;
-			printf("[%d] %i\n", arginv->n_bg_jobs, last_pid);
 			arginv->last_bg_pid = last_pid;
 			status = 0;
 		}
@@ -137,7 +136,6 @@ int worker_execute(arg_inventory_t *arginv)
 		else
 		{
 			arginv->n_bg_jobs++;
-			printf("[%d] %i\n", arginv->n_bg_jobs, last_pid);
 			arginv->last_bg_pid = last_pid;
 			status = 0;
 		}

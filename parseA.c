@@ -7,12 +7,12 @@
  *
  * Return: 1 because of error
  */
-int parse_error(const char *error, token_t *near)
+int parse_error(token_t *near)
 {
 	if (near)
-		fprintf(stderr, "Parse error near \"%s\": %s\n", near->str, error);
+		_perror("Parse error near\n");
 	else
-		fprintf(stderr, "Parse error: %s\n", error);
+		_perror("Parse error\n");
 
 	return (1);
 }
@@ -47,8 +47,7 @@ ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs,
 			if (*ntoken < tokens->tokensN || tokens->tokens[op].id !=
 				TOKEN_BACKGROUND)
 			{
-				parse_error("Line starts with operator, expected command",
-							&tokens->tokens[*ntoken]);
+				parse_error(&tokens->tokens[*ntoken]);
 				return (NULL);
 			}
 		}
@@ -95,13 +94,12 @@ int parse(parser_t *parser, tokens_t *tokens)
 	parser->tree = NULL;
 
 	if (tokens->tokensN == 0)
-		return (parse_error("Nothing to parse", NULL));
+		return (parse_error(NULL));
 
 	ptree = ptree_new_string_node(NULL, tokens, &cur_token);
 
 	if (!ptree)
-		return (parse_error("Line starts with operator, expected command",
-							tokens->tokens + 0));
+		return (parse_error(tokens->tokens + 0));
 
 	parser->tree = ptree;
 
