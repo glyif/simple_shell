@@ -3,7 +3,8 @@
 ## Description
 
 This repo has our custom shell project, which attempts to replicate some of the
-processes of the 'sh' shell or 'bash' shell.
+processes of the 'sh' shell or 'bash' shell.  For more on the processes of
+arsine, please reference our blog post here: https://medium.com/@djohncoleman/arsine-a-custom-shell-command-line-interpreter-fa5561169cbc
 
 ### C language standard functions and system calls utilized
 
