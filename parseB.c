@@ -1,5 +1,16 @@
 #include "header.h"
 
+int _getpid(void)
+{
+	int pid;
+
+	pid = fork();
+	if (pid > 0)
+		return (pid);
+	else
+		return (pid);
+}
+
 /**
  * bash_replace - replaces env vars
  * @arginv: arg inventory
@@ -15,9 +26,10 @@ void bash_replace(arg_inventory_t *arginv, int index)
 		if (t.tokens[index].str[j] == '$' && t.tokens[index].str[j + 1] != '\0')
 			switch (t.tokens[index].str[j + 1])
 			{
+				
 				case '$':
 					replace_str((char **)&t.tokens[index].str,
-						int_to_str(getpid()), j, j + 1, 1);
+						int_to_str(_getpid()), j, j + 1, 1);
 					break;
 				case '?':
 					replace_str((char **)&t.tokens[index].str,
