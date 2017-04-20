@@ -57,6 +57,8 @@ int delete_tokens(tokens_t *tokens);
 int tokenize(tokens_t *tokens, const char *string);
 int is_redirection(int token_id);
 void init_tokens(tokens_t *tokens, int length);
+void delete_dups(tokens_t *tokens);
+void token_classify(tokens_t *tokens);
 
 /* -------custom environ------- */
 env_t *env_list(void);
