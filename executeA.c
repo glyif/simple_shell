@@ -34,14 +34,14 @@ int exec_builtins(arg_inventory_t *arginv)
 		}
 	}
 	/*
-	if (arginv->io_redir == TOKEN_REWRITE || arginv->io_redir ==
-		TOKEN_APPEND || arginv->pipeout)
-	{
-		safe_dup2(old_stdout, STDOUT_FILENO);
-
-		close(old_stdout);
-	}
-	*/
+	 *	if (arginv->io_redir == TOKEN_REWRITE || arginv->io_redir ==
+	 *		TOKEN_APPEND || arginv->pipeout)
+	 *	{
+	 *		safe_dup2(old_stdout, STDOUT_FILENO);
+	 *
+	 *		close(old_stdout);
+	 *	}
+	 */
 
 	return (retval);
 }
@@ -89,10 +89,11 @@ pid_t exec_path(char *command, arg_inventory_t *arginv)
 	{
 		_environ = zelda_to_ganondorf(arginv->envlist);
 		/*
-		redirect_output(arginv, 1);
-		if (redirect_input(arginv))
-			exec_error_exit("No such file or directory\n", command, _environ, arginv);
-		*/
+		 *		redirect_output(arginv, 1);
+		 *		if (redirect_input(arginv))
+		 *			exec_error_exit("No such file or directory\n", command,
+		 *_environ, arginv);
+		 */
 		if (execve(command, (char **)arginv->commands, _environ) < 0)
 			exec_error_exit("No Command\n", command, _environ, arginv);
 	}

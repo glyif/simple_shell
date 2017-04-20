@@ -18,13 +18,13 @@ ssize_t _getline(char **buffer, size_t *limit)
 		free(*buffer);
 		exit(EXT_SUCCESS);
 	}
-	
 
 	return (count);
 }
 
 /**
- * _readline - custom getline currently reads 1 char at a time from a file descriptor
+ * _readline - custom getline currently reads 1 char at a time from a file
+ * descriptor
  * @fd: file descriptor of the file to use for reading
  * @buffer: address of pointer to input commands buffer
  * @limit: maxsize of input character string, realloc if necessary

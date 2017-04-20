@@ -5,17 +5,17 @@
  * struct token - categorizes a token
  * @id: id of token from TOKEN_ macros
  * @str: token
+ * @prec: the prec
  */
 typedef struct token
 {
-        int id;
-        char *str;
-		int prec;
+	int id;
+	char *str;
+	int prec;
 } token_t;
 
 /**
  * struct tokens - struct for tokenizing string
- * @data: initial string separated with '\0', hold all the tokens
  * @tokens: array of token_t structs with tokenized strings and ids
  * @tokensN: amount of tokens parsed
  *
@@ -24,15 +24,16 @@ typedef struct token
  */
 typedef struct tokens
 {
-        token_t *tokens;
-        unsigned int tokensN;
+	token_t *tokens;
+	unsigned int tokensN;
 } tokens_t;
 
 /**
- * struct token_id
+ * struct token_id - baby token
  * @token_id: numerical id
  * @token_str: the exact token string to be compared with
  * @token_descr: for debugging
+ * @precedence: the precedence
  */
 typedef struct token_id
 {
@@ -72,9 +73,12 @@ typedef struct parser
 } parser_t;
 
 /**
- * struct process - this attributes a parse tree with TOKEN_STRING id with a process id
+ * struct process - this attributes a parse tree with TOKEN_STRING id with a
+ * process id
  * @ptree: ptree to process
  * @pid: pid
+ * @io_redir: io_redir
+ * @filename: filename
  */
 typedef struct process
 {
@@ -104,6 +108,7 @@ typedef struct pipeline
 /**
  * struct env - struct for holding custom environmental variables list
  * @var: environmental variable and value separated by '=' char
+ * @val: value of env var
  * @next: pointer to the next env variable node
  */
 typedef struct env
@@ -144,6 +149,22 @@ typedef struct alias
  * @input_commands: string of input commands
  * @envlist: custom davinci environ linked list
  * @buflimit: buflimit max of 1024 chars
+ * @commands: double pointer to commands list
+ * @st_mode: st_mode either FIFO or terminal
+ * @history: linked list of history
+ * @alias: linked list of aliases
+ * @tokens: tokens list
+ * @parser: a parse
+ * @pipeline: pipline list
+ * @n_bg_jobs: pipeline
+ * @pipein: pipein variable
+ * @pipeout: pipeout variable
+ * @io_redir: io redirection
+ * @filename: the filename
+ * @last_exit_code: last exit code
+ * @last_bg_pid: last pid
+ * @exit: indicator to exit or not
+ * @exit_status: the exit status
  */
 typedef struct arg_inventory
 {
@@ -154,19 +175,15 @@ typedef struct arg_inventory
 	int st_mode;
 	history_t *history;
 	alias_t *alias;
-
 	tokens_t   tokens;
 	parser_t   parser;
 	pipeline_t pipeline;
-
 	int n_bg_jobs;
-
 	int pipein;
-    int pipeout;
-
+	int pipeout;
 	/* 0 for no redirection, 3 for >, 4 >>, 5 < */
 	int io_redir;
-    char *filename;
+	char *filename;
 
 	int last_exit_code;
 	pid_t last_bg_pid;
@@ -189,7 +206,7 @@ typedef struct _builtins
 /**
  * struct bins - matches command to appropriate builtin function
  * @function: string of function name
- * @file: string of name of file
+ * @help: string of name of file
  */
 typedef struct bins
 {

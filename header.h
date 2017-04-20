@@ -42,7 +42,7 @@ extern char **environ;
 ssize_t _getline(char **buffer, size_t *limit);
 arg_inventory_t *buildarginv(void);
 int _filemode(int fd);
-ssize_t _readline(int fd,char **buffer, size_t *limit);
+ssize_t _readline(int fd, char **buffer, size_t *limit);
 
 /* ---------------execute--------------- */
 pid_t execute(arg_inventory_t *arginv);
@@ -92,7 +92,8 @@ int _unsetenv(arg_inventory_t *arginv);
 char *_strcat(char *dest, char *src);
 char *int_to_str(unsigned int n);
 void replace_str(char **old_str, char *new_str, int i, int j, int flg);
-char *_str_replace(char *string, unsigned int start, unsigned int end, char *rep);
+char *_str_replace(char *string, unsigned int start, unsigned int end,
+				   char *rep);
 
 /* -----custom C std lib----- */
 char _isspace(char c);
@@ -146,12 +147,14 @@ void free_paths(char **paths);
 
 /* ---------------ptree--------------- */
 ptree_t *ptree_new_node(ptree_t *parent);
-ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens, unsigned int *cur_token);
+ptree_t *ptree_new_string_node(ptree_t *parent, tokens_t *tokens,
+							   unsigned int *cur_token);
 int delete_ptree(ptree_t *node);
 
 /* ---------------parser--------------- */
 int parse_error(token_t *near);
-ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs, int min_prec);
+ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs,
+					int min_prec);
 int parse(parser_t *parser, tokens_t *tokens);
 int delete_parser(parser_t *parser);
 void expand_bash_vars(arg_inventory_t *arginv);
@@ -163,7 +166,7 @@ int init_pipeline_push_processes(pipeline_t *pipeline, ptree_t *tree);
 int init_pipeline(pipeline_t *pipeline, ptree_t *ptree);
 int worker_execute_core(arg_inventory_t *arginv);
 int worker_execute(arg_inventory_t *arginv);
-int delete_pipeline(pipeline_t * pipeline);
+int delete_pipeline(pipeline_t *pipeline);
 
 /* ---------------free--------------- */
 int freeall(arg_inventory_t *arginv);

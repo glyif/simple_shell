@@ -90,7 +90,7 @@ int delete_ptree(ptree_t *node)
 	if (node->strings)
 	{
 		i = 0;
-		while(node->strings[i])
+		while (node->strings[i])
 		{
 			free(node->strings[i]);
 			i++;

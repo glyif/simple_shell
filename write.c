@@ -9,6 +9,7 @@
 unsigned int write_history(history_t *head)
 {
 	unsigned int i = 0;
+
 	while (head)
 	{
 		write_uint(head->number);

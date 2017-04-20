@@ -60,11 +60,9 @@ int load_alias(arg_inventory_t *arginv)
 	home_node = fetch_node(arginv->envlist, "HOME");
 	home = home_node->val;
 	lenhome = _strlen(home);
-
 	file = safe_malloc(sizeof(char) * (_strlen(home) + lenname + 1));
 	file = _strncat(file, home, lenhome);
 	file = _strncat(file, name, lenname);
-
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
@@ -72,22 +70,16 @@ int load_alias(arg_inventory_t *arginv)
 		return (1);
 	}
 	buffer = (char *)safe_malloc(sz);
-
 	while ((count = _readline(fd, &buffer, &sz)) != 0)
 	{
 		while (buffer[count - 1] == '\n')
 			buffer[count - 1] = '\0';
-
 		val = buffer;
-
 		while (*val && *val != ':')
 			val++;
-
 		if (!*val)
 			break;
-
 		*(val++) = '\0';
-
 		add_node_alias(&arginv->alias, buffer, val);
 	}
 	free(file);
