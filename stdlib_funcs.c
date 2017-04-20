@@ -64,7 +64,7 @@ void _perror(char *string)
 }
 
 /**
- * memmove - shifting an array
+ * _memmove - shifting an array
  * @dest: dest
  * @src: source
  * @n: bytes to move
@@ -85,5 +85,4 @@ void _memmove(void *dest, void *src, size_t n)
 
 	for (i = 0; i < n; i++)
 		copy_dest[i] = temp[i];
- 
 }

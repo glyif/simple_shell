@@ -102,7 +102,7 @@ char *_strdup(char *str)
  * @s2: second string
  * @n: number of bytes to compare
  *
- * Return: difference of first characters that are of diff value or 0 on success
+ * Return: difference of first chars of diff value or 0 on success
  */
 int _strncmp(char *s1, char *s2, unsigned int n)
 {

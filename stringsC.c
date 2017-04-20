@@ -17,7 +17,6 @@ void replace_str(char **old_str, char *new_str, int i, int j, int flg)
 	tmp = _str_replace(*old_str, i, j, new_str);
 	free(*old_str);
 	*old_str = tmp;
-	
 	if (flg)
 		if (new_str[0])
 			free(new_str);
@@ -108,7 +107,8 @@ char *int_to_str(unsigned int n)
  *
  * Return: replaced string
  */
-char *_str_replace(char *string, unsigned int start, unsigned int end, char *rep)
+char *_str_replace(char *string, unsigned int start, unsigned int end,
+				   char *rep)
 {
 	char *new_str;
 
