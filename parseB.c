@@ -80,7 +80,7 @@ void expand_bash_vars(arg_inventory_t *arginv)
  * expand_alias - expand the alias found in the command strings
  *
  * @arginv: args inventory
- *
+ * Return: int
  */
 int expand_alias(arg_inventory_t *arginv)
 {

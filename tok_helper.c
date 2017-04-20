@@ -33,13 +33,14 @@ void delete_dups(tokens_t *tokens)
  */
 void token_classify(tokens_t *tokens)
 {
-	unsigned int i, j;
+	unsigned int i;
+	int j;
 
 	for (i = 0; i < tokens->tokensN; i++)
 	{
 		tokens->tokens[i].id = TOKEN_STRING;
 
-		for (j = 0; j < sizeof(token_names) / sizeof(token_names[0]); j++)
+		for (j = 0; token_names[j].token_id != 9; j++)
 		{
 			if (_strcmp(token_names[j].token_str, tokens->tokens[i].str) == 0)
 			{

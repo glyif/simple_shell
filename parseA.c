@@ -2,7 +2,6 @@
 
 /**
  * parse_error - prints parser error
- * @error: error to print
  * @near: where the issue is at
  *
  * Return: 1 because of error
@@ -33,15 +32,12 @@ ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs,
 	ptree_t *rhs, *new;
 
 	lookahead = *ntoken;
-
 	while (*ntoken < tokens->tokensN && tokens->tokens[lookahead].prec >=
 		   min_prec)
 	{
 		op = *ntoken;
 		*ntoken = *ntoken + 1;
-
 		rhs = ptree_new_string_node(lhs, tokens, ntoken);
-
 		if (rhs == NULL)
 		{
 			if (*ntoken < tokens->tokensN || tokens->tokens[op].id !=
@@ -54,28 +50,23 @@ ptree_t *parse_expr(unsigned int *ntoken, tokens_t *tokens, ptree_t *lhs,
 		else if (*ntoken < tokens->tokensN)
 		{
 			lookahead = *ntoken;
-
 			while (*ntoken < tokens->tokensN && tokens->tokens[lookahead].id !=
 				   TOKEN_STRING && tokens->tokens[lookahead].prec >
 				   tokens->tokens[op].prec)
 			{
 				rhs = parse_expr(ntoken, tokens, rhs,
 								 tokens->tokens[lookahead].prec);
-
 				if (rhs == NULL)
 					return (NULL);
-
 				lookahead = *ntoken;
 			}
 		}
-
 		new = ptree_new_node(NULL);
 		new->token_id = tokens->tokens[op].id;
 		new->left = lhs;
 		new->right = rhs;
 		lhs = new;
 	}
-
 	return (lhs);
 }
 
