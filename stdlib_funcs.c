@@ -62,3 +62,27 @@ void _perror(char *string)
 
 	write(STDERR_FILENO, string, len);
 }
+
+/**
+ * _memmove - shifting an array
+ * @dest: dest
+ * @src: source
+ * @n: bytes to move
+ */
+void _memmove(void *dest, void *src, size_t n)
+{
+	char *copy_source;
+	char *copy_dest;
+	char *temp;
+	size_t i;
+
+	copy_source = (char *) src;
+	copy_dest = (char *)dest;
+	temp = malloc(sizeof(char) * 1024);
+
+	for (i = 0; i < n; i++)
+		temp[i] = copy_source[i];
+
+	for (i = 0; i < n; i++)
+		copy_dest[i] = temp[i];
+}

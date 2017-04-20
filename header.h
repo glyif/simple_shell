@@ -57,6 +57,9 @@ int delete_tokens(tokens_t *tokens);
 int tokenize(tokens_t *tokens, const char *string);
 int is_redirection(int token_id);
 void init_tokens(tokens_t *tokens, int length);
+void delete_dups(tokens_t *tokens);
+void token_classify(tokens_t *tokens);
+
 
 /* -------custom environ------- */
 env_t *env_list(void);
@@ -98,6 +101,7 @@ char *_str_replace(char *string, unsigned int start, unsigned int end, char *rep
 char _isspace(char c);
 int _atoi(char *s);
 void _perror(char *string);
+void _memmove(void *dest, void *src, size_t n);
 
 /* ---------------custom malloc--------------- */
 char *mem_reset(char *str, int bytes);
