@@ -57,7 +57,7 @@ int main(void)
 	while (!arginv->exit)
 	{
 		if (arginv->st_mode)
-			write(STDOUT_FILENO, "$ ", 2);
+			print_prompt(arginv->envlist);
 		if(!_getline(&arginv->input_commands, &arginv->buflimit))
 			break;
 		add_node_history(&arginv->history, arginv->input_commands);

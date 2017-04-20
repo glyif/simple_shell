@@ -185,4 +185,6 @@ void h_cd(void);
 void h_alias(void);
 void h_help(void);
 
+void print_prompt(env_t *envlist);
+
 #endif
