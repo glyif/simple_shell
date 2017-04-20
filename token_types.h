@@ -10,6 +10,7 @@ token_types token_names[] = {
 	{ TOKEN_PIPE,       "|",  "pipe",       3 },
 	{ TOKEN_REWRITE,    ">",  "rewrite",    4 },
 	{ TOKEN_APPEND,     ">>", "append",     4 },
-	{ TOKEN_CAT,        "<",  "cat",        4 }
+	{ TOKEN_CAT,        "<",  "cat",        4 },
+	{ 9, '\0', '\0', 9}
 };
 #endif
