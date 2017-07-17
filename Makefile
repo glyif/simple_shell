@@ -32,8 +32,7 @@ CFILES=\
 	tokenize.c\
 	tokenizer.c\
 	worker.c\
-	write.c\
-	tok_helper.c
+	write.c
 
 GLOBAL_HEADERS=\
 	header.h

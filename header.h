@@ -54,7 +54,7 @@ pid_t exec_path(char *command, arg_inventory_t *arginv);
 
 /* ---------------tokenizer--------------- */
 int delete_tokens(tokens_t *tokens);
-int tokenize(tokens_t *tokens, const char *string);
+void tokenize(tokens_t *tokens, const char *string);
 int is_redirection(int token_id);
 void init_tokens(tokens_t *tokens, int length);
 void delete_dups(tokens_t *tokens);
