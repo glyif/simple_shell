@@ -12,9 +12,7 @@ env_t *add_node_env(env_t **head, char *var, char *val)
 {
 	env_t *new_node, *temp;
 
-	new_node = malloc(sizeof(env_t));
-	if (new_node == NULL)
-		return (NULL);
+	new_node = safe_malloc(sizeof(env_t));
 
 	new_node->var = _strdup(var);
 	new_node->val = _strdup(val);

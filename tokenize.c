@@ -8,7 +8,7 @@
 void tokenize(tokens_t *tokens, const char *string)
 {
 	unsigned int l, string_idx, data_idx, tokens_idx;
-	unsigned int skip_next, skip_quote, is_token, i;
+	unsigned int skip_next, skip_quote, is_token;
 	char *data, symbol;
 
 	l = (_strlen(string) == 0 ? 1 : _strlen(string));
@@ -34,7 +34,7 @@ void tokenize(tokens_t *tokens, const char *string)
 			data[data_idx++] = ';', data[data_idx++] = '\0', is_token = 0;
 			continue;
 		}
-		if ((symbol == '\"') && !skip_next)
+		if ((symbol == '\"' || symbol == '\'') && !skip_next)
 		{
 			skip_quote = !skip_quote;
 			continue;
@@ -46,10 +46,24 @@ void tokenize(tokens_t *tokens, const char *string)
 		}
 		skip_next = 0, data[data_idx++] = symbol;
 	}
-	data[data_idx] = '\0';
+	cleanup_tokens(tokens, tokens_idx, data);
+}
+
+/**
+ * cleanup_tokens - cleans up tokeniz functions
+ * @tokens: the tokenized tokens variable
+ * @tokens_idx: the index referring to the tokens
+ * @data: pointer used to store the data in tokens, only used in this
+ * function to free the memory there
+ */
+void cleanup_tokens(tokens_t *tokens, unsigned int tokens_idx, char *data)
+{
+	unsigned int i;
+
 	tokens->tokensN = tokens_idx;
 	token_classify(tokens);
 	delete_dups(tokens);
+
 	if (tokens->tokensN)
 	{
 		if (tokens->tokens[tokens->tokensN - 1].id == TOKEN_SEMICOLON)

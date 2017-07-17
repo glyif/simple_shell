@@ -7,11 +7,13 @@
 arg_inventory_t *buildarginv(void)
 {
 	arg_inventory_t *arginv;
+	char *file, *home, *name = "/.simple_shell_history";
+	int lenhome, lenname;
+	env_t *home_node;
 
 	arginv = safe_malloc(sizeof(arg_inventory_t));
 	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
 	arginv->envlist = env_list();
-	arginv->history = history_list(arginv);
 	arginv->alias = alias_list();
 	arginv->buflimit = BUFSIZE;
 	arginv->st_mode = _filemode(STDIN_FILENO);
@@ -20,11 +22,16 @@ arg_inventory_t *buildarginv(void)
 	arginv->n_bg_jobs = 0;
 	arginv->exit = 0;
 	arginv->exit_status = 0;
-	if (arginv->envlist == NULL)
-	{
-		_perror("No Memory\n");
-		write(STDOUT_FILENO, "insufficient memory", 19);
-	}
+
+	/* initialize history and history file */
+	home_node = fetch_node(arginv->envlist, "HOME");
+	home = home_node->val;
+	lenhome = _strlen(home), lenname = _strlen(name);
+	file = safe_malloc(sizeof(char) * (lenhome + lenname + 1));
+	file = _strncat(file, home, lenhome);
+	file = _strncat(file, name, lenname);
+	arginv->history_file = file;
+	arginv->history = history_list(arginv);
 
 	load_alias(arginv);
 
