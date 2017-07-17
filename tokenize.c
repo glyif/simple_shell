@@ -15,11 +15,8 @@ void tokenize(tokens_t *tokens, const char *string)
 	init_tokens(tokens, l);
 	data = safe_malloc((l * 2 + 1) * sizeof(char));
 	string_idx = data_idx = tokens_idx = skip_next = skip_quote = is_token = 0;
-
-	while (string[string_idx] != '\0' && string[string_idx] != '#')
+	while ((symbol = string[string_idx++]) != '\0' && symbol != '#')
 	{
-		symbol = string[string_idx++];
-
 		if (!is_token && _isspace(symbol))
 			continue;
 		if (!is_token && !_isspace(symbol) && (symbol != ';'))
@@ -50,14 +47,15 @@ void tokenize(tokens_t *tokens, const char *string)
 		skip_next = 0, data[data_idx++] = symbol;
 	}
 	data[data_idx] = '\0';
-
 	tokens->tokensN = tokens_idx;
 	token_classify(tokens);
 	delete_dups(tokens);
-
-	if (tokens->tokensN && tokens->tokens[tokens->tokensN - 1].id == TOKEN_SEMICOLON)
-		tokens->tokensN--;
-	for (i = 0; i < tokens->tokensN; i++)
-		tokens->tokens[i].str = _strdup((char *)tokens->tokens[i].str);
+	if (tokens->tokensN)
+	{
+		if (tokens->tokens[tokens->tokensN - 1].id == TOKEN_SEMICOLON)
+			tokens->tokensN--;
+		for (i = 0; i < tokens->tokensN; i++)
+			tokens->tokens[i].str = _strdup((char *)tokens->tokens[i].str);
+	}
 	free(data);
 }
