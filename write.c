@@ -86,15 +86,16 @@ size_t print_list(env_t *head)
 {
 	unsigned int i = 0;
 	char **_environ;
-	unsigned int count = link_count(head);
 
 	_environ = zelda_to_ganondorf(head);
 
-	while (i < count)
+	while (_environ[i])
 	{
 		_puts(_environ[i]);
+		free(_environ[i]);
 		i++;
 	}
 
+	free(_environ);
 	return (i);
 }
