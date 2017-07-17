@@ -71,12 +71,10 @@ void _perror(char *string)
  */
 void _memmove(void *dest, void *src, size_t n)
 {
-	char *copy_source;
-	char *copy_dest;
-	char *temp;
+	char *copy_source, *copy_dest, *temp;
 	size_t i;
 
-	copy_source = (char *) src;
+	copy_source = (char *)src;
 	copy_dest = (char *)dest;
 	temp = malloc(sizeof(char) * 1024);
 
@@ -85,4 +83,5 @@ void _memmove(void *dest, void *src, size_t n)
 
 	for (i = 0; i < n; i++)
 		copy_dest[i] = temp[i];
+	free(temp);
 }

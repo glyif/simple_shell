@@ -51,6 +51,7 @@ void sig_handler(int sig)
 int main(void)
 {
 	arg_inventory_t *arginv;
+	int exit_status;
 
 	arginv = buildarginv();
 	signal(SIGINT, sig_handler);
@@ -83,7 +84,7 @@ int main(void)
 
 		delete_tokens(&arginv->tokens);
 	}
-	freeall(arginv);
+	exit_status = freeall(arginv);
 
-	return (arginv->exit_status);
+	return (exit_status);
 }

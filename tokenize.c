@@ -49,8 +49,9 @@ void tokenize(tokens_t *tokens, const char *string)
 		}
 		skip_next = 0, data[data_idx++] = symbol;
 	}
+	data[data_idx] = '\0';
 
-	data[data_idx] = '\0', tokens->tokensN = tokens_idx;
+	tokens->tokensN = tokens_idx;
 	token_classify(tokens);
 	delete_dups(tokens);
 
@@ -58,4 +59,5 @@ void tokenize(tokens_t *tokens, const char *string)
 		tokens->tokensN--;
 	for (i = 0; i < tokens->tokensN; i++)
 		tokens->tokens[i].str = _strdup((char *)tokens->tokens[i].str);
+	free(data);
 }

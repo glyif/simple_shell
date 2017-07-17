@@ -8,19 +8,22 @@
  */
 int freeall(arg_inventory_t *arginv)
 {
-	save_alias(arginv);
+	int exit_status;
 
-	file_history(arginv);
+	if (arginv)
+	{
+		save_alias(arginv);
+		file_history(arginv);
+		free_history(arginv->history);
+		free_environ(arginv->envlist);
+		free_alias(arginv->alias);
+		if (arginv->input_commands)
+			free(arginv->input_commands);
+		exit_status = arginv->exit_status;
+		free(arginv);
+	}
 
-	free_history(arginv->history);
-
-	free_environ(arginv->envlist);
-
-	free_alias(arginv->alias);
-
-	free(arginv->input_commands);
-
-	return (EXT_SUCCESS);
+	return (exit_status);
 }
 
 /**
