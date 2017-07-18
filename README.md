@@ -27,9 +27,13 @@ our blog posting here:
 
 ## Usage
 
-**Compile**: `$ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh`
+### compile
 
-**Using Make**: `make all`
+```
+$ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
+```
+
+**Compile with Make**: `make all`
 
 ### executing the program
 
