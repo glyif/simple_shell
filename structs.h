@@ -152,7 +152,8 @@ typedef struct alias
  * @commands: double pointer to commands list
  * @st_mode: st_mode either FIFO or terminal
  * @history: linked list of history
- * @history_file: the history file to story history in
+ * @history_file: the history file to store command history
+ * @alias_file: the aliases file to store aliases
  * @alias: linked list of aliases
  * @tokens: tokens list
  * @parser: a parse
@@ -177,8 +178,9 @@ typedef struct arg_inventory
 	history_t *history;
 	char *history_file;
 	alias_t *alias;
-	tokens_t   tokens;
-	parser_t   parser;
+	char *alias_file;
+	tokens_t tokens;
+	parser_t parser;
 	pipeline_t pipeline;
 	int n_bg_jobs;
 	int pipein;

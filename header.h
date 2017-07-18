@@ -40,9 +40,12 @@ extern char **environ;
 
 /* ---------------main--------------- */
 ssize_t _getline(char **buffer, size_t *limit);
-arg_inventory_t *buildarginv(void);
 int _filemode(int fd);
 ssize_t _readline(int fd, char **buffer, size_t *limit);
+
+/* --------- arguments inventory ---------- */
+arg_inventory_t *buildarginv(void);
+char *set_name(env_t *envlist, char *name);
 
 /* ---------------execute--------------- */
 pid_t execute(arg_inventory_t *arginv);

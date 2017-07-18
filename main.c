@@ -1,44 +1,6 @@
 #include "header.h"
 
 /**
- * buildarginv - function to build a struct of the arguments inventory
- * Return: pointer to arguments inventory struct
- */
-arg_inventory_t *buildarginv(void)
-{
-	arg_inventory_t *arginv;
-	char *file, *home, *name = "/.simple_shell_history";
-	int lenhome, lenname;
-	env_t *home_node;
-
-	arginv = safe_malloc(sizeof(arg_inventory_t));
-	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
-	arginv->envlist = env_list();
-	arginv->alias = alias_list();
-	arginv->buflimit = BUFSIZE;
-	arginv->st_mode = _filemode(STDIN_FILENO);
-	arginv->last_exit_code = 0;
-	arginv->last_bg_pid = -1;
-	arginv->n_bg_jobs = 0;
-	arginv->exit = 0;
-	arginv->exit_status = 0;
-
-	/* initialize history and history file */
-	home_node = fetch_node(arginv->envlist, "HOME");
-	home = home_node->val;
-	lenhome = _strlen(home), lenname = _strlen(name);
-	file = safe_malloc(sizeof(char) * (lenhome + lenname + 1));
-	file = _strncat(file, home, lenhome);
-	file = _strncat(file, name, lenname);
-	arginv->history_file = file;
-	arginv->history = history_list(arginv);
-
-	load_alias(arginv);
-
-	return (arginv);
-}
-
-/**
  * sig_handler - handles user input of ^C with the following
  * @sig: integer value of signal to change, will be SIGINT = ^C
  *

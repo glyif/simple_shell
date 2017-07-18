@@ -9,18 +9,10 @@
 int save_alias(arg_inventory_t *arginv)
 {
 	alias_t *tmp = arginv->alias;
-	char *name = "/.simple_shell_alias";
-	char *file, *home, *buffer;
-	env_t *home_node;
-	int lenhome, fd, lenname = _strlen(name);
+	char *file, *buffer;
+	int fd;
 
-	home_node = fetch_node(arginv->envlist, "HOME");
-	home = home_node->val;
-	lenhome = _strlen(home);
-
-	file = safe_malloc(sizeof(char) * (_strlen(home) + lenname + 1));
-	file = _strncat(file, home, lenhome);
-	file = _strncat(file, name, lenname);
+	file = arginv->alias_file;
 
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	close(fd);
@@ -38,7 +30,6 @@ int save_alias(arg_inventory_t *arginv)
 		free(buffer);
 	}
 
-	free(file);
 	return (0);
 }
 
@@ -52,17 +43,11 @@ int load_alias(arg_inventory_t *arginv)
 {
 	ssize_t count;
 	size_t sz = BUFSIZE;
-	char *name = "/.simple_shell_alias";
-	char *file, *home, *buffer, *val;
-	env_t *home_node;
-	int lenhome, fd, lenname = _strlen(name);
+	char *file, *buffer, *val;
+	int fd;
 
-	home_node = fetch_node(arginv->envlist, "HOME");
-	home = home_node->val;
-	lenhome = _strlen(home);
-	file = safe_malloc(sizeof(char) * (_strlen(home) + lenname + 1));
-	file = _strncat(file, home, lenhome);
-	file = _strncat(file, name, lenname);
+	file = arginv->alias_file;
+
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
@@ -82,7 +67,6 @@ int load_alias(arg_inventory_t *arginv)
 		*(val++) = '\0';
 		add_node_alias(&arginv->alias, buffer, val);
 	}
-	free(file);
 	free(buffer);
 	close(fd);
 	return (0);

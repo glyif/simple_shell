@@ -6,6 +6,7 @@ EXENAME=hsh
 CFILES=\
 	aliasA.c\
 	aliasB.c\
+	buildarginv.c\
 	builtinA.c\
 	builtinB.c\
 	cd.c\
