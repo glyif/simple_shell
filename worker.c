@@ -22,9 +22,7 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 		arginv->commands = ptree->strings;
 		ptree->stringsN += expand_alias(arginv);
 		ptree->strings = arginv->commands;
-
 		/* pipe(p); Create the two-way pipe */
-
 		/**
 		 * arginv->pipein = fd_input;
 		 * arginv->pipeout = (i + 1 < arginv->pipeline.processesN) ? p[1] : 0;
@@ -40,45 +38,44 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 		 *			arginv->io_redir = 0;
 		 *		}
 		 */
-
 		arginv->pipeline.processes[i].pid = execute(arginv);
 		/**
 		 * close(p[1]); Close non-needed descriptor
 		 * fd_input = p[0];  The input should be saved for the next comman
 		 */
 	}
-
 	return (arginv->pipeline.processes[arginv->pipeline.processesN - 1].pid);
 }
 
+/**
+ * worker_execute_tree - this executes ptree
+ * @arginv: arg inventory
+ * @ptree: the parsing tree
+ * @depth: the depth of parsing tree
+ *
+ * Return: the last pid
+ */
 pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 						  unsigned int depth)
 {
-	int status;
+	int status, id, execute;
 	pid_t last_pid = -1;
-	int execute;
 
 	if (!ptree)
 		return (last_pid);
-
-	/* execute pipeline */
-	if (ptree->token_id == TOKEN_STRING || ptree->token_id == TOKEN_PIPE ||
-		is_redirection(ptree->token_id))
-	{
-	    init_pipeline(&arginv->pipeline, ptree);
-	    last_pid = worker_execute_core(arginv);
+	id = ptree->token_id;
+	if (id == TOKEN_STRING || id == TOKEN_PIPE || is_redirection(id))
+	{ /* execute pipeline */
+		init_pipeline(&arginv->pipeline, ptree);
+		last_pid = worker_execute_core(arginv);
 		delete_pipeline(&arginv->pipeline);
 		return (last_pid);
-	}
-
-	/* recursive call on each child */
+	} /* recursive call on each child */
 	if (ptree->left)
 	{
 		last_pid = worker_execute_tree(arginv, ptree->left, depth + 1);
-
-		if (ptree->token_id != TOKEN_BACKGROUND)
-		{
-			/* wait for the child */
+		if (id != TOKEN_BACKGROUND)
+		{ /* wait for the child */
 			waitpid(last_pid, &status, 0);
 
 			if (WIFEXITED(status))
@@ -92,20 +89,10 @@ pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 			arginv->last_bg_pid = last_pid;
 			status = 0;
 		}
-
 		arginv->last_exit_code = status;
 		execute = 1;
-
-		if (ptree->token_id == TOKEN_AND)
-		{
-			if (status != EXIT_SUCCESS)
-				execute = 0;
-		}
-		else if (ptree->token_id == TOKEN_OR)
-		{
-			if (status == EXIT_SUCCESS)
-				execute = 0;
-		}
+		if ((id == TOKEN_AND || id == TOKEN_OR)	&& status != EXIT_SUCCESS)
+			execute = 0;
 		if (execute)
 			last_pid = worker_execute_tree(arginv, ptree->right, depth + 1);
 	}
