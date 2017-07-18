@@ -67,7 +67,7 @@ int _unalias(arg_inventory_t *arginv)
 }
 
 /**
- * the_help - prints mona lisa ascii art
+ * the_help - prints help commands info based on the other input argument
  * @arginv: arguments inventory
  *
  * Return: 0 on success
