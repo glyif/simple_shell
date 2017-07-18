@@ -88,7 +88,7 @@ void _memmove(void *dest, void *src, size_t n)
 
 /**
  * is_uint - checks if input string is unsigned int
- * @number: the input number
+ * @num: the input number
  * Return: TRUE or FALSE
  */
 int is_uint(char *num)
