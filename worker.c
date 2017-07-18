@@ -91,7 +91,7 @@ pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 		}
 		arginv->last_exit_code = status;
 		execute = 1;
-		if ((id == TOKEN_AND || id == TOKEN_OR)	&& status != EXIT_SUCCESS)
+		if ((id == TOKEN_AND && status) || (id == TOKEN_OR && !status))
 			execute = 0;
 		if (execute)
 			last_pid = worker_execute_tree(arginv, ptree->right, depth + 1);
