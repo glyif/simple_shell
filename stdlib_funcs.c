@@ -85,3 +85,25 @@ void _memmove(void *dest, void *src, size_t n)
 		copy_dest[i] = temp[i];
 	free(temp);
 }
+
+/**
+ * is_uint - checks if input string is unsigned int
+ * @number: the input number
+ * Return: TRUE or FALSE
+ */
+int is_uint(char *num)
+{
+	int i = 0;
+
+	while (num[i])
+	{
+		if (num[i] > 47 && num[i] < 58)
+			i++;
+		else if (num[i] == 45 && i == 0)
+			return (FALSE);
+		else
+			return (FALSE);
+	}
+
+	return (TRUE);
+}

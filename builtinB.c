@@ -117,9 +117,9 @@ int the_exit(arg_inventory_t *arginv)
 	int es;
 
 	commands = (char **)arginv->commands;
-	if (commands[1] == '\0')
+	if (commands[1] == NULL)
 		arginv->exit = 1;
-	else if (commands[1][0] > 47 && commands[1][0] < 58)
+	else if (is_uint(commands[1]))
 	{
 		es = _atoi(commands[1]);
 		arginv->exit = 1;

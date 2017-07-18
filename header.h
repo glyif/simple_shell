@@ -106,6 +106,7 @@ char _isspace(char c);
 int _atoi(char *s);
 void _perror(char *string);
 void _memmove(void *dest, void *src, size_t n);
+int is_uint(char *num);
 
 /* ---------------custom malloc--------------- */
 char *mem_reset(char *str, int bytes);
