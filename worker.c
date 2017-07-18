@@ -58,7 +58,7 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 						  unsigned int depth)
 {
-	int status, id, execute;
+	int status = NULL, id, execute = 1;
 	pid_t last_pid = -1;
 
 	if (!ptree)
@@ -90,7 +90,6 @@ pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 			status = 0;
 		}
 		arginv->last_exit_code = status;
-		execute = 1;
 		if ((id == TOKEN_AND && status) || (id == TOKEN_OR && !status))
 			execute = 0;
 		if (execute)
