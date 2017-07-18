@@ -46,6 +46,11 @@ command with flags.  This command lists directory contents.
 $ ls -la
 ```
 
+## Testing
+
+To run tests on the custom shell follow the instructions in the custom shell
+checker in this repository: https://github.com/glyif/shellfish
+
 ## File List
 
 See file `./FILE_LIST.md`
