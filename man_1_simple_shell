@@ -69,7 +69,7 @@ the arsine executable file ('hsh').  This is an example:
 .B $ echo 'ls' | ./hsh
 .P
 .RE
-Commands may also be input into daVinci through a file containing commands:
+Commands may also be input into arsine through a file containing commands:
 .P
 .RS
 .B $ cat aFile | ./hsh
@@ -81,13 +81,13 @@ Commands may also be input into daVinci through a file containing commands:
 .SH OPTIONS
 
 arsine does not take any options but does utilize the variable extern char \
-**environ.  This is currently part of the future goals of daVinci
+**environ.  This is currently part of the future goals of arsine
 
 
 .SS BUILT-IN COMMANDS
 
 .RS
-This secion has information on the included builtin commands with daVinci
+This secion has information on the included builtin commands with arsine
 
 .Bl -tag -width "PAGEIN" -compact -offset indent
 
@@ -146,5 +146,3 @@ none known.  arsine does not currently replicate these tasks:
 Bobby Yang <122@holberton.com>
 
 David John Coleman II <lcsw@davidjohncoleman.com>
-
-special thanks to: walter white
