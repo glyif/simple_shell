@@ -5,9 +5,9 @@
  */
 void h_alias(void)
 {
-	_puts("this is a help file:");
-	_puts("first: goolge your question");
-	_puts("second: contact developers for help");
+	_puts("\nUsage: $ alias [NAME]=[VALUE]");
+	_puts("\tDefine or display aliases, in the form:");
+	_puts("\n\talias [NAME]=[VALUE]");
 }
 
 /**
@@ -15,9 +15,8 @@ void h_alias(void)
  */
 void h_cd(void)
 {
-	_puts("this is a help file:");
-	_puts("first: goolge your question");
-	_puts("second: contact developers for help");
+	_puts("\nUsage: $ cd");
+	_puts("\tChange the shell working directory.");
 }
 
 /**
@@ -25,9 +24,9 @@ void h_cd(void)
  */
 void h_env(void)
 {
-	_puts("this is a help file:");
-	_puts("first: goolge your question");
-	_puts("second: contact developers for help");
+	_puts("\nUsage: $ env");
+	_puts("\tDisplay all environmental variables, in the form:");
+	_puts("\n\t[NAME]=[VALUE]");
 }
 
 /**
@@ -35,9 +34,8 @@ void h_env(void)
  */
 void h_exit(void)
 {
-	_puts("this is a help file:");
-	_puts("first: goolge your question");
-	_puts("second: contact developers for help");
+	_puts("\nUsage: $ exit");
+	_puts("\tExit the shell.");
 }
 
 /**
@@ -45,7 +43,6 @@ void h_exit(void)
  */
 void h_help(void)
 {
-	_puts("this is a help file:");
-	_puts("first: goolge your question");
-	_puts("second: contact developers for help");
+	_puts("\nUsage: $ help [command]");
+	_puts("\tDisplay information about builtin commands.");
 }

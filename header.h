@@ -179,7 +179,7 @@ int free_alias(alias_t *head);
 
 /* ----help---- */
 void h_exit(void);
-void h_monalisa(void);
+void h_arsine(void);
 void h_env(void);
 void h_setenv(void);
 void h_unsetenv(void);

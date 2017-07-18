@@ -77,7 +77,7 @@ int the_help(arg_inventory_t *arginv)
 	char **commands;
 	int i = 0;
 	bins_t bins[] = {
-		{"exit", h_exit}, {"monalisa", h_monalisa}, {"env", h_env},
+		{"exit", h_exit}, {"arsine", h_arsine}, {"env", h_env},
 		{"setenv", h_setenv}, {"unsetenv", h_unsetenv},
 		{"history", h_history}, {"cd", h_cd}, {"alias", h_alias},
 		{"help", h_help},
