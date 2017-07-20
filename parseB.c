@@ -11,10 +11,7 @@ int _getpid(void)
 
 	pid = fork();
 
-	if (pid > 0)
-		return (pid);
-	else
-		return (pid);
+	return (pid);
 }
 
 /**

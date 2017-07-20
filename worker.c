@@ -78,10 +78,8 @@ pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 		{ /* wait for the child */
 			waitpid(last_pid, &status, 0);
 
-			if (WIFEXITED(status))
-				status = WEXITSTATUS(status);
-			else
-				status = 1;
+			status = WEXITSTATUS(status);
+			arginv->exit_status = status ? 127 : status;
 		}
 		else
 		{
@@ -119,8 +117,7 @@ int worker_execute(arg_inventory_t *arginv)
 		{
 			status = 1;
 			waitpid(last_pid, &status, 0);
-			if (WIFEXITED(status))
-				status = WEXITSTATUS(status);
+			status = WEXITSTATUS(status);
 		}
 		else
 		{
@@ -129,6 +126,7 @@ int worker_execute(arg_inventory_t *arginv)
 			status = 0;
 		}
 		arginv->last_exit_code = status;
+		arginv->exit_status = status ? 127 : status;
 	}
 	return (0);
 }

@@ -13,12 +13,6 @@ ssize_t _getline(char **buffer, size_t *limit)
 
 	count = _readline(STDIN_FILENO, buffer, limit);
 
-	if (count == 0)
-	{
-		free(*buffer);
-		exit(EXT_SUCCESS);
-	}
-
 	return (count);
 }
 
