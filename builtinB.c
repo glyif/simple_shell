@@ -75,7 +75,7 @@ int _unalias(arg_inventory_t *arginv)
 int the_help(arg_inventory_t *arginv)
 {
 	char **commands;
-	int i = 0;
+	int i = 0, retval = 127;
 	bins_t bins[] = {
 		{"exit", h_exit}, {"arsine", h_arsine}, {"env", h_env},
 		{"setenv", h_setenv}, {"unsetenv", h_unsetenv},
@@ -89,7 +89,7 @@ int the_help(arg_inventory_t *arginv)
 	if (commands[2] != NULL)
 	{
 		_perror("help: too many input commands.\n");
-		return (-1);
+		return (retval);
 	}
 
 	while (bins[i].function != NULL)
@@ -97,12 +97,13 @@ int the_help(arg_inventory_t *arginv)
 		if (_strcmp(bins[i].function, commands[1]) == 0)
 		{
 			bins[i].help();
+			retval = EXT_SUCCESS;
 			break;
 		}
 		i++;
 	}
 
-	return (EXT_SUCCESS);
+	return (retval);
 }
 
 /**

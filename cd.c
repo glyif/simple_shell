@@ -65,7 +65,7 @@ int _cd(arg_inventory_t *arginv)
 		free(oldpwd);
 		free(pwd);
 		free(path);
-		return (-1);
+		return (2);
 	}
 	else
 	{

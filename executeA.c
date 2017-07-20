@@ -42,7 +42,7 @@ int exec_builtins(arg_inventory_t *arginv)
 	 *		close(old_stdout);
 	 *	}
 	 */
-
+	arginv->exit_status = retval;
 	return (retval);
 }
 
