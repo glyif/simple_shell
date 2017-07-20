@@ -126,7 +126,15 @@ int worker_execute(arg_inventory_t *arginv)
 			status = 0;
 		}
 		arginv->last_exit_code = status;
-		arginv->exit_status = status ? 127 : status;
+		switch (status)
+		{
+		case 1:
+			arginv->exit_status = 127;
+			break;
+		default:
+			arginv->exit_status = status;
+			break;
+		}
 	}
 	return (0);
 }
