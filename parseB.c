@@ -35,7 +35,7 @@ void bash_replace(arg_inventory_t *arginv, int index)
 					break;
 				case '?':
 					replace_str((char **)&t.tokens[index].str,
-						int_to_str(arginv->last_exit_code), j,
+						int_to_str(arginv->exit_status), j,
 						j + 1, 1);
 					break;
 				case '!':

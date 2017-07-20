@@ -163,7 +163,6 @@ typedef struct alias
  * @pipeout: pipeout variable
  * @io_redir: io redirection
  * @filename: the filename
- * @last_exit_code: last exit code
  * @last_bg_pid: last pid
  * @exit: indicator to exit or not
  * @exit_status: the exit status
@@ -189,7 +188,6 @@ typedef struct arg_inventory
 	int io_redir;
 	char *filename;
 
-	int last_exit_code;
 	pid_t last_bg_pid;
 
 	int exit;

@@ -58,7 +58,7 @@ pid_t worker_execute_core(arg_inventory_t *arginv)
 pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 						  unsigned int depth)
 {
-	int status = NULL, id, execute = 1;
+	int status = 0, id, execute = 1;
 	pid_t last_pid = -1;
 
 	if (!ptree)
@@ -77,17 +77,19 @@ pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 		if (id != TOKEN_BACKGROUND)
 		{ /* wait for the child */
 			waitpid(last_pid, &status, 0);
-
 			status = WEXITSTATUS(status);
-			arginv->exit_status = status ? 127 : status;
 		}
 		else
+			arginv->n_bg_jobs++, arginv->last_bg_pid = last_pid;
+		switch (status)
 		{
-			arginv->n_bg_jobs++;
-			arginv->last_bg_pid = last_pid;
-			status = 0;
+		case 1:
+			arginv->exit_status = 127;
+			break;
+		default:
+			arginv->exit_status = status;
+			break;
 		}
-		arginv->last_exit_code = status;
 		if ((id == TOKEN_AND && status) || (id == TOKEN_OR && !status))
 			execute = 0;
 		if (execute)
@@ -105,7 +107,7 @@ pid_t worker_execute_tree(arg_inventory_t *arginv, ptree_t *ptree,
 int worker_execute(arg_inventory_t *arginv)
 {
 	pid_t last_pid;
-	int status;
+	int status = 0;
 
 	arginv->n_bg_jobs = 0;
 
@@ -115,7 +117,6 @@ int worker_execute(arg_inventory_t *arginv)
 	{
 		if (arginv->parser.tree->token_id != TOKEN_BACKGROUND)
 		{
-			status = 1;
 			waitpid(last_pid, &status, 0);
 			status = WEXITSTATUS(status);
 		}
@@ -123,9 +124,7 @@ int worker_execute(arg_inventory_t *arginv)
 		{
 			arginv->n_bg_jobs++;
 			arginv->last_bg_pid = last_pid;
-			status = 0;
 		}
-		arginv->last_exit_code = status;
 		switch (status)
 		{
 		case 1:

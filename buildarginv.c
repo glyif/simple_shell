@@ -13,7 +13,6 @@ arg_inventory_t *buildarginv(void)
 	arginv->envlist = env_list();
 	arginv->buflimit = BUFSIZE;
 	arginv->st_mode = _filemode(STDIN_FILENO);
-	arginv->last_exit_code = 0;
 	arginv->last_bg_pid = -1;
 	arginv->n_bg_jobs = 0;
 	arginv->exit = 0;
