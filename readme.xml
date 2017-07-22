@@ -1,0 +1,18 @@
+<readme>
+    <logo src="https://www.holbertonschool.com/assets/holberton-logo-1cc451260ca3cd297def53f2250a9794810667c7ca7b5fa5879a569a457bf16f.png" alt="Holberton logo"></logo>
+    <title>Your Document Title</title>
+    <author prefix="Author:" suffix="(Description)">
+        Bobby Yang
+    </author>
+    <paragraph header="Paragraph Header">
+You can type any text information in this paragraph block. All the
+Markdown (md) decorators can be use inside here in order to markup
+your text, they will be keep as-is while being parsed.
+    </paragraph>
+    <files header="File Breakdown">
+        <file path="*"></file>
+    </files>
+    <license header="License" type="MIT">
+        More descriptions of your license go here if any
+    </license>
+</readme>
