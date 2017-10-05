@@ -25,6 +25,8 @@ commands is designed to replicate output from the shell `sh` (dash) and some
 bash commands.  For more on the detailed functionality of our shell, please read
 our blog posting here:
 
+## Dockerizing
+
 ## File List
 
 See file `./FILE_LIST.md`
