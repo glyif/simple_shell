@@ -25,7 +25,35 @@ commands is designed to replicate output from the shell `sh` (dash) and some
 bash commands.  For more on the detailed functionality of our shell, please read
 our blog posting here:
 
-## Dockerizing
+## Usage
+
+### compile
+
+```
+$ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
+```
+
+**Compile with Make**: `make all`
+
+### executing the program
+
+**interactive mode**: `$ ./hsh`
+
+**non-interactive mode**: `$ echo "ls -la" | ./hsh`
+
+### usage of arsine in interactive mode
+
+arsine functions just as any other shell.  Here is an example usage of the ls
+command with flags.  This command lists directory contents.
+
+```
+$ ls -la
+```
+
+## Testing
+
+To run tests on the custom shell follow the instructions in the custom shell
+checker in this repository: https://github.com/glyif/shellfish
 
 ## File List
 
@@ -38,6 +66,4 @@ David John Coleman II - http://www.davidjohncoleman.com/
 
 ## License
 
-Public Domain, no copyright protection
-
-_special thanks to Walter White_
+MIT License

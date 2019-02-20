@@ -1,37 +1,6 @@
 #include "header.h"
 
 /**
- * buildarginv - function to build a struct of the arguments inventory
- * Return: pointer to arguments inventory struct
- */
-arg_inventory_t *buildarginv(void)
-{
-	arg_inventory_t *arginv;
-
-	arginv = safe_malloc(sizeof(arg_inventory_t));
-	arginv->input_commands = safe_malloc(BUFSIZE * sizeof(char));
-	arginv->envlist = env_list();
-	arginv->history = history_list(arginv);
-	arginv->alias = alias_list();
-	arginv->buflimit = BUFSIZE;
-	arginv->st_mode = _filemode(STDIN_FILENO);
-	arginv->last_exit_code = 0;
-	arginv->last_bg_pid = -1;
-	arginv->n_bg_jobs = 0;
-	arginv->exit = 0;
-	arginv->exit_status = 0;
-	if (arginv->envlist == NULL)
-	{
-		_perror("No Memory\n");
-		write(STDOUT_FILENO, "insufficient memory", 19);
-	}
-
-	load_alias(arginv);
-
-	return (arginv);
-}
-
-/**
  * sig_handler - handles user input of ^C with the following
  * @sig: integer value of signal to change, will be SIGINT = ^C
  *

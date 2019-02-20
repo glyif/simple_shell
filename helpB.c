@@ -5,18 +5,16 @@
  */
 void h_history(void)
 {
-	_puts("this is a help file:");
-	_puts("first: goolge your question");
-	_puts("second: contact developers for help");
+	_puts("\nUsage: $ history");
+	_puts("Display the history list.");
 }
 
 /**
- * h_monalisa - help function to explain how the associated function works
+ * h_arsine - help function to explain how the associated function works
  */
-void h_monalisa(void)
-{	_puts("this is a help file:");
-	_puts("first: goolge your question");
-	_puts("second: contact developers for help");
+void h_arsine(void)
+{	_puts("\nUsage: $ arsine");
+	_puts("\t shows chemical formula of shell");
 }
 
 /**
@@ -24,9 +22,8 @@ void h_monalisa(void)
  */
 void h_setenv(void)
 {
-	_puts("this is a help file:");
-	_puts("first: goolge your question");
-	_puts("second: contact developers for help");
+	_puts("\nUsage: $ setenv [NAME] [VALUE]");
+	_puts("\tSets a new environmental variable");
 }
 
 /**
@@ -34,7 +31,6 @@ void h_setenv(void)
  */
 void h_unsetenv(void)
 {
-	_puts("this is a help file:");
-	_puts("first: goolge your question");
-	_puts("second: contact developers for help");
+	_puts("\nUsage: $ unsetenv [NAME]");
+	_puts("\tUnsets a saved environmental variable");
 }

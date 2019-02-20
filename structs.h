@@ -152,6 +152,8 @@ typedef struct alias
  * @commands: double pointer to commands list
  * @st_mode: st_mode either FIFO or terminal
  * @history: linked list of history
+ * @history_file: the history file to store command history
+ * @alias_file: the aliases file to store aliases
  * @alias: linked list of aliases
  * @tokens: tokens list
  * @parser: a parse
@@ -161,7 +163,6 @@ typedef struct alias
  * @pipeout: pipeout variable
  * @io_redir: io redirection
  * @filename: the filename
- * @last_exit_code: last exit code
  * @last_bg_pid: last pid
  * @exit: indicator to exit or not
  * @exit_status: the exit status
@@ -174,9 +175,11 @@ typedef struct arg_inventory
 	size_t buflimit;
 	int st_mode;
 	history_t *history;
+	char *history_file;
 	alias_t *alias;
-	tokens_t   tokens;
-	parser_t   parser;
+	char *alias_file;
+	tokens_t tokens;
+	parser_t parser;
 	pipeline_t pipeline;
 	int n_bg_jobs;
 	int pipein;
@@ -185,7 +188,6 @@ typedef struct arg_inventory
 	int io_redir;
 	char *filename;
 
-	int last_exit_code;
 	pid_t last_bg_pid;
 
 	int exit;

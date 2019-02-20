@@ -116,7 +116,7 @@ int _arsine(arg_inventory_t *arginv)
 {
 	(void)arginv;
 
-	_puts("AsH3");
+	_puts("AsH3 special thanks to Walter White");
 
 	return (EXT_SUCCESS);
 }

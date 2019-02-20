@@ -15,8 +15,10 @@ int freeall(arg_inventory_t *arginv)
 		save_alias(arginv);
 		file_history(arginv);
 		free_history(arginv->history);
+		free(arginv->history_file);
 		free_environ(arginv->envlist);
 		free_alias(arginv->alias);
+		free(arginv->alias_file);
 		if (arginv->input_commands)
 			free(arginv->input_commands);
 		exit_status = arginv->exit_status;

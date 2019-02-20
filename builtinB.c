@@ -67,7 +67,7 @@ int _unalias(arg_inventory_t *arginv)
 }
 
 /**
- * the_help - prints mona lisa ascii art
+ * the_help - prints help commands info based on the other input argument
  * @arginv: arguments inventory
  *
  * Return: 0 on success
@@ -75,9 +75,9 @@ int _unalias(arg_inventory_t *arginv)
 int the_help(arg_inventory_t *arginv)
 {
 	char **commands;
-	int i = 0;
+	int i = 0, retval = 127;
 	bins_t bins[] = {
-		{"exit", h_exit}, {"monalisa", h_monalisa}, {"env", h_env},
+		{"exit", h_exit}, {"arsine", h_arsine}, {"env", h_env},
 		{"setenv", h_setenv}, {"unsetenv", h_unsetenv},
 		{"history", h_history}, {"cd", h_cd}, {"alias", h_alias},
 		{"help", h_help},
@@ -89,7 +89,7 @@ int the_help(arg_inventory_t *arginv)
 	if (commands[2] != NULL)
 	{
 		_perror("help: too many input commands.\n");
-		return (-1);
+		return (retval);
 	}
 
 	while (bins[i].function != NULL)
@@ -97,12 +97,13 @@ int the_help(arg_inventory_t *arginv)
 		if (_strcmp(bins[i].function, commands[1]) == 0)
 		{
 			bins[i].help();
+			retval = EXT_SUCCESS;
 			break;
 		}
 		i++;
 	}
 
-	return (EXT_SUCCESS);
+	return (retval);
 }
 
 /**
@@ -117,9 +118,9 @@ int the_exit(arg_inventory_t *arginv)
 	int es;
 
 	commands = (char **)arginv->commands;
-	if (commands[1] == '\0')
+	if (commands[1] == NULL)
 		arginv->exit = 1;
-	else if (commands[1][0] > 47 && commands[1][0] < 58)
+	else if (is_uint(commands[1]))
 	{
 		es = _atoi(commands[1]);
 		arginv->exit = 1;

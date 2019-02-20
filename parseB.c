@@ -1,14 +1,17 @@
 #include "header.h"
 
+/**
+ * _getpid - gets the pid and starts a new child precess
+ *
+ * Return: returns the pid of new child process
+ */
 int _getpid(void)
 {
 	int pid;
 
 	pid = fork();
-	if (pid > 0)
-		return (pid);
-	else
-		return (pid);
+
+	return (pid);
 }
 
 /**
@@ -26,14 +29,13 @@ void bash_replace(arg_inventory_t *arginv, int index)
 		if (t.tokens[index].str[j] == '$' && t.tokens[index].str[j + 1] != '\0')
 			switch (t.tokens[index].str[j + 1])
 			{
-				
 				case '$':
 					replace_str((char **)&t.tokens[index].str,
 						int_to_str(_getpid()), j, j + 1, 1);
 					break;
 				case '?':
 					replace_str((char **)&t.tokens[index].str,
-						int_to_str(arginv->last_exit_code), j,
+						int_to_str(arginv->exit_status), j,
 						j + 1, 1);
 					break;
 				case '!':

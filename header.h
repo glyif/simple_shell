@@ -40,9 +40,12 @@ extern char **environ;
 
 /* ---------------main--------------- */
 ssize_t _getline(char **buffer, size_t *limit);
-arg_inventory_t *buildarginv(void);
 int _filemode(int fd);
 ssize_t _readline(int fd, char **buffer, size_t *limit);
+
+/* --------- arguments inventory ---------- */
+arg_inventory_t *buildarginv(void);
+char *set_name(env_t *envlist, char *name);
 
 /* ---------------execute--------------- */
 pid_t execute(arg_inventory_t *arginv);
@@ -59,6 +62,7 @@ int is_redirection(int token_id);
 void init_tokens(tokens_t *tokens, int length);
 void delete_dups(tokens_t *tokens);
 void token_classify(tokens_t *tokens);
+void cleanup_tokens(tokens_t *tokens, unsigned int tokens_idx, char *data);
 
 /* -------custom environ------- */
 env_t *env_list(void);
@@ -102,6 +106,7 @@ char _isspace(char c);
 int _atoi(char *s);
 void _perror(char *string);
 void _memmove(void *dest, void *src, size_t n);
+int is_uint(char *num);
 
 /* ---------------custom malloc--------------- */
 char *mem_reset(char *str, int bytes);
@@ -178,7 +183,7 @@ int free_alias(alias_t *head);
 
 /* ----help---- */
 void h_exit(void);
-void h_monalisa(void);
+void h_arsine(void);
 void h_env(void);
 void h_setenv(void);
 void h_unsetenv(void);
